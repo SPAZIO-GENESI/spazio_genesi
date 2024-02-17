@@ -5,7 +5,7 @@
 /* Links */
 a {
   color: black;
-},
+}
 a:focus,
 a:hover {
   color: #000000;
@@ -47,7 +47,7 @@ body {
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 100em;
 }
 
 
