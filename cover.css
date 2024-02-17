@@ -8,6 +8,9 @@
     width: 95%;
     max-width: 400px;
   }
+  .cover {
+    padding: 0 0rem;
+  }
 }
 
 @media all and (min-width:410px) and (max-width: 1024px) {
@@ -16,7 +19,9 @@
     width: 80%;
     max-width: 800px;
   }
-  
+  .cover {
+    padding: 0 5rem;
+  }
 }
 
 
@@ -113,9 +118,7 @@ body {
 /*
  * Cover
  */
-.cover {
-  padding: 0 5rem;
-}
+
 .cover .btn-lg {
   padding: .75rem 1.25rem;
   font-weight: 700;
