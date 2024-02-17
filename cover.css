@@ -2,7 +2,7 @@
  * Globals
  */
 
- @media all and (min-width:0px) and (max-width: 400px) {
+ @media all and (min-width:0px) and (max-width: 500px) {
   /* put your css styles in here */
   .cover-container {
     width: 95%;
@@ -13,7 +13,7 @@
   }
 }
 
-@media all and (min-width:410px) and (max-width: 1024px) {
+@media all and (min-width:501px) and (max-width: 1024px) {
   /* put your css styles in here */
   .cover-container {
     width: 80%;
