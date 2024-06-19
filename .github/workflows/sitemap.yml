@@ -19,6 +19,7 @@ jobs:
       uses: cicirello/generate-sitemap@v1.10.1
       with:
         sitemap-path: sitemap.xml
+        base-url-path: https://spaziogenesi.org/
 
     - name: Commit sitemap
       run: |
