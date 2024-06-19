@@ -21,10 +21,23 @@ jobs:
         sitemap-path: sitemap.xml
         base-url-path: https://spaziogenesi.org/
 
-    - name: Commit sitemap
+        
+    - name: Output stats
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add sitemap.xml
-        git commit -m 'Generate sitemap'
-        git push
+        echo "sitemap-path = ${{ steps.sitemap.outputs.sitemap-path }}"
+        echo "url-count = ${{ steps.sitemap.outputs.url-count }}"
+        echo "excluded-count = ${{ steps.sitemap.outputs.excluded-count }}"
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6.0.5
+      with:
+        title: "Automated sitemap update"
+        body: > 
+          Automated changes. Sitemap updated by 
+          the [generate-sitemap](https://github.com/cicirello/generate-sitemap) 
+          GitHub action.  
+        commit-message: "Automated sitemap update."
+        author: mascam64 <mascam64@users.noreply.github.com>
+        committer: mascam64 <mascam64@users.noreply.github.com>
+        branch: create-pull-request/sitemap
+        delete-branch: true
