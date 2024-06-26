@@ -1,0 +1,43 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Generate sitemap
+      uses: cicirello/generate-sitemap@v1.10.1
+      with:
+        sitemap-path: sitemap.xml
+        base-url-path: https://spaziogenesi.org/
+
+        
+    - name: Output stats
+      run: |
+        echo "sitemap-path = ${{ steps.sitemap.outputs.sitemap-path }}"
+        echo "url-count = ${{ steps.sitemap.outputs.url-count }}"
+        echo "excluded-count = ${{ steps.sitemap.outputs.excluded-count }}"
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6.0.5
+      with:
+        title: "Automated sitemap update"
+        body: > 
+          Automated changes. Sitemap updated by 
+          the [generate-sitemap](https://github.com/cicirello/generate-sitemap) 
+          GitHub action.  
+        commit-message: "Automated sitemap update."
+        author: mascam64 <mascam64@users.noreply.github.com>
+        committer: mascam64 <mascam64@users.noreply.github.com>
+        branch: create-pull-request/sitemap
+        delete-branch: true
