@@ -55,9 +55,7 @@ body {
   background-color: white;
   text-align: center;
   font-family: "Lucida Console", "Courier New", monospace;
-}
-
-body {
+  font-size: 0.7rem;
   display: -ms-flexbox;
   display: -webkit-box;
   display: flex;
