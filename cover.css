@@ -56,6 +56,9 @@ body {
   text-align: center;
   font-family: "Lucida Console", "Courier New", monospace;
   font-size: 0.7rem;
+}
+
+body{
   display: -ms-flexbox;
   display: -webkit-box;
   display: flex;
