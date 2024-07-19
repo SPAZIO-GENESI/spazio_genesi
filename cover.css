@@ -57,7 +57,11 @@ body {
   font-family: "Lucida Console", "Courier New", monospace;
   
 }
-
+a {
+  color: blue;
+  text-decoration: underline;
+  }
+  
 body{
   display: -ms-flexbox;
   display: -webkit-box;
