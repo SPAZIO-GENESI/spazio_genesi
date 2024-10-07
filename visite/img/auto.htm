@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carosello Bootstrap</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* change transition duration to control the speed of fade effect */
+.carousel-item {
+  transition: transform 2.6s ease-in-out;
+}
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+  transition: opacity 0s 2.6s;
+}
+    </style>
 </head>
 <body>
-    <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="2000">
+    <div id="carouselExample" class="carousel slide carousel-fade" data-ride="carousel" data-interval="2000">
         <div class="carousel-inner" id="carousel-inner">
             <!-- Le immagini verranno aggiunte dinamicamente qui -->
         </div>
