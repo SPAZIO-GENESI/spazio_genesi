@@ -1,7 +1,9 @@
 import { lista } from './lista.mjs';
-    let immmagini=[];
-    let descrizioni=[];
-    let crediti=[];
+
+let immmagini=[];
+let descrizioni=[];
+let crediti=[];
+
 function caricalista(lista){
     let quante = lista.length;
     for (let x=0; x<quante; x++) {
@@ -9,16 +11,16 @@ function caricalista(lista){
         descrizioni.push(lista(1),x);
         crediti.push(lista(2),x);
     }
-    loadImages();
+    loadImages(immmagini, descrizioni, crediti);
 }
 
-function loadImages() {
+function loadImages(immagini, descrizioni, crediti) {
     const imageFolder = './'; // Cartella delle immagini
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Estensioni delle immagini
     const carouselInner = document.getElementById('carousel-inner');
 
     // Lista delle immagini (in un vero scenario, questa lista potrebbe essere generata dinamicamente)
-    const images = immmagini(); //['accademiasanluca_benedettibiocca_gbartolomei.jpeg', 'accademiasanluca_bernini.jpeg', 'accademiasanluca_canova.jpeg']; // Sostituisci con i nomi delle tue immagini
+    const images = immmagini; //['accademiasanluca_benedettibiocca_gbartolomei.jpeg', 'accademiasanluca_bernini.jpeg', 'accademiasanluca_canova.jpeg']; // Sostituisci con i nomi delle tue immagini
 
     images.forEach((image, index) => {
         const div = document.createElement('div');
