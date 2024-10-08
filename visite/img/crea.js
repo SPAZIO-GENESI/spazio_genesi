@@ -1,4 +1,4 @@
-import { lista } from './lista.mjs';
+import * as lista from './lista.mjs';
 
 let immmagini=[];
 let descrizioni=[];
