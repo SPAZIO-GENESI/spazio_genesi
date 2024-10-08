@@ -7,9 +7,9 @@ let crediti=[];
 function caricalista(lista){
     let quante = lista.length;
     for (let x=0; x<quante; x++) {
-        immmagini.push(lista(0),x);
-        descrizioni.push(lista(1),x);
-        crediti.push(lista(2),x);
+        immmagini.push(lista(0,x));
+        descrizioni.push(lista(1,x));
+        crediti.push(lista(2,x));
     }
     loadImages(immmagini, descrizioni, crediti);
 }
