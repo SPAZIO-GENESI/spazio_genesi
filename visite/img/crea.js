@@ -1,4 +1,4 @@
-import { lista } from './lista.js';
+import { lista } from './lista.mjs';
 
 function caricalista(lista){
     let immmagini[];
