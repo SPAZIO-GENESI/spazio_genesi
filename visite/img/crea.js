@@ -18,7 +18,7 @@ function loadImages() {
     const carouselInner = document.getElementById('carousel-inner');
 
     // Lista delle immagini (in un vero scenario, questa lista potrebbe essere generata dinamicamente)
-    const images = immmagini; //['accademiasanluca_benedettibiocca_gbartolomei.jpeg', 'accademiasanluca_bernini.jpeg', 'accademiasanluca_canova.jpeg']; // Sostituisci con i nomi delle tue immagini
+    const images = immmagini(); //['accademiasanluca_benedettibiocca_gbartolomei.jpeg', 'accademiasanluca_bernini.jpeg', 'accademiasanluca_canova.jpeg']; // Sostituisci con i nomi delle tue immagini
 
     images.forEach((image, index) => {
         const div = document.createElement('div');
