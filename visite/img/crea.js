@@ -1,9 +1,9 @@
 import { lista } from './lista.mjs';
 
 function caricalista(lista){
-    let immmagini[];
-    let descrizioni[];
-    let crediti[];
+    let immmagini=[];
+    let descrizioni=[];
+    let crediti=[];
 
     let quante = lista.length;
     for (let x=0; x<quante; x++) {
