@@ -1,10 +1,8 @@
 import { lista } from './lista.mjs';
-
-function caricalista(lista){
     let immmagini=[];
     let descrizioni=[];
     let crediti=[];
-
+function caricalista(lista){
     let quante = lista.length;
     for (let x=0; x<quante; x++) {
         immmagini.push(lista(0),x);
