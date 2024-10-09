@@ -58,7 +58,7 @@ function loadImages(immagini, descrizioni, crediti) {
         div.appendChild(img);
 
         const divtesto = document.createElement('div');
-            divtesto.className ="carousel-caption d-none d-md-block";
+            divtesto.className ="carousel-caption ";
 
             const di = document.createElement('h5');
             const h5text = document.createTextNode(descr[index]);
