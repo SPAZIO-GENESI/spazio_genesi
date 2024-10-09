@@ -15,7 +15,7 @@ let quanti = calcolaLunghezza(array);
 console.log("i="+quanti);
 
 function caricalista(array){
-    for (let x=0; x<quante; x++) {
+    for (let x=0; x<quanto; x++) {
         immmagini.push(lista(0,x));
             console.log (immmagini(x));
         descrizioni.push(lista(1,x));
