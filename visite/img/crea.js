@@ -1,15 +1,15 @@
 import {listaa} from './lista.mjs';
-console.log(listaa);
+console.log(listaa.lista);
 
 let immmagini=[];
 let descrizioni=[];
 let crediti=[];
 
-let quante = listaa.length;
+let quante = listaa.listar.length;
 console.log("e="+quante);
-let quanto = Object.keys(listaa).length;
+let quanto = Object.keys(listaa.listar).length;
 console.log("o="+quanto);
-let quanti = calcolaLunghezza(listaa);
+let quanti = calcolaLunghezza(listaa.listar);
 console.log("i="+quanti);
 
 function caricalista(lista){
