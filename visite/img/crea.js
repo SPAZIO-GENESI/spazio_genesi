@@ -1,5 +1,5 @@
 import {listaa} from './lista.mjs';
-const array = listaa();
+const lista = listaa();
 
 console.log(array);
 
@@ -9,12 +9,12 @@ let crediti=[];
 
 //let quante = (listaa.listar).length;
 //console.log("e="+quante);
-let quanto = Object.keys(array).length;
+let quanto = Object.keys(lista).length;
 console.log("o="+quanto);
-let quanti = calcolaLunghezza(array);
+let quanti = calcolaLunghezza(lista);
 console.log("i="+quanti);
 
-function caricalista(array){
+function caricalista(lista){
     for (let x=0; x<quanto; x++) {
         immmagini.push(lista(0,x));
             console.log (immmagini(x));
