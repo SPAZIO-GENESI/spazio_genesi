@@ -6,11 +6,11 @@ let descrizioni=[];
 let crediti=[];
 
 let quante = listaa.length;
-console.log("e=${quante}");
+console.log("e="+quante);
 let quanto = Object.keys(listaa).length;
-console.log("o=${quanto}");
+console.log("o="+quanto);
 let quanti = calcolaLunghezza(listaa);
-console.log("i=${quanti}");
+console.log("i="+quanti);
 
 function caricalista(lista){
     for (let x=0; x<quante; x++) {
