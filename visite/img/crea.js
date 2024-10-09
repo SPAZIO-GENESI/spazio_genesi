@@ -3,8 +3,9 @@ import * as listam from './lista.mjs';
 let immmagini=[];
 let descrizioni=[];
 let crediti=[];
-    let quante = listam.lista.length;
-    console.log(quante);
+    let quante = listam.listaa.length;
+    let quanto = Object.keys(listam.listaa).length;
+    console.log(quanto);
 function caricalista(lista){
 
     for (let x=0; x<quante; x++) {
