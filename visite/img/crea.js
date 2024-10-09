@@ -38,7 +38,7 @@ function loadImages(immagini, descrizioni, crediti) {
 
     images.forEach((image, index) => {
 
-        const bottone = document.createElement('button');
+        const bottone = document.createElement('input');
         bottone.setAttribute('type','button');
         bottone.setAttribute('data-bs-target','#carouselExampleCaptions');
         bottone.setAttribute('data-bs-slide-to',index);
