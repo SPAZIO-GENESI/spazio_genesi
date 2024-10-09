@@ -30,12 +30,24 @@ function loadImages(immagini, descrizioni, crediti) {
     const imageFolder = './'; // Cartella delle immagini
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Estensioni delle immagini
     const carouselInner = document.getElementById('carousel-inner');
+    const carouselIndicator = document.getElementById('carousel-indicators');
 
     // Lista delle immagini (in un vero scenario, questa lista potrebbe essere generata dinamicamente)
     const images = immagini; //['accademiasanluca_benedettibiocca_gbartolomei.jpeg', 'accademiasanluca_bernini.jpeg', 'accademiasanluca_canova.jpeg']; // Sostituisci con i nomi delle tue immagini
     const descr = descrizioni;
 
     images.forEach((image, index) => {
+
+        const bottone = document.createElement('button');
+        bottone.setAttribute('type','button');
+        bottone.setAttribute('data-bs-target','#carouselExampleCaptions');
+        bottone.setAttribute('data-bs-slide-to',index);
+        bottone.setAttribute('aria-label','Slide '+index);
+        bottone.setAttribute('aria-current','true');
+        bottone.className('active');
+        carouselIndicator.appendChild(bottone);
+
+
         const div = document.createElement('div');
         div.className = 'carousel-item 100-vh ' + (index === 0 ? ' active' : '');
         const img = document.createElement('img');
@@ -47,7 +59,7 @@ function loadImages(immagini, descrizioni, crediti) {
 
         const divtesto = document.createElement('div');
             divtesto.className ="carousel-caption d-none d-md-block";
-            
+
             const di = document.createElement('h5');
             const h5text = document.createTextNode(descr[index]);
             di.appendChild(h5text);
