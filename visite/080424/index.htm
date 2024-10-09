@@ -25,25 +25,17 @@
 </script>
 <!-- End Matomo Code -->
 <style>
-    @media (max-width: 767px) {
-.carousel-inner > .carousel-item-next,
-.carousel-inner > .carousel-item-prev,
-.carousel-inner > .carousel-item.active {
-display: none;
+.carousel-item img {
+  object-fit: cover;
+  height: 300px; /* Adjust as needed */
 }
 
-.carousel-inner > .carousel-item.active.carousel-item-left,
-.carousel-inner > .carousel-item.carousel-item-left {
-display: block;
-transform: translateX(-100%);
+@media (max-width: 768px) {
+  .carousel-item img {
+    height: 200px; /* Adjust for smaller devices */
+  }
 }
 
-.carousel-inner > .carousel-item.active.carousel-item-right,
-.carousel-inner > .carousel-item.carousel-item-right {
-display: block;
-transform: translateX(100%);
-}
-}
 </style>
     </head>
     <body class="text-center h-100">
