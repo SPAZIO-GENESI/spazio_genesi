@@ -1,11 +1,11 @@
 import {listaa} from './lista.mjs';
-console.log(listaa.lista);
+console.log(listaa.listar);
 
 let immmagini=[];
 let descrizioni=[];
 let crediti=[];
 
-let quante = listaa.listar.length;
+let quante = (listaa.listar).length;
 console.log("e="+quante);
 let quanto = Object.keys(listaa.listar).length;
 console.log("o="+quanto);
