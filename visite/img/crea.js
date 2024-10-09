@@ -1,15 +1,15 @@
-import * as listam from './lista.mjs';
-console.log(listam.listaa);
+import {listaa} from './lista.mjs';
+console.log(listaa);
 
 let immmagini=[];
 let descrizioni=[];
 let crediti=[];
 
-let quante = listam.listaa.length;
+let quante = listaa.length;
 console.log("e=${quante}");
-let quanto = Object.keys(listam.listaa).length;
+let quanto = Object.keys(listaa).length;
 console.log("o=${quanto}");
-let quanti = calcolaLunghezza(listam.listaa);
+let quanti = calcolaLunghezza(listaa);
 console.log("i=${quanti}");
 
 function caricalista(lista){
