@@ -37,7 +37,7 @@ function loadImages(immagini, descrizioni, crediti) {
 
     images.forEach((image, index) => {
         const div = document.createElement('div');
-        div.className = 'carousel-item' + (index === 0 ? ' active' : '');
+        div.className = 'carousel-item 100-vh ' + (index === 0 ? ' active' : '');
         const img = document.createElement('img');
         img.src = imageFolder + image;
         // img.className = 'd-block 100-vh ';
@@ -53,7 +53,12 @@ function loadImages(immagini, descrizioni, crediti) {
         // Aggiungi il nodo di testo all'elemento <h5>
         divtesto.appendChild(h5text);
 
+        const pcred=document.createElement('p');
+        const ptext=document.createTextNode(crediti[index]);
+        pcred.appendChild(ptext)
+
         div.appendChild(divtesto);
+        div.appendChild(pcred);
 
 
         carouselInner.appendChild(div);
