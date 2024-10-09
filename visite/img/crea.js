@@ -44,7 +44,7 @@ function loadImages(immagini, descrizioni, crediti) {
         bottone.setAttribute('data-bs-slide-to',index);
         bottone.setAttribute('aria-label','Slide '+index);
         bottone.setAttribute('aria-current','true');
-        bottone.className('active');
+        bottone.className( (index === 0 ? ' active' : ''));
         carouselIndicator.appendChild(bottone);
 
 
