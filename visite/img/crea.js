@@ -1,5 +1,5 @@
-//import * as listam from './lista.mjs';
-const listam = require('./lista.mjs');
+import * as listam from './lista.mjs';
+
 
 let immmagini=[];
 let descrizioni=[];
