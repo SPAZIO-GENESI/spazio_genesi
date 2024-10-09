@@ -1,11 +1,14 @@
-import * as listam from './lista.mjs';
+//import * as listam from './lista.mjs';
+const listam = require('./lista.mjs');
 
 let immmagini=[];
 let descrizioni=[];
 let crediti=[];
-    let quante = listam.listaa.length;
-    let quanto = Object.keys(listam.listaa).length;
-    console.log(quanto);
+let quante = listam.listaa.length;
+console.log("e="+quante);
+let quanto = Object.keys(listam.listaa).length;
+console.log("o="+quanto);
+
 function caricalista(lista){
 
     for (let x=0; x<quante; x++) {
