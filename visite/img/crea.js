@@ -33,6 +33,7 @@ function loadImages(immagini, descrizioni, crediti) {
 
     // Lista delle immagini (in un vero scenario, questa lista potrebbe essere generata dinamicamente)
     const images = immagini; //['accademiasanluca_benedettibiocca_gbartolomei.jpeg', 'accademiasanluca_bernini.jpeg', 'accademiasanluca_canova.jpeg']; // Sostituisci con i nomi delle tue immagini
+    const descr = descrizioni;
 
     images.forEach((image, index) => {
         const div = document.createElement('div');
@@ -43,6 +44,18 @@ function loadImages(immagini, descrizioni, crediti) {
         img.style = "max-height: 500px; max-width: 500px; height: auto; width: auto;";
         img.alt = 'Slide ' + (index + 1);
         div.appendChild(img);
+
+        const divtesto = document.createElement('div');
+        divtesto.className ="carousel-caption d-none d-md-block";
+        
+        const di = document.createElement('h5');
+        const h5text = document.createTextNode(descr[index]);
+        // Aggiungi il nodo di testo all'elemento <h5>
+        divtesto.appendChild(h5text);
+
+        div.appendChild(divtesto);
+
+
         carouselInner.appendChild(div);
     });
 }
