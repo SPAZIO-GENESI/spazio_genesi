@@ -8,6 +8,8 @@ let quante = listam.listaa.length;
 console.log("e="+quante);
 let quanto = Object.keys(listam.listaa).length;
 console.log("o="+quanto);
+let quanti = calcolaLunghezza(listam.listaa);
+console.log("i="+quanti);
 
 function caricalista(lista){
 
@@ -41,6 +43,23 @@ function loadImages(immagini, descrizioni, crediti) {
         div.appendChild(img);
         carouselInner.appendChild(div);
     });
+}
+
+function calcolaLunghezza(arr) {
+    let count = 0;
+
+    function contaElementi(a) {
+        for (let i = 0; i < a.length; i++) {
+            if (Array.isArray(a[i])) {
+                contaElementi(a[i]);
+            } else {
+                count++;
+            }
+        }
+    }
+
+    contaElementi(arr);
+    return count;
 }
 
 // Carica le immagini quando la pagina è pronta
