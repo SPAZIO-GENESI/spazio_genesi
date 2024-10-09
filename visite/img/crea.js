@@ -3,7 +3,7 @@ const lista = listaa();
 
 console.log(lista);
 
-let immmagini=[];
+let immagini=[];
 let descrizioni=[];
 let crediti=[];
 
@@ -15,15 +15,15 @@ let quanti = calcolaLunghezza(lista);
 console.log("i="+quanti);
 
 function caricalista(lista){
-    for (let x=0; x<quanto; x++) {
-        immmagini.push(lista[0,x]);
-            console.log (lista[0,x]);
-        descrizioni.push(lista[1,x]);
-            console.log (lista[1,x]);
-        crediti.push(lista[2,x]);
-            console.log (lista[2,x]);
-    }
-    loadImages(immmagini, descrizioni, crediti);
+    
+        immagini=lista[0];
+            console.log (immagini);
+        descrizioni=lista[1];
+            console.log (descrizioni);
+        crediti=lista[2];
+            console.log (crediti);
+    
+    loadImages(immagini, descrizioni, crediti);
 }
 
 function loadImages(immagini, descrizioni, crediti) {
