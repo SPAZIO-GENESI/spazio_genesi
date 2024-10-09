@@ -1,7 +1,7 @@
 import {listaa} from './lista.mjs';
 const lista = listaa();
 
-console.log(array);
+console.log(lista);
 
 let immmagini=[];
 let descrizioni=[];
