@@ -65,4 +65,4 @@ function calcolaLunghezza(arr) {
 }
 
 // Carica le immagini quando la pagina è pronta
-document.addEventListener('DOMContentLoaded', caricalista);
+document.addEventListener('DOMContentLoaded', caricalista(lista));
