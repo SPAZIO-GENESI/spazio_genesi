@@ -17,11 +17,11 @@ console.log("i="+quanti);
 function caricalista(lista){
     for (let x=0; x<quanto; x++) {
         immmagini.push(lista[0,x]);
-            console.log (immmagini[x]);
+            console.log (lista[0,x]);
         descrizioni.push(lista[1,x]);
-            console.log (descrizioni[x]);
+            console.log (lista[1,x]);
         crediti.push(lista[2,x]);
-            console.log (crediti[x]);
+            console.log (lista[2,x]);
     }
     loadImages(immmagini, descrizioni, crediti);
 }
