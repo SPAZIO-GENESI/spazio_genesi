@@ -40,7 +40,7 @@ function loadImages(immagini, descrizioni, crediti) {
 
         const bottone = document.createElement('input');
         bottone.setAttribute('type','button');
-        bottone.setAttribute('data-bs-target','#carouselExampleCaptions');
+        bottone.setAttribute('data-bs-target','#carouselExample');
         bottone.setAttribute('data-bs-slide-to',index);
         bottone.setAttribute('aria-label','Slide '+index);
         bottone.setAttribute('aria-current','true');
