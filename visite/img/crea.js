@@ -1,5 +1,5 @@
 import * as listam from './lista.mjs';
-console.log(listam);
+console.log(listam.listaa);
 
 let immmagini=[];
 let descrizioni=[];
