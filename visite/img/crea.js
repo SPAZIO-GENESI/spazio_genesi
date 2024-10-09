@@ -1,7 +1,7 @@
 import {listaa} from './lista.mjs';
 const lista = listaa();
 
-console.log(lista);
+// console.log(lista);
 
 let immagini=[];
 let descrizioni=[];
@@ -11,17 +11,17 @@ let crediti=[];
 //console.log("e="+quante);
 let quanto = Object.keys(lista).length;
 console.log("o="+quanto);
-let quanti = calcolaLunghezza(lista);
-console.log("i="+quanti);
+// let quanti = calcolaLunghezza(lista);
+// console.log("i="+quanti);
 
 function caricalista(lista){
     
         immagini=lista[0];
-            console.log (immagini);
+       //     console.log (immagini);
         descrizioni=lista[1];
-            console.log (descrizioni);
+        //    console.log (descrizioni);
         crediti=lista[2];
-            console.log (crediti);
+        //    console.log (crediti);
     
     loadImages(immagini, descrizioni, crediti);
 }
