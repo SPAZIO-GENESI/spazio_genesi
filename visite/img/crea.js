@@ -1,12 +1,12 @@
-import * as lista from './lista.mjs';
+import * as listam from './lista.mjs';
 
 let immmagini=[];
 let descrizioni=[];
 let crediti=[];
-
-function caricalista(lista){
-    let quante = lista.length;
+    let quante = listam.lista.length;
     console.log(quante);
+function caricalista(lista){
+
     for (let x=0; x<quante; x++) {
         immmagini.push(lista(0,x));
             console.log (immmagini(x));
