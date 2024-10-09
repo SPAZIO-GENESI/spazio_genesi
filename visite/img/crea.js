@@ -39,26 +39,26 @@ function loadImages(immagini, descrizioni, crediti) {
         const div = document.createElement('div');
         div.className = 'carousel-item 100-vh ' + (index === 0 ? ' active' : '');
         const img = document.createElement('img');
-        img.src = imageFolder + image;
-        // img.className = 'd-block 100-vh ';
-        img.style = "max-height: 500px; max-width: 500px; height: auto; width: auto;";
-        img.alt = 'Slide ' + (index + 1);
+            img.src = imageFolder + image;
+            // img.className = 'd-block 100-vh ';
+            img.style = "max-height: 500px; max-width: 500px; height: auto; width: auto;";
+            img.alt = 'Slide ' + (index + 1);
         div.appendChild(img);
 
         const divtesto = document.createElement('div');
-        divtesto.className ="carousel-caption d-none d-md-block";
-        
-        const di = document.createElement('h5');
-        const h5text = document.createTextNode(descr[index]);
-        // Aggiungi il nodo di testo all'elemento <h5>
-        divtesto.appendChild(h5text);
+            divtesto.className ="carousel-caption d-none d-md-block";
+            
+            const di = document.createElement('h5');
+            const h5text = document.createTextNode(descr[index]);
+            di.appendChild(h5text);
 
-        const pcred=document.createElement('p');
-        const ptext=document.createTextNode(crediti[index]);
-        pcred.appendChild(ptext)
+            const pcred=document.createElement('p');
+            const ptext=document.createTextNode(crediti[index]);
+            pcred.appendChild(ptext)
 
+            divtesto.appendChild(di);
+            divtesto.appendChild(pcred);
         div.appendChild(divtesto);
-        div.appendChild(pcred);
 
 
         carouselInner.appendChild(div);
