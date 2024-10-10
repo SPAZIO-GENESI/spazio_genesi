@@ -1,4 +1,4 @@
-import {listaa} from './bio.json' assert { type: 'json' };
+import {listaa} from './bio.json';
 const lista = listaa;
 
 console.log(lista);
