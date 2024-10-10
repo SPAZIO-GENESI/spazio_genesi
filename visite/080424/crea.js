@@ -53,7 +53,8 @@ function loadImages(immagini, descrizioni, crediti) {
         const img = document.createElement('img');
             img.src = imageFolder + image;
             // img.className = 'd-block 100-vh ';
-            img.style = "max-height: 500px; max-width: 500px; height: auto; width: auto;";
+            img.className = 'd-block w-100';
+            // img.style = "max-height: 500px; max-width: 500px; height: auto; width: auto;";
             img.alt = 'Slide ' + (index + 1);
         div.appendChild(img);
 
