@@ -1,3 +1,5 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 const quale = urlParams.get('artista');
 console.log(quale);
 
