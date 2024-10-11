@@ -14,11 +14,12 @@ loadJSON().then(lista => {
    cycleAndRenderImages(lista, "névoanarua");
 });
 
-const numimg = 0;
+
 
 function cycleAndRenderImages(jsonData, personName) {
     jsonData.artisti.forEach(artist => {
         if (artist.nome === personName) {
+            const numimg = 0;
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     numimg += 1;
