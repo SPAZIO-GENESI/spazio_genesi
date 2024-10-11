@@ -1,5 +1,14 @@
-import listaa from './bio.json' assert { type: 'json' };
+//import listaa from './bio.json' assert { type: 'json' };
 const lista = listaa;
+
+
+fetch('./bio.json')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error loading JSON:', error));
+
+
+
 
 console.log(lista);
 
