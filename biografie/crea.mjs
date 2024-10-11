@@ -21,7 +21,7 @@ function cycleAndRenderImages(jsonData, personName) {
             let cartella = artist.cartella;
 
             const nome = document.createTextNode("Bio : "+ artist.nome);
-            document.getElementById("bio").appendChild(nome);
+            document.getElementById("biotit").appendChild(nome);
 
             const di = document.createElement('p');
             const bio = document.createTextNode(artist.bio);
@@ -32,7 +32,6 @@ function cycleAndRenderImages(jsonData, personName) {
                 Object.values(imgGroup).forEach(images => {
                     images.forEach(image => {
                         numimg += 1;
-                        console.log("processo " + numimg);
                         renderImage(image, numimg, artist);
                     });
                 });
