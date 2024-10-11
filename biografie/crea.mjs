@@ -21,9 +21,11 @@ function cycleAndRenderImages(jsonData, personName) {
             let cartella = artist.cartella;
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
-                    numimg += 1;
-                    console.log("processo "+numimg);
-                    images.forEach(renderImage(images,numimg, artist));
+                    images.forEach(image => {
+                        numimg += 1;
+                        console.log("processo " + numimg);
+                        renderImage(image, numimg, artist);
+                    });
                 });
             });
         }
