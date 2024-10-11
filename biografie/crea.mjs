@@ -34,6 +34,16 @@ function cycleAndRenderImages(jsonData, personName) {
             di.appendChild(bio);
             document.getElementById("bio").appendChild(di);
 
+            const soc = document.createElement('p');
+
+            if (artist.IG){
+                const igurl = document.createElement('a');
+                igurl.href = artist.IG;
+                igurl.innerHTML = "Instagram";
+                document.getElementById("bio").appendChild(igurl);
+
+            }
+
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     images.forEach(image => {
