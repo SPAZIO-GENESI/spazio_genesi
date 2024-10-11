@@ -31,13 +31,13 @@ function cycleAndRenderImages(jsonData, personName) {
     });
 }
 
-function renderImage(image, indice, artista) {
+function renderImage(image, numimg, artista) {
     const imgElement = document.createElement('img');
     imgElement.src = "./"+artista.cartella+"/"+image.img;
     imgElement.alt = image.des;
     console.log(image);
-    console.log("img"+indice);
-    document.getElementById('img'+indice).appendChild(imgElement);
+    console.log("img"+numimg);
+    document.getElementById('img'+numimg).appendChild(imgElement);
 }
 
 function countChildNodes(node) {
