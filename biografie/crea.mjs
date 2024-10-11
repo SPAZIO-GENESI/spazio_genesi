@@ -14,8 +14,6 @@ loadJSON().then(lista => {
    cycleAndRenderImages(lista, "névoanarua");
 });
 
-
-
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
     jsonData.artisti.forEach(artist => {
@@ -24,7 +22,7 @@ function cycleAndRenderImages(jsonData, personName) {
                 Object.values(imgGroup).forEach(images => {
                     numimg += 1;
                     console.log("processo "+numimg);
-                    images.forEach(renderImage, numimg, artist);
+                    images.forEach(renderImage(numimg, artist));
                 });
             });
         }
