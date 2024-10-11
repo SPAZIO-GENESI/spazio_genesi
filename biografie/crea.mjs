@@ -73,6 +73,7 @@ function renderImage(image, numimg, artist) {
         document.getElementById('img'+numimg).appendChild(imgElement);
 
         const di = document.createElement('div');
+        di.className = "regdiv";
         di.innerHTML = image.des;
         
         document.getElementById('img'+numimg).appendChild(di);
