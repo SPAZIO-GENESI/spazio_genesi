@@ -5,11 +5,11 @@ const lista = [];
 fetch('./bio.json')
   .then(response => response.json())
   .then(data => {console.log(data)
-     lista = data;
-     let quanto = Object.keys(lista).length;
-    console.log("o="+quanto);
+     //lista = data;
+     //let quanto = Object.keys(lista).length;
+    //console.log("o="+quanto);
      // Carica le immagini quando la pagina è pronta
-    document.addEventListener('DOMContentLoaded', caricalista(lista));
+    // document.addEventListener('DOMContentLoaded', caricalista(lista));
 
   })
   .catch(error => console.error('Error loading JSON:', error));
