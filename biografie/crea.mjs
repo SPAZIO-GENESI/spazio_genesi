@@ -17,9 +17,9 @@ loadJSON().then(lista => {
 
 
 function cycleAndRenderImages(jsonData, personName) {
+    let numimg = 0;
     jsonData.artisti.forEach(artist => {
         if (artist.nome === personName) {
-            const numimg = 0;
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     numimg += 1;
