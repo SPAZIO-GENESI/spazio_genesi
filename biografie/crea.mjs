@@ -1,7 +1,24 @@
 //import listaa from './bio.json' assert { type: 'json' };
 
-const lista = [];
+//const lista = [];
 
+async function loadJSON() {
+    // Fetch the JSON file
+    const response = await fetch('path/to/your/file.json');
+    // Parse the JSON data
+    const lista = await response.json();
+    // Return the parsed data
+    return lista;
+}
+
+// Call the function and log the data
+loadJSON().then(data => {console.log(lista)
+    let quanto = Object.keys(lista).length;
+    console.log("o="+quanto);
+});
+
+
+/*
 fetch('./bio.json')
   .then(response => response.json())
   .then(data => {console.log(data)
@@ -13,7 +30,7 @@ fetch('./bio.json')
 
   })
   .catch(error => console.error('Error loading JSON:', error));
-
+*/
 
 
 
