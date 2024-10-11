@@ -4,7 +4,7 @@
 
 async function loadJSON() {
     // Fetch the JSON file
-    const response = await fetch('path/to/your/file.json');
+    const response = await fetch('./bio.json');
     // Parse the JSON data
     const lista = await response.json();
     // Return the parsed data
