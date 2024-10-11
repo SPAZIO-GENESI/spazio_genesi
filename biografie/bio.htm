@@ -40,6 +40,27 @@
 p {
     text-align: left;
 }
+/* Per dispositivi con larghezza massima di 576px (smartphone) */
+@media (max-width: 576px) {
+    p {
+        font-size: 0.4rem; /* Dimensione per smartphone */
+        font-weight: 800;
+    }
+}
+
+/* Per dispositivi con larghezza massima di 768px (tablet) */
+@media (max-width: 768px) {
+    p {
+        font-size: 0.5rem; /* Dimensione per tablet */
+    }
+}
+
+/* Per dispositivi con larghezza massima di 992px (desktop piccoli) */
+@media (max-width: 992px) {
+    p {
+        font-size: 0.6rem; /* Dimensione per desktop piccoli */
+    }
+}
 
 .regdiv {
     text-align: left;
