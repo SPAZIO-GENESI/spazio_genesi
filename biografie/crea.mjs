@@ -12,7 +12,7 @@ async function loadJSON() {
 }
 
 // Call the function and log the data
-loadJSON().then(data => {console.log(lista)
+loadJSON().then(lista => {console.log(lista)
     let quanto = Object.keys(lista).length;
     console.log("o="+quanto);
 });
