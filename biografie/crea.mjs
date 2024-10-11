@@ -41,7 +41,8 @@ function renderImage(image, numimg, artist) {
     console.log(artist);
     const imgElement = document.createElement('img');
     imgElement.src = "./"+artist.cartella+"/"+image.img;
-    imgElement.style.width = "100px";
+    // imgElement.style.width = "100px";
+    imgElement.className="img-fluid";
     imgElement.alt = image.des;
     console.log(image);
     console.log("img"+numimg);
