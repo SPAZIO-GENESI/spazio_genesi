@@ -12,9 +12,14 @@ async function loadJSON() {
 }
 
 // Call the function and log the data
-loadJSON().then(lista => {console.log(lista)
+loadJSON().then(lista => {
+    console.log(lista);
     let quanto = Object.keys(lista).length;
     console.log("o="+quanto);
+    let quante = countChildNodes(lista).length;
+    console.log("n="+quante);
+//console.log("e="+quante);
+
 });
 
 
@@ -44,6 +49,16 @@ fetch('./bio.json')
 
 // let quanti = calcolaLunghezza(lista);
 // console.log("i="+quanti);
+function countChildNodes(node) {
+    if (!node.children) {
+        return 0;
+    }
+    let count = node.children.length;
+    for (let child of node.children) {
+        count += countChildNodes(child);
+    }
+    return count;
+}
 
 function caricalista(lista){
     
