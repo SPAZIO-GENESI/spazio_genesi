@@ -19,12 +19,14 @@ function cycleAndRenderImages(jsonData, personName) {
     jsonData.artisti.forEach(artist => {
         if (artist.nome === personName) {
             let cartella = artist.cartella;
+
+            const nome = document.createTextNode("Bio : "+ artist.nome);
+            document.getElementById("bio").appendChild(nome);
+
             const di = document.createElement('p');
             const bio = document.createTextNode(artist.bio);
             di.appendChild(bio);
             document.getElementById("bio").appendChild(bio);
-
-            const nome = document.createTextNode("Bio : "+ artist.nome);
 
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
