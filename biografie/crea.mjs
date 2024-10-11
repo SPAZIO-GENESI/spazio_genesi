@@ -73,11 +73,13 @@ function renderImage(image, numimg, artist) {
     //  console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
-        const di = document.createElement('div');
-        di.className = "regdiv";
-        di.innerHTML = image.des;
+        //const di = document.createElement('div');
+        //di.className = "regdiv";
+        //di.innerHTML = image.des;
+
         
         document.getElementById('img'+numimg).appendChild(di);
+        document.getElementById('img'+numimg).innerHTML = image.des;
     }
 }
 
