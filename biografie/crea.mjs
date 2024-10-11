@@ -1,3 +1,7 @@
+const quale = urlParams.get('artista');
+console.log(quale);
+
+
 async function loadJSON() {
     // Fetch the JSON file
     const response = await fetch('./bio.json');
