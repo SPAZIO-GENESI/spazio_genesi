@@ -14,7 +14,7 @@ async function loadJSON() {
 }
 
 loadJSON().then(lista => {
-    console.log(lista);
+   // console.log(lista);
     const quante = lista.artisti.length;
     console.log("n="+quante);
    cycleAndRenderImages(lista, quale);
@@ -47,14 +47,14 @@ function cycleAndRenderImages(jsonData, personName) {
 }
 
 function renderImage(image, numimg, artist) {
-    console.log(artist);
+   // console.log(artist);
     const imgElement = document.createElement('img');
     imgElement.src = "./"+artist.cartella+"/"+image.img;
     // imgElement.style.width = "100px";
     imgElement.className="img-fluid";
     imgElement.alt = image.des;
-    console.log(image);
-    console.log("img"+numimg);
+    //console.log(image);
+  //  console.log("img"+numimg);
     document.getElementById('img'+numimg).appendChild(imgElement);
 
     const di = document.createElement('p');
