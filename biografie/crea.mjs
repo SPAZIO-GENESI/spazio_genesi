@@ -11,9 +11,27 @@ loadJSON().then(lista => {
     console.log(lista);
     const quante = lista.artisti.length;
     console.log("n="+quante);
-    const imgg= lista.artisti.img.length;
-    console.log("i="+imgg);
+   cycleAndRenderImages(lista, "nevoanarua");
 });
+
+function cycleAndRenderImages(jsonData, personName) {
+    jsonData.artisti.forEach(artist => {
+        if (artist.nome === personName) {
+            artist.img.forEach(imgGroup => {
+                Object.values(imgGroup).forEach(images => {
+                    numimg += 1;
+                    images.forEach(renderImage, numimg);
+                });
+            });
+        }
+    });
+
+function renderImage(image, indice) {
+    const imgElement = document.createElement('img');
+    imgElement.src = image.img;
+    imgElement.alt = image.des;
+    document.getElementById('img'+indice).appendChild(imgElement);
+}
 
 function countChildNodes(node) {
     if (!node.children) {
