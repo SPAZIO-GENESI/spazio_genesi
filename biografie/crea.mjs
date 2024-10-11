@@ -20,17 +20,18 @@ function cycleAndRenderImages(jsonData, personName) {
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     numimg += 1;
-                    images.forEach(renderImage, numimg);
+                    images.forEach(renderImage, numimg, artist);
                 });
             });
         }
     });
 }
 
-function renderImage(image, indice) {
+function renderImage(image, indice, artista) {
     const imgElement = document.createElement('img');
-    imgElement.src = image.img;
+    imgElement.src = "./"+artista.cartella+"/"+image.img;
     imgElement.alt = image.des;
+    console.log(image);
     document.getElementById('img'+indice).appendChild(imgElement);
 }
 
