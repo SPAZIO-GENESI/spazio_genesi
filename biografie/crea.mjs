@@ -47,6 +47,11 @@ function renderImage(image, numimg, artist) {
     console.log(image);
     console.log("img"+numimg);
     document.getElementById('img'+numimg).appendChild(imgElement);
+
+    const di = document.createElement('p');
+    const bio = document.createTextNode(image.des);
+    di.appendChild(bio);
+    document.getElementById('img'+numimg).appendChild(di);
 }
 
 function countChildNodes(node) {
