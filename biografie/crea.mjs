@@ -11,7 +11,7 @@ loadJSON().then(lista => {
     console.log(lista);
     const quante = lista.artisti.length;
     console.log("n="+quante);
-   cycleAndRenderImages(lista, "nevoanarua");
+   cycleAndRenderImages(lista, "névoanarua");
 });
 
 function cycleAndRenderImages(jsonData, personName) {
