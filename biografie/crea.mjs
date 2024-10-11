@@ -41,7 +41,13 @@ function cycleAndRenderImages(jsonData, personName) {
                 igurl.href = artist.IG;
                 igurl.innerHTML = "Instagram";
                 document.getElementById("bio").appendChild(igurl);
+            }
 
+            if (artist.social){
+                const socurl = document.createElement('a');
+                socurl.href = artist.social;
+                socurl.innerHTML = artist.social;
+                document.getElementById("bio").appendChild(socurl);
             }
 
             artist.img.forEach(imgGroup => {
@@ -68,8 +74,8 @@ function renderImage(image, numimg, artist) {
     //  console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
-        const di = document.createElement('p');
-        const bio = document.createTextNode(image.des);
+        const di = document.createElement('div');
+        const bio = document.innerHTML(image.des);
         di.appendChild(bio);
         document.getElementById('img'+numimg).appendChild(di);
     }
