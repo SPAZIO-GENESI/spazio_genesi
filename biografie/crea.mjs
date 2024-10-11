@@ -23,6 +23,7 @@ function cycleAndRenderImages(jsonData, personName) {
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     numimg += 1;
+                    console.log("processo "+numimg);
                     images.forEach(renderImage, numimg, artist);
                 });
             });
