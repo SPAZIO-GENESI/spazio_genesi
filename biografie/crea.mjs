@@ -31,8 +31,9 @@ function cycleAndRenderImages(jsonData, personName) {
 
             if (artist.IG){
                 const igurl = document.createElement('a');
-                igurl.href = artist.IG;
+                igurl.href = "https://www.instagram.com/"+artist.IG;
                 igurl.innerHTML = "Instagram";
+                igurl.target = "_new";
                 document.getElementById("bio").appendChild(igurl);
             }
 
