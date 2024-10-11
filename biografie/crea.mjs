@@ -29,9 +29,9 @@ function cycleAndRenderImages(jsonData, personName) {
     });
 }
 
-function renderImage(image, numimg, artista) {
+function renderImage(image, numimg, artist) {
     const imgElement = document.createElement('img');
-    imgElement.src = "./"+artista.cartella+"/"+image.img;
+    imgElement.src = "./"+artist.cartella+"/"+image.img;
     imgElement.alt = image.des;
     console.log(image);
     console.log("img"+numimg);
