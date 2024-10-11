@@ -1,5 +1,5 @@
 //import listaa from './bio.json' assert { type: 'json' };
-const lista = listaa;
+//const lista = listaa;
 
 
 fetch('./bio.json')
