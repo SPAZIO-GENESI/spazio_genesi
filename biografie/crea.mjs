@@ -19,6 +19,11 @@ function cycleAndRenderImages(jsonData, personName) {
     jsonData.artisti.forEach(artist => {
         if (artist.nome === personName) {
             let cartella = artist.cartella;
+            const di = document.createElement('p');
+            const bio = document.createTextNode(artist.bio);
+            di.appendChild(bio);
+            document.getElementById("bio").appendChild(bio);
+
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     images.forEach(image => {
@@ -36,6 +41,7 @@ function renderImage(image, numimg, artist) {
     console.log(artist);
     const imgElement = document.createElement('img');
     imgElement.src = "./"+artist.cartella+"/"+image.img;
+    imgElement.width = "100px";
     imgElement.alt = image.des;
     console.log(image);
     console.log("img"+numimg);
