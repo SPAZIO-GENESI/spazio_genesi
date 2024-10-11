@@ -17,13 +17,13 @@ loadJSON().then(lista => {
     console.log(lista);
     const quante = lista.artisti.length;
     console.log("n="+quante);
-   cycleAndRenderImages(lista, "névoanarua");
+   cycleAndRenderImages(lista, quale);
 });
 
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
     jsonData.artisti.forEach(artist => {
-        if (artist.nome === personName) {
+        if (artist.cartella === personName) {
             let cartella = artist.cartella;
 
             const nome = document.createTextNode("Bio : "+ artist.nome);
