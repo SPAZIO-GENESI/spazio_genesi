@@ -25,6 +25,7 @@ function cycleAndRenderImages(jsonData, personName) {
             });
         }
     });
+}
 
 function renderImage(image, indice) {
     const imgElement = document.createElement('img');
