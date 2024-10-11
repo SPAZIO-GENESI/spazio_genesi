@@ -16,7 +16,7 @@ loadJSON().then(lista => {
     console.log(lista);
     let quanto = Object.keys(lista).length;
     console.log("o="+quanto);
-    let quante = countChildNodes(lista).length;
+    let quante = countChildNodes(lista);
     console.log("n="+quante);
 //console.log("e="+quante);
 
