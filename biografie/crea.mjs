@@ -35,6 +35,7 @@ function renderImage(image, indice, artista) {
     imgElement.src = "./"+artista.cartella+"/"+image.img;
     imgElement.alt = image.des;
     console.log(image);
+    console.log("img"+indice);
     document.getElementById('img'+indice).appendChild(imgElement);
 }
 
