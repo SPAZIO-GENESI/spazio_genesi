@@ -1,7 +1,3 @@
-//import listaa from './bio.json' assert { type: 'json' };
-
-//const lista = [];
-
 async function loadJSON() {
     // Fetch the JSON file
     const response = await fetch('./bio.json');
@@ -11,44 +7,14 @@ async function loadJSON() {
     return lista;
 }
 
-// Call the function and log the data
 loadJSON().then(lista => {
     console.log(lista);
-    let quanto = Object.keys(lista).length;
-    console.log("o="+quanto);
     const quante = lista.artisti.length;
     console.log("n="+quante);
-//console.log("e="+quante);
-
+    const imgg= lista.artisti.img.length;
+    console.log("i="+imgg);
 });
 
-
-/*
-fetch('./bio.json')
-  .then(response => response.json())
-  .then(data => {console.log(data)
-     //lista = data;
-     //let quanto = Object.keys(lista).length;
-    //console.log("o="+quanto);
-     // Carica le immagini quando la pagina è pronta
-    // document.addEventListener('DOMContentLoaded', caricalista(lista));
-
-  })
-  .catch(error => console.error('Error loading JSON:', error));
-*/
-
-
-
-
-
-
-
-
-//let quante = (listaa.listar).length;
-//console.log("e="+quante);
-
-// let quanti = calcolaLunghezza(lista);
-// console.log("i="+quanti);
 function countChildNodes(node) {
     if (!node.children) {
         return 0;
@@ -61,14 +27,12 @@ function countChildNodes(node) {
 }
 
 function caricalista(lista){
-    
-        immagini=lista[0];
-       //     console.log (immagini);
-        descrizioni=lista[1];
-        //    console.log (descrizioni);
-        crediti=lista[2];
-        //    console.log (crediti);
-    
+    immagini=lista[0];
+    //     console.log (immagini);
+    descrizioni=lista[1];
+    //    console.log (descrizioni);
+    crediti=lista[2];
+    //    console.log (crediti);
     loadImages(immagini, descrizioni, crediti);
 }
 
