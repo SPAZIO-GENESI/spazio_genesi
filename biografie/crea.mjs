@@ -24,6 +24,8 @@ function cycleAndRenderImages(jsonData, personName) {
             di.appendChild(bio);
             document.getElementById("bio").appendChild(bio);
 
+            const nome = document.createTextNode("Bio : "+ artist.nome);
+
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     images.forEach(image => {
