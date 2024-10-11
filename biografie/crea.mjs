@@ -1,24 +1,30 @@
 //import listaa from './bio.json' assert { type: 'json' };
-//const lista = listaa;
 
+const lista = [];
 
 fetch('./bio.json')
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => {console.log(data)
+     lista = data;
+     let quanto = Object.keys(lista).length;
+    console.log("o="+quanto);
+     // Carica le immagini quando la pagina è pronta
+    document.addEventListener('DOMContentLoaded', caricalista(lista));
+
+  })
   .catch(error => console.error('Error loading JSON:', error));
 
 
 
 
-console.log(lista);
+
 
 
 
 
 //let quante = (listaa.listar).length;
 //console.log("e="+quante);
-let quanto = Object.keys(lista).length;
-console.log("o="+quanto);
+
 // let quanti = calcolaLunghezza(lista);
 // console.log("i="+quanti);
 
@@ -103,5 +109,3 @@ function calcolaLunghezza(arr) {
     return count;
 }
 
-// Carica le immagini quando la pagina è pronta
-document.addEventListener('DOMContentLoaded', caricalista(lista));
