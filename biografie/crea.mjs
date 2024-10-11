@@ -18,6 +18,7 @@ function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
     jsonData.artisti.forEach(artist => {
         if (artist.nome === personName) {
+            let cartella = artist.cartella;
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     numimg += 1;
@@ -30,6 +31,7 @@ function cycleAndRenderImages(jsonData, personName) {
 }
 
 function renderImage(image, numimg, artist) {
+    console.log(artist);
     const imgElement = document.createElement('img');
     imgElement.src = "./"+artist.cartella+"/"+image.img;
     imgElement.alt = image.des;
