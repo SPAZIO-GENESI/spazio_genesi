@@ -49,18 +49,20 @@ function cycleAndRenderImages(jsonData, personName) {
 function renderImage(image, numimg, artist) {
    // console.log(artist);
     const imgElement = document.createElement('img');
-    imgElement.src = "./"+artist.cartella+"/"+image.img;
-    // imgElement.style.width = "100px";
-    imgElement.className="img-fluid";
-    imgElement.alt = image.des;
-    //console.log(image);
-  //  console.log("img"+numimg);
-    document.getElementById('img'+numimg).appendChild(imgElement);
+    if (image.img){
+        imgElement.src = "./"+artist.cartella+"/"+image.img;
+        // imgElement.style.width = "100px";
+        imgElement.className="img-fluid";
+        imgElement.alt = image.des;
+        //console.log(image);
+    //  console.log("img"+numimg);
+        document.getElementById('img'+numimg).appendChild(imgElement);
 
-    const di = document.createElement('p');
-    const bio = document.createTextNode(image.des);
-    di.appendChild(bio);
-    document.getElementById('img'+numimg).appendChild(di);
+        const di = document.createElement('p');
+        const bio = document.createTextNode(image.des);
+        di.appendChild(bio);
+        document.getElementById('img'+numimg).appendChild(di);
+    }
 }
 
 function countChildNodes(node) {
