@@ -15,8 +15,8 @@ async function loadJSON() {
 
 loadJSON().then(lista => {
    // console.log(lista);
-    const quante = lista.artisti.length;
-    console.log("n="+quante);
+   // const quante = lista.artisti.length;
+   // console.log("n="+quante);
    cycleAndRenderImages(lista, quale);
 });
 
@@ -71,7 +71,7 @@ function renderImage(image, numimg, artist) {
         imgElement.className="img-fluid";
         imgElement.alt = image.des;
         //console.log(image);
-    //  console.log("img"+numimg);
+      console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
         const di = document.createElement('p');
