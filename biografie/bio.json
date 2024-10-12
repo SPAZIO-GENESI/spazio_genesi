@@ -48,6 +48,31 @@
                 "2":[{"img":"DSC_5650-01-GretaDiNaccio.jpg","des":"tavole tesi 1","deslunga":""}],
                 "3":[{"img":"DSC_5906-01-01-GretaDiNaccio.jpg","des":"","deslunga":""}]
                 }]            
+        },
+        {
+            "cartella":"saradias",
+            "nome": "Sara Dias",
+            "IG": "sara._dias",
+            "social": "",
+            "bio": "La ricerca artistica di Sara Dias si sviluppa a partire dal concetto di Temporaneo affettivo. Tramite il Temporaneo affettivo, l’artista intende indagare i fenomeni di permanenza e temporalità, con particolare riguardo alle dinamiche di matrice relazionale tra soggetti. Nella poetica emergono in modo sistematico elementi quali il multiplo, il riflesso o la trasparenza, il concetto di prossimità, l’interesse per l’effimero e il rapporto tra forma e luce. Alla base della ricerca c’è un profondo interesse per l’intimità tra corpi e i molteplici modi in cui essa si genera e si propaga. La contaminazione reciproca tra artista, spazio e fruitore è centrale nello sviluppo della narrazione. La sperimentazione risulta centrale all’interno del processo artistico e permette all’artista di esplorare differenti ambiti d’interesse, spesso utilizzando materiali soggetti alla trasformazione quali cera e plastica o attraverso la selezione di materiali estremamente frangibili quali vetri e specchi. Tale attitudine le ha permesso di spaziare nell’arco del proprio percorso di studi dall’installazione alla performance sia all’interno di contesti istituzionali che in spazi indipendenti.",
+            "img": [ {
+                "1":[{"img":"_MG_5427-SaraDias.jpg","des":"abaq-aqab","deslunga":""}],
+                "2":[{"img":"DSC_2798-SaraDias.jpg","des":"tavole tesi 1","deslunga":""}],
+                "3":[{"img":"IMG_20210612_200434-SaraDias.jpg","des":"","deslunga":""}],
+                "4":[{"img":"IMG_20221009_155045-SaraDias.jpg","des":"","deslunga":""}]
+                }]            
+        },
+        {
+            "cartella":"davidemariani",
+            "nome": "Davide Mariani",
+            "IG": "dmariani98",
+            "social": "",
+            "bio": "La mia ricerca artistica è un analisi approfondita sul mio vivere quotidiano attraverso sia uno sguardo ampio e vasto come gli attraversamenti a piedi dei luoghi legati alla mia vita personale che con uno sguardo intimo e privato attraverso l’esplorazione dei luoghi che sto abitando. Mediante il mio lavoro rifletto sul forte senso di appartenenza nel mondo in cui vivo che con il camminare mi confronto con un territorio autobiografico che di conseguenza rivivo attivamente e poi con una continua raccolta dati tramite il video, disegno e la fotografia dei miei spazi vitali come camera mia, la stanza singola della casa dello studente e gli spazi vitali dove trascorro il tempo con le persone a me care come la mia famiglia e gli amici. Che cosa vuol dire per me appartenenza? Che cosa vuol dire per me abitare e infine che cosa vuol dire per me camminare?",
+            "img": [ {
+                "1":[{"img":"DSC_4029-01-GretaDiNaccio.jpg","des":"abaq-aqab","deslunga":""}],
+                "2":[{"img":"DSC_5650-01-GretaDiNaccio.jpg","des":"tavole tesi 1","deslunga":""}],
+                "3":[{"img":"DSC_5906-01-01-GretaDiNaccio.jpg","des":"","deslunga":""}]
+                }]            
         }
     ]
 }
