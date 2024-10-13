@@ -68,7 +68,7 @@ function renderImage(image, numimg, artist) {
     if (image.img){
         imgElement.src = "./"+artist.cartella+"/"+image.img;
         // imgElement.style.width = "100px";
-        imgElement.className="img-fluid";
+        imgElement.className="img-fluid ";
         imgElement.alt = image.des;
         //console.log(image);
       console.log("img"+numimg);
