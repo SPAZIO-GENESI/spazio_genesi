@@ -40,7 +40,8 @@ function cycleAndRenderImages(jsonData, personName) {
             metaTag.setAttribute('property', 'og:image');
             metaTag.setAttribute('content', templateURL); // Replace with your image URL
 
-            document.getElementsByTagName('head')[0].head.appendChild(metaTag);
+            document.getElementsByTagName('head')[0].appendChild(metaTag);
+       
 
             const nome = document.createTextNode("Bio : "+ artist.nome);
             document.getElementById("biotit").appendChild(nome);
