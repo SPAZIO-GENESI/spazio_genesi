@@ -58,7 +58,7 @@ function cycleAndRenderImages(jsonData, personName) {
 
             if (artist.portfolio){
                 const socurl = document.createElement('a');
-                socurl.href = "./" + artist.portfolio;
+                socurl.href = "./" + artist.cartella + "/" + artist.portfolio;
                 socurl.innerHTML = artist.portfolio;
                 socurl.className = "regdiv";
                 document.getElementById("pidiv").appendChild(socurl);
