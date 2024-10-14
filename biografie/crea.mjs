@@ -42,14 +42,28 @@ function cycleAndRenderImages(jsonData, personName) {
             di.appendChild(bio);
             document.getElementById("bio").appendChild(di);*/
             document.getElementById("bio").innerHTML = artist.bio;
+            // p di appoggio per gli ulteriori oggetti
+            const pi = document.createElement('p');
+            pi.className = "regdiv";
+            pi.id="pidiv";
+            document.getElementById("bio").appendChild(pi);
 
             if (artist.social){
                 const socurl = document.createElement('a');
                 socurl.href = artist.social;
                 socurl.innerHTML = artist.social;
                 socurl.className = "regdiv";
-                document.getElementById("bio").appendChild(socurl);
+                document.getElementById("pidiv").appendChild(socurl);
             }
+
+            if (artist.portfolio){
+                const socurl = document.createElement('a');
+                socurl.href = "./" + artist.portfolio;
+                socurl.innerHTML = artist.portfolio;
+                socurl.className = "regdiv";
+                document.getElementById("pidiv").appendChild(socurl);
+            }
+
 
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
