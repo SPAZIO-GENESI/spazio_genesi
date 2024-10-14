@@ -4,6 +4,16 @@ const quale = urlParams.get('artista');
 console.log(quale);
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    loadJSON().then(lista => {
+   // console.log(lista);
+   // const quante = lista.artisti.length;
+   // console.log("n="+quante);
+   cycleAndRenderImages(lista, quale);
+});
+}
+)
+
 async function loadJSON() {
     // Fetch the JSON file
     const response = await fetch('./bio.json');
@@ -13,12 +23,7 @@ async function loadJSON() {
     return lista;
 }
 
-loadJSON().then(lista => {
-   // console.log(lista);
-   // const quante = lista.artisti.length;
-   // console.log("n="+quante);
-   cycleAndRenderImages(lista, quale);
-});
+
 
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
