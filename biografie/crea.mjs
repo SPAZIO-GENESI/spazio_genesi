@@ -3,7 +3,6 @@ const urlParams = new URLSearchParams(queryString);
 const quale = urlParams.get('artista');
 console.log(quale);
 
-
 document.addEventListener('DOMContentLoaded', function() {
     loadJSON().then(lista => {
    // console.log(lista);
@@ -22,8 +21,6 @@ async function loadJSON() {
     // Return the parsed data
     return lista;
 }
-
-
 
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
