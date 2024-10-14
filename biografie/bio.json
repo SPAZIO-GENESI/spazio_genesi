@@ -12,7 +12,20 @@
                 "3":[{"img":"nevoanarua_fontanaaurea_lettomanoppello_simposioscultura.png","des":"'Fontana Aurea': pietra della Maiella, lavorazione manuale. Lettomanoppello (PE) Simposio internazionale di scultura \"10 giornate in pietra 2023\" a cura di Giacinto di Pietrantonio", "deslunga":"'Fontana Aurea': pietra della Maiella, lavorazione manuale. Lettomanoppello (PE) Simposio internazionale di scultura <a href='https://pod.co/10-giornate-in-pietra-2023/nvoa-na-rua-fonta-aurea'>\"10 giornate in pietra 2023\"</a> a cura di <a href='https://www.instagram.com/giacintodi.pietrantonio/'>Giacinto di Pietrantonio</a>"}]
                 }]
         },
-
+        {
+            "cartella": "elenamussi",
+            "nome": "Elena Mussi",
+            "IG": "",
+            "social": "",
+            "bio": "",
+            "img": [ {
+                "1":[{"img":"lattesa-65hBeats.jpg","des":"", "deslunga":""}],
+                "2":[{"img":"lavasca-65hBeats.jpg","des":"", "deslunga":""}],
+                "3":[{"img":"LeeSeungGi-65hBeats.jpg","des":"", "deslunga":""}],
+                "4":[{"img":"lombelicodelmondo-65hBeats.jpg","des":"", "deslunga":""}],
+                "5":[{"img":"lorizzonte-65hBeats.jpg","des":"", "deslunga":""}]
+                }]
+        },
         {
             "cartella":"federicobattisti",
             "nome": "Federico Battisti",
