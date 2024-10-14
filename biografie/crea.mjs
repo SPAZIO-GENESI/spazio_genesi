@@ -26,6 +26,15 @@ function cycleAndRenderImages(jsonData, personName) {
         if (artist.cartella === personName) {
             let cartella = artist.cartella;
 
+            // GENERAZIONE OG
+            const title = encodeURIComponent(document.title);
+            const description = encodeURIComponent("Biografia Artista "+ artist.nome);
+            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella + artist.img[1].img );
+            //template settings
+            const templateId = 'e23b4a4f-83c2-4d9b-addb-051de54d819c';
+            const versionNumber = 1;
+            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
+
             const nome = document.createTextNode("Bio : "+ artist.nome);
             document.getElementById("biotit").appendChild(nome);
 
