@@ -34,7 +34,13 @@ function cycleAndRenderImages(jsonData, personName) {
             const templateId = 'e23b4a4f-83c2-4d9b-addb-051de54d819c';
             const versionNumber = 1;
             const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
-            //document.head.appendChild(templateURL);
+
+            var metaTag = document.createElement('meta');
+            // Set the attributes for the meta tag
+            metaTag.setAttribute('property', 'og:image');
+            metaTag.setAttribute('content', templateURL); // Replace with your image URL
+
+            document.getElementsByTagName('head')[0].head.appendChild(metaTag);
 
             const nome = document.createTextNode("Bio : "+ artist.nome);
             document.getElementById("biotit").appendChild(nome);
