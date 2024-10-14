@@ -29,7 +29,7 @@ function cycleAndRenderImages(jsonData, personName) {
             // GENERAZIONE OG
             const title = encodeURIComponent(document.title);
             const description = encodeURIComponent("Biografia Artista "+ artist.nome);
-            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella + artist.img[1].img );
+            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella + artist.img[0]["1"][0]["img"] );
             //template settings
             const templateId = 'e23b4a4f-83c2-4d9b-addb-051de54d819c';
             const versionNumber = 1;
