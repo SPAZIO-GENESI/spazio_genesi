@@ -37,10 +37,11 @@ function cycleAndRenderImages(jsonData, personName) {
                 document.getElementById("bio").appendChild(igurl);
             }
 
-            const di = document.createElement('p');
+            /*const di = document.createElement('p');
             const bio = document.createTextNode(artist.bio);
             di.appendChild(bio);
-            document.getElementById("bio").appendChild(di);
+            document.getElementById("bio").appendChild(di);*/
+            document.getElementById("bio").innerHTML = artist.bio;
 
             if (artist.social){
                 const socurl = document.createElement('a');
