@@ -34,7 +34,7 @@ function cycleAndRenderImages(jsonData, personName) {
             const templateId = 'e23b4a4f-83c2-4d9b-addb-051de54d819c';
             const versionNumber = 1;
             const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
-            document.head.appendChild(templateURL);
+            //document.head.appendChild(templateURL);
 
             const nome = document.createTextNode("Bio : "+ artist.nome);
             document.getElementById("biotit").appendChild(nome);
