@@ -29,11 +29,11 @@ function cycleAndRenderImages(jsonData, personName) {
             // GENERAZIONE OG
             const title = encodeURIComponent(document.title);
             const description = encodeURIComponent("Biografia Artista "+ artist.nome);
-            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella + artist.img[0]["1"][0]["img"] );
+            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
             //template settings
-            const templateId = 'e23b4a4f-83c2-4d9b-addb-051de54d819c';
-            const versionNumber = 1;
-            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
+            const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
+            const versionNumber = 4;
+            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/spaziogenesi.org/${title}/${description}/${imageUrl}/og.png`;
 
             var metaTag = document.createElement('meta');
             // Set the attributes for the meta tag
