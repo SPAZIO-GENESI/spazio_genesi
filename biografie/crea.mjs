@@ -38,7 +38,7 @@ function cycleAndRenderImages(jsonData, personName) {
             var metaTag = document.createElement('meta');
             // Set the attributes for the meta tag
             metaTag.setAttribute('property', 'og:image');
-            metaTag.setAttribute('content', templateURL); // Replace with your image URL
+            metaTag.setAttribute('content', imageUrl); // Replace with your image URL
 
             document.getElementsByTagName('head')[0].appendChild(metaTag);
        
