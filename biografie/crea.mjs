@@ -48,14 +48,6 @@ function cycleAndRenderImages(jsonData, personName) {
             const nome = document.createTextNode("Bio : "+ artist.nome);
             document.getElementById("biotit").appendChild(nome);
 
-            if (artist.IG){
-                const igurl = document.createElement('a');
-                igurl.href = "https://www.instagram.com/"+artist.IG;
-                igurl.innerHTML = "Instagram";
-                igurl.target = "_new";
-                document.getElementById("bio").appendChild(igurl);
-            }
-
             /*const di = document.createElement('p');
             const bio = document.createTextNode(artist.bio);
             di.appendChild(bio);
@@ -66,7 +58,14 @@ function cycleAndRenderImages(jsonData, personName) {
             pi.className = "regdiv";
             pi.id="pidiv";
             document.getElementById("bio").appendChild(pi);
-
+            
+            if (artist.IG){
+                const igurl = document.createElement('a');
+                igurl.href = "https://www.instagram.com/"+artist.IG;
+                igurl.innerHTML = "Instagram";
+                igurl.target = "_new";
+                document.getElementById("pidiv").appendChild(igurl);
+            }
             if (artist.social){
                 const socurl = document.createElement('a');
                 socurl.href = artist.social;
