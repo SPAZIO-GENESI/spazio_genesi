@@ -3,6 +3,15 @@ const urlParams = new URLSearchParams(queryString);
 const quale = urlParams.get('artista');
 console.log(quale);
 
+document.addEventListener('DOMContentLoaded', function() {
+    loadJSON().then(lista => {
+   // console.log(lista);
+   // const quante = lista.artisti.length;
+   // console.log("n="+quante);
+   cycleAndRenderImages(lista, quale);
+});
+}
+)
 
 async function loadJSON() {
     // Fetch the JSON file
@@ -13,18 +22,28 @@ async function loadJSON() {
     return lista;
 }
 
-loadJSON().then(lista => {
-   // console.log(lista);
-   // const quante = lista.artisti.length;
-   // console.log("n="+quante);
-   cycleAndRenderImages(lista, quale);
-});
-
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
     jsonData.artisti.forEach(artist => {
         if (artist.cartella === personName) {
             let cartella = artist.cartella;
+
+            // GENERAZIONE OG
+            const title = encodeURIComponent(document.title);
+            const description = encodeURIComponent("Biografia Artista "+ artist.nome);
+            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
+            //template settings
+            const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
+            const versionNumber = 4;
+            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/spaziogenesi.org/${title}/${description}/${imageUrl}/og.png`;
+
+            var metaTag = document.createElement('meta');
+            // Set the attributes for the meta tag
+            metaTag.setAttribute('property', 'og:image');
+            metaTag.setAttribute('content', imageUrl); // Replace with your image URL
+
+            document.getElementsByTagName('head')[0].appendChild(metaTag);
+       
 
             const nome = document.createTextNode("Bio : "+ artist.nome);
             document.getElementById("biotit").appendChild(nome);
@@ -37,18 +56,33 @@ function cycleAndRenderImages(jsonData, personName) {
                 document.getElementById("bio").appendChild(igurl);
             }
 
-            const di = document.createElement('p');
+            /*const di = document.createElement('p');
             const bio = document.createTextNode(artist.bio);
             di.appendChild(bio);
-            document.getElementById("bio").appendChild(di);
+            document.getElementById("bio").appendChild(di);*/
+            document.getElementById("bio").innerHTML = artist.bio;
+            // p di appoggio per gli ulteriori oggetti
+            const pi = document.createElement('p');
+            pi.className = "regdiv";
+            pi.id="pidiv";
+            document.getElementById("bio").appendChild(pi);
 
             if (artist.social){
                 const socurl = document.createElement('a');
                 socurl.href = artist.social;
                 socurl.innerHTML = artist.social;
                 socurl.className = "regdiv";
-                document.getElementById("bio").appendChild(socurl);
+                document.getElementById("pidiv").appendChild(socurl);
             }
+
+            if (artist.portfolio){
+                const socurl = document.createElement('a');
+                socurl.href = "./" + artist.cartella + "/" + artist.portfolio;
+                socurl.innerHTML = artist.portfolio;
+                socurl.className = "regdiv";
+                document.getElementById("pidiv").appendChild(socurl);
+            }
+
 
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
