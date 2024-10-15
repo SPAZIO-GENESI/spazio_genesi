@@ -58,13 +58,16 @@ function cycleAndRenderImages(jsonData, personName) {
             pi.className = "regdiv";
             pi.id="pidiv";
             document.getElementById("bio").appendChild(pi);
-            
+            const pi2 = document.createElement('p');
+            pi2.className = "regdiv";
+            pi2.id="pidiv2";
+            document.getElementById("bio").appendChild(pi2);
             if (artist.IG){
                 const igurl = document.createElement('a');
                 igurl.href = "https://www.instagram.com/"+artist.IG;
                 igurl.innerHTML = "Instagram";
                 igurl.target = "_new";
-                document.getElementById("pidiv").appendChild(igurl);
+                document.getElementById("pidiv2").appendChild(igurl);
             }
             if (artist.social){
                 const socurl = document.createElement('a');
