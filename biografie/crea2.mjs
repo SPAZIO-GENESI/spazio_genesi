@@ -5,13 +5,12 @@ console.log(quale);
 
 document.addEventListener('DOMContentLoaded', function() {
     loadJSON().then(lista => {
-   // console.log(lista);
-   // const quante = lista.artisti.length;
-   // console.log("n="+quante);
-   cycleAndRenderImages(lista, quale);
+        console.log('JSON loaded:', lista);
+        cycleAndRenderImages(lista, quale);
+    }).catch(error => {
+        console.error('Error loading JSON:', error);
+    });
 });
-}
-)
 
 async function loadJSON() {
     // Fetch the JSON file
