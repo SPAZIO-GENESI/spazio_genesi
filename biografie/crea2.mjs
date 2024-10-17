@@ -8,12 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('JSON loaded:', lista);
         cycleAndRenderImages(lista, quale);
         var metaTag = document.createElement('meta');
-        // Set the attributes for the meta tag
         metaTag.setAttribute('property', 'og:image');
-        metaTag.setAttribute('content', 'test'); // Replace with your image URL
-
-       // document.getElementsByTagName('head')[0].appendChild(metaTag);
-        document.head.appendChild(metaTag);
+        metaTag.setAttribute('content', 'test'); 
+        document.getElementsByTagName('head')[0].appendChild(metaTag);
+       // document.head.appendChild(metaTag);
     }).catch(error => {
         console.error('Error loading JSON:', error);
     });
@@ -26,7 +24,7 @@ async function loadJSON() {
     const lista = await response.json();
     // Return the parsed data
     return lista;
-}
+};
 
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
@@ -104,7 +102,7 @@ function cycleAndRenderImages(jsonData, personName) {
             });
         }
     });
-}
+};
 
 function renderImage(image, numimg, artist) {
    // console.log(artist);
@@ -125,7 +123,7 @@ function renderImage(image, numimg, artist) {
         document.getElementById('img'+numimg).appendChild(di);
         //document.getElementById('img'+numimg).innerHTML = image.des;
     }
-}
+};
 
 
 
