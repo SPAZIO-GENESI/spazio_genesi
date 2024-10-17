@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
     loadJSON().then(lista => {
         console.log('JSON loaded:', lista);
         cycleAndRenderImages(lista, quale);
+        var metaTag = document.createElement('meta');
+        // Set the attributes for the meta tag
+        metaTag.setAttribute('property', 'og:image');
+        metaTag.setAttribute('content', 'test'); // Replace with your image URL
+
+       // document.getElementsByTagName('head')[0].appendChild(metaTag);
+        document.head.appendChild(metaTag);
     }).catch(error => {
         console.error('Error loading JSON:', error);
     });
