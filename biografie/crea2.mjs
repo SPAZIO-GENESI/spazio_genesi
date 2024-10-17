@@ -2,8 +2,9 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const quale = urlParams.get('artista');
 console.log(quale);
+loadJSON();
 
-document.addEventListener('DOMContentLoaded', function() {
+
     loadJSON().then(lista => {
         console.log('JSON loaded:', lista);
         cycleAndRenderImages(lista, quale);
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }).catch(error => {
         console.error('Error loading JSON:', error);
     });
-});
+
 
 async function loadJSON() {
     // Fetch the JSON file
