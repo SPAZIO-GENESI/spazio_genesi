@@ -36,7 +36,7 @@ function cycleAndRenderImages(jsonData, personName) {
             //template settings
             const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
             const versionNumber = 4;
-            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/spaziogenesi.org/${title}/${description}/${imageUrl}/og.png`;
+            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
 
             var metaTag = document.createElement('meta');
             // Set the attributes for the meta tag
