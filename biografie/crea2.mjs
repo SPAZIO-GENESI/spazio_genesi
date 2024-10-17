@@ -8,11 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadJSON().then(lista => {
         console.log('JSON loaded:', lista);
         cycleAndRenderImages(lista, quale);
-        var metaTag = document.createElement('meta');
-        metaTag.setAttribute('property', 'og:image');
-        metaTag.setAttribute('content', 'test'); 
-        document.getElementsByTagName('head')[0].appendChild(metaTag);
-       // document.head.appendChild(metaTag);
     }).catch(error => {
         console.error('Error loading JSON:', error);
     });
@@ -37,6 +32,7 @@ function cycleAndRenderImages(jsonData, personName) {
             const title = encodeURIComponent(document.title);
             const description = encodeURIComponent("Biografia Artista "+ artist.nome);
             const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
+            console.log("imageurl : "+imageUrl);
             //template settings
             const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
             const versionNumber = 4;
