@@ -16,8 +16,18 @@
         <link href="/cover.css" rel="stylesheet">
         <link href="./bio.css" rel="stylesheet">
         <script type="module" src="./crea.mjs"></script>
+        <meta name="og:image" content="https://ogcdn.net/e4b8c678-7bd5-445d-ba03-bfaad510c686/v4/Artista%20Spazio%20Genesi/Biografia/https://spaziogenesi.org/img/spazio_genesi_logo.png/og.png`">
+        <script>
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const quale = urlParams.get('artista');
+            var metaTag = document.createElement('meta');
+            metaTag.setAttribute('property', 'og:url');
+            metaTag.setAttribute('content', quale); // Replace with your image URL
+            document.getElementsByTagName('head')[0].appendChild(metaTag);
+            document.head.appendChild(metaTag);
 
-
+        </script>
         <!-- Matomo -->
 <script>
   var _paq = window._paq = window._paq || [];
