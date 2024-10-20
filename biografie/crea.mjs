@@ -64,6 +64,11 @@ function cycleAndRenderImages(jsonData, personName) {
             pi2.className = "regdiv";
             pi2.id="pidiv2";
             document.getElementById("bio").appendChild(pi2);
+            const pi3 = document.createElement('p');
+            pi3.className = "regdiv";
+            pi3.id="pidiv3";
+            document.getElementById("bio").appendChild(pi3);
+
             if (artist.IG){
                 const igurl = document.createElement('a');
                 igurl.href = "https://www.instagram.com/"+artist.IG;
@@ -84,7 +89,7 @@ function cycleAndRenderImages(jsonData, personName) {
                 socurl.href = "./" + artist.cartella + "/" + artist.portfolio;
                 socurl.innerHTML = artist.portfolio;
                 socurl.className = "regdiv";
-                document.getElementById("pidiv").appendChild(socurl);
+                document.getElementById("pidiv3").appendChild(socurl);
             }
 
 
