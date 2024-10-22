@@ -1,37 +1,59 @@
-<html>
-    <head>
-        <meta name="msvalidate.01" content="86E2F89CEBA9E3CF10AD0F8BAE5897B1" />
-    </head>
-    <body>
-        <script>
-            //Inserire qui il nome del dominio
-var domainroot="spaziogenesi.org"
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricerca Bing nel Sito</title>
+</head>
+<body>
+    <h1>Ricerca nel Sito</h1>
+    <form id="searchForm">
+        <label for="query">Parola chiave:</label>
+        <input type="text" id="query" name="query" required>
+        <button type="submit">Cerca</button>
+    </form>
+    <div id="results"></div>
 
-var searchaction=[
-"http://www.google.com/search",
-"http://search.yahoo.com/search",
-"http://search.msn.com/results.aspx"
-]
-var queryfieldname=["q","p","q"]
-function switchaction(cur, index){
-cur.form.action=searchaction[index]
-document.getElementById("hiddenquery").name=queryfieldname[index]
-}
-function jksitesearch(curobj){
-for (i=0; i< document.jksearch.se.length; i++){ //loop through radio to see
-which is checked
-if (document.jksearch.se[i].checked==true)
-switchaction(document.jksearch.se[i], i)
-}
-document.getElementById("hiddenquery").value="site:"+domainroot+"
-"+curobj.qfront.value
-}
-        </script>
-        <form name="jksearch" action="http://www.google.com/search" method="get" onSubmit="jksitesearch(this)">
-            <p>Cerca su HTML.it:<br />
-            <input id="hiddenquery" type="hidden" name="q">
-            <input name="qfront" type="text" style="width: 200px" value="javascript">
-            <input type="submit" value="Search"><br />
-            <div>Google:<input name="se" type="radio" checked> Yahoo:<input name="se" type="radio"> MSN:<input name="se" type="radio">
-    </body>
+    <script>
+        const apiKey = '042fee46078e4f9f9bdaf666e78cbc4d';
+        const site = 'spaziogenesi.org';
+
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+            const results = await searchBing(query);
+            displayResults(results);
+        });
+
+        async function searchBing(query) {
+            const url = `https://api.bing.microsoft.com/v7.0/search?q=site:${site} ${query}`;
+            
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Ocp-Apim-Subscription-Key': apiKey
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Errore nella chiamata API');
+            }
+
+            const data = await response.json();
+            return data.webPages.value;
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Pulisce i risultati precedenti
+            const list = document.createElement('ul');
+            results.forEach(result => {
+                const listItem = document.createElement('li');
+                listItem.textContent = result.name + ' - ' + result.url;
+                list.appendChild(listItem);
+            });
+            resultsDiv.appendChild(list);
+        }
+    </script>
+</body>
 </html>
