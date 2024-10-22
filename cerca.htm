@@ -1,0 +1,37 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            //Inserire qui il nome del dominio
+var domainroot="spaziogenesi.org"
+
+var searchaction=[
+"http://www.google.com/search",
+"http://search.yahoo.com/search",
+"http://search.msn.com/results.aspx"
+]
+var queryfieldname=["q","p","q"]
+function switchaction(cur, index){
+cur.form.action=searchaction[index]
+document.getElementById("hiddenquery").name=queryfieldname[index]
+}
+function jksitesearch(curobj){
+for (i=0; i< document.jksearch.se.length; i++){ //loop through radio to see
+which is checked
+if (document.jksearch.se[i].checked==true)
+switchaction(document.jksearch.se[i], i)
+}
+document.getElementById("hiddenquery").value="site:"+domainroot+"
+"+curobj.qfront.value
+}
+        </script>
+        <form name="jksearch" action="http://www.google.com/search" method="get" onSubmit="jksitesearch(this)">
+            <p>Cerca su HTML.it:<br />
+            <input id="hiddenquery" type="hidden" name="q">
+            <input name="qfront" type="text" style="width: 200px" value="javascript">
+            <input type="submit" value="Search"><br />
+            <div>Google:<input name="se" type="radio" checked> Yahoo:<input name="se" type="radio"> MSN:<input name="se" type="radio">
+    </body>
+</html>
