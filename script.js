@@ -19,7 +19,11 @@ function shortu(){
     const url = `https://matomodocker.azurewebsites.net/index.php?module=API&method=VisitsSummary.getVisits&idSite=${siteId}&period=${period}&date=${date}&format=JSON&token_auth=${tokenAuth}`;
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          headers: {
+              'Accept': 'application/json'
+          }
+      });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
