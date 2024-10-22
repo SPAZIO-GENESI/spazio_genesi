@@ -113,7 +113,7 @@ function renderImage(image, numimg, artist) {
         // imgElement.style.width = "100px";
         imgElement.className="img-fluid ";
         imgElement.alt = image.des;
-        //console.log(image);
+        console.log(imgElement);
       console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
