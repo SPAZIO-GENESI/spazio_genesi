@@ -442,8 +442,8 @@
         <script src="./script.js"></script>
         <script>
           const siteId = '7'; // Your Matomo site ID
-          const period = 'week'; // Period (day, week, month, year)
-          const date = 'today'; // Date (e.g., 'today', '2023-10-22')
+          const period = 'day'; // Period (day, week, month, year)
+          const date = 'yesterday'; // Date (e.g., 'today', '2023-10-22')
           const tokenAuth = 'ba8fc89122c43565eef77303744dd851'; // Your Matomo API token
 
           getMatomoVisitors(siteId, period, date, tokenAuth).then(visitors => {
