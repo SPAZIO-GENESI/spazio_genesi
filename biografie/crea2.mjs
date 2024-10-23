@@ -31,7 +31,7 @@ function cycleAndRenderImages(jsonData, personName) {
 
                     const linkTag = document.createElement('link');
                     linkTag.setAttribute('rel', 'canonical');
-                    linkTag.href = 'https://spaziogenesi.org/biografie/' +artist.cartella +'/'+ artist.img[0]["1"][0]["img"];
+                    linkTag.href = 'https://spaziogenesi.org/biografie/bio2.htm?artista=' + artist.img[0]["1"][0]["img"];
                     document.head.appendChild(linkTag);
                     console.log(linkTag);
              
