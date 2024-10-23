@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricerca nel Sito con Bing</title>
+</head>
+<body>
+    <h1>Ricerca nel Sito</h1>
+    <input type="text" id="query" placeholder="Inserisci la tua ricerca">
+    <button onclick="searchBing()">Cerca</button>
+    <div id="results"></div>
+
+    <script>
+        async function searchBing() {
+            const query = document.getElementById('query').value;
+            const apiKey = '042fee46078e4f9f9bdaf666e78cbc4d';
+            const endpoint = `https://api.bing.microsoft.com/v7.0/search?q=site:spaziogenesi.org+${query}`;
+
+            try {
+                const response = await fetch(endpoint, {
+                    headers: { 'Ocp-Apim-Subscription-Key': apiKey }
+                });
+                const data = await response.json();
+                displayResults(data.webPages.value);
+            } catch (error) {
+                console.error('Errore nella ricerca:', error);
+            }
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.innerHTML = `<h2><a href="${result.url}">${result.name}</a></h2><p>${result.snippet}</p>`;
+                resultsDiv.appendChild(resultItem);
+            });
+        }
+    </script>
+</body>
+</html>
