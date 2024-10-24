@@ -3,4 +3,8 @@ Disallow: /admin/
 Disallow: /private/
 Allow: /
 
+User-Agent: Googlebot
+Allow: .js
+Allow: .css
+
 Sitemap: https://spaziogenesi.org/sitemap.xml

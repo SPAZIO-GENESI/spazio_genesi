@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricerca Bing nel Sito</title>
+    <meta name="msvalidate.01" content="86E2F89CEBA9E3CF10AD0F8BAE5897B1" />
+</head>
+<body>
+    <h1>Ricerca nel Sito</h1>
+    <form id="searchForm">
+        <label for="query">Parola chiave:</label>
+        <input type="text" id="query" name="query" required>
+        <button type="submit">Cerca</button>
+    </form>
+    <div id="results"></div>
+
+    <script>
+        const apiKey = '042fee46078e4f9f9bdaf666e78cbc4d';
+        const site = 'spaziogenesi.org';
+
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+            const results = await searchBing(query);
+            displayResults(results);
+        });
+
+        async function searchBing(query) {
+            const url = `https://api.bing.microsoft.com/v7.0/search?q=site:${site} ${query}`;
+            
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Ocp-Apim-Subscription-Key': apiKey
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Errore nella chiamata API');
+            }
+
+            const data = await response.json();
+            return data.webPages.value;
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Pulisce i risultati precedenti
+            const list = document.createElement('ul');
+            results.forEach(result => {
+                const listItem = document.createElement('li');
+                listItem.textContent = result.name + ' - ' + result.url;
+                list.appendChild(listItem);
+            });
+            resultsDiv.appendChild(list);
+        }
+    </script>
+</body>
+</html>

@@ -28,6 +28,15 @@ function cycleAndRenderImages(jsonData, personName) {
         if (artist.cartella === personName) {
             let cartella = artist.cartella;
 
+            // CREAZIONE CANONICAL
+            
+                    const linkTag = document.createElement('link');
+                    linkTag.setAttribute('rel', 'canonical');
+                    linkTag.href = 'https://spaziogenesi.org/biografie/bio.htm?artista=' + artist.cartella;
+                    document.head.appendChild(linkTag);
+                    console.log(linkTag);
+             
+
             // GENERAZIONE OG
             const title = encodeURIComponent(document.title);
             const description = encodeURIComponent("Biografia Artista "+ artist.nome);
@@ -113,8 +122,8 @@ function renderImage(image, numimg, artist) {
         // imgElement.style.width = "100px";
         imgElement.className="img-fluid ";
         imgElement.alt = image.des;
-        //console.log(image);
-      console.log("img"+numimg);
+        //console.log(imgElement);
+        //console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
         const di = document.createElement('p');

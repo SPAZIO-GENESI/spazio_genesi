@@ -2,16 +2,16 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const quale = urlParams.get('artista');
 console.log(quale);
-//loadJSON();
 
 document.addEventListener('DOMContentLoaded', function() {
     loadJSON().then(lista => {
-        console.log('JSON loaded:', lista);
-        cycleAndRenderImages(lista, quale);
-    }).catch(error => {
-        console.error('Error loading JSON:', error);
-    });
+   // console.log(lista);
+   // const quante = lista.artisti.length;
+   // console.log("n="+quante);
+   cycleAndRenderImages(lista, quale);
 });
+}
+)
 
 async function loadJSON() {
     // Fetch the JSON file
@@ -20,7 +20,7 @@ async function loadJSON() {
     const lista = await response.json();
     // Return the parsed data
     return lista;
-};
+}
 
 function cycleAndRenderImages(jsonData, personName) {
     let numimg = 0;
@@ -28,11 +28,18 @@ function cycleAndRenderImages(jsonData, personName) {
         if (artist.cartella === personName) {
             let cartella = artist.cartella;
 
+
+                    const linkTag = document.createElement('link');
+                    linkTag.setAttribute('rel', 'canonical');
+                    linkTag.href = 'https://spaziogenesi.org/biografie/bio2.htm?artista=' +artist.cartella ;
+                    document.head.appendChild(linkTag);
+                    console.log(linkTag);
+             
+
             // GENERAZIONE OG
             const title = encodeURIComponent(document.title);
             const description = encodeURIComponent("Biografia Artista "+ artist.nome);
             const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
-            console.log("imageurl : "+imageUrl);
             //template settings
             const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
             const versionNumber = 4;
@@ -43,7 +50,7 @@ function cycleAndRenderImages(jsonData, personName) {
             metaTag.setAttribute('property', 'og:image');
             metaTag.setAttribute('content', templateURL); // Replace with your image URL
 
-           // document.getElementsByTagName('head')[0].appendChild(metaTag);
+            document.getElementsByTagName('head')[0].appendChild(metaTag);
             document.head.appendChild(metaTag);
             console.log(metaTag);
        
@@ -65,6 +72,11 @@ function cycleAndRenderImages(jsonData, personName) {
             pi2.className = "regdiv";
             pi2.id="pidiv2";
             document.getElementById("bio").appendChild(pi2);
+            const pi3 = document.createElement('p');
+            pi3.className = "regdiv";
+            pi3.id="pidiv3";
+            document.getElementById("bio").appendChild(pi3);
+
             if (artist.IG){
                 const igurl = document.createElement('a');
                 igurl.href = "https://www.instagram.com/"+artist.IG;
@@ -85,7 +97,7 @@ function cycleAndRenderImages(jsonData, personName) {
                 socurl.href = "./" + artist.cartella + "/" + artist.portfolio;
                 socurl.innerHTML = artist.portfolio;
                 socurl.className = "regdiv";
-                document.getElementById("pidiv").appendChild(socurl);
+                document.getElementById("pidiv3").appendChild(socurl);
             }
 
 
@@ -99,7 +111,7 @@ function cycleAndRenderImages(jsonData, personName) {
             });
         }
     });
-};
+}
 
 function renderImage(image, numimg, artist) {
    // console.log(artist);
@@ -109,8 +121,8 @@ function renderImage(image, numimg, artist) {
         // imgElement.style.width = "100px";
         imgElement.className="img-fluid ";
         imgElement.alt = image.des;
-        //console.log(image);
-      console.log("img"+numimg);
+        //console.log(imgElement);
+        //console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
         const di = document.createElement('p');
@@ -120,7 +132,7 @@ function renderImage(image, numimg, artist) {
         document.getElementById('img'+numimg).appendChild(di);
         //document.getElementById('img'+numimg).innerHTML = image.des;
     }
-};
+}
 
 
 
