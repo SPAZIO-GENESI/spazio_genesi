@@ -30,7 +30,7 @@ function cycleAndRenderImages(jsonData, personName) {
 
             // CREAZIONE TITLE
                 const titleTag = document.createElement('meta');
-                titleTag.setAttribute('title', 'Biografia ' + decodeURI(artista.nome));
+                titleTag.setAttribute('title', 'Biografia ' + decodeURI(artist.nome));
                 document.head.appendChild(titleTag);
                 console.log(titleTag);
             
