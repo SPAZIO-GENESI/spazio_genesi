@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Motore di Ricerca</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <h1>Motore di Ricerca</h1>
@@ -11,15 +24,44 @@
         <input type="text" id="query" placeholder="Cerca...">
         <button type="submit">Cerca</button>
     </form>
-    <div id="results"></div>
+    <div id="results">
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Titolo</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var query = document.getElementById('query').value;
-            var site = 'example.com'; // Sostituisci con il sito specifico
-            var searchUrl = 'https://www.google.com/search?q=site:' + site + ' ' + encodeURIComponent(query);
-            window.open(searchUrl, '_blank');
+            var site = 'spaziogenesi.org'; // Sostituisci con il sito specifico
+            var searchUrl = 'https://www.googleapis.com/customsearch/v1?key=YOUR_API_KEY&cx=YOUR_CX&siteSearch=' + site + '&q=' + encodeURIComponent(query);
+
+            fetch(searchUrl)
+                .then(response => response.json())
+                .then(data => {
+                    var resultsTable = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
+                    resultsTable.innerHTML = ''; // Pulisce i risultati precedenti
+
+                    data.items.forEach(item => {
+                        var row = resultsTable.insertRow();
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        cell1.textContent = item.title;
+                        var link = document.createElement('a');
+                        link.href = item.link;
+                        link.textContent = item.link;
+                        cell2.appendChild(link);
+                    });
+                })
+                .catch(error => console.error('Errore:', error));
         });
     </script>
 </body>
