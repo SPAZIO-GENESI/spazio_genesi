@@ -63,7 +63,7 @@ function cycleAndRenderImages(jsonData, personName) {
             console.log(metaTag);
        
 
-            const nome = document.createTextNode("Bio : "+ artist.nome);
+            const nome = document.createTextNode("Bio : "+ decodeURI(artist.nome));
             document.getElementById("biotit").appendChild(nome);
 
             /*const di = document.createElement('p');
