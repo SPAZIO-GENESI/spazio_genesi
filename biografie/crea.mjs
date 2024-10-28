@@ -28,8 +28,13 @@ function cycleAndRenderImages(jsonData, personName) {
         if (artist.cartella === personName) {
             let cartella = artist.cartella;
 
-            // CREAZIONE CANONICAL
+            // CREAZIONE TITLE
+                const titleTag = document.createElement('meta');
+                titleTag.setAttribute('title', 'Biografia ' + decodeURI(artista.nome));
+                document.head.appendChild(titleTag);
+                console.log(titleTag);
             
+            // CREAZIONE CANONICAL
                 const linkTag = document.createElement('link');
                 linkTag.setAttribute('rel', 'canonical');
                 linkTag.href = 'https://spaziogenesi.org/biografie/bio.htm?artista=' + artist.cartella;
@@ -37,7 +42,6 @@ function cycleAndRenderImages(jsonData, personName) {
                 console.log(linkTag);
             
             // CREAZIONE DESCRIPTION
-
                 const desTag = document.createElement('meta');
                 desTag.setAttribute('name', 'description');
                 desTag.setAttribute ('content',"Biografia dell'artista " + artist.cartella + " associata SPAZIO GENESI ets");
@@ -45,13 +49,13 @@ function cycleAndRenderImages(jsonData, personName) {
                 console.log(desTag);
 
             // GENERAZIONE OG
-            const title = encodeURIComponent(document.title);
-            const description = encodeURIComponent("Biografia Artista "+ artist.nome);
-            const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
-            //template settings
-            const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
-            const versionNumber = 4;
-            const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
+                const title = encodeURIComponent(document.title);
+                const description = encodeURIComponent("Biografia Artista "+ artist.nome);
+                const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
+                //template settings
+                const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
+                const versionNumber = 4;
+                const templateURL = `https://ogcdn.net/${templateId}/v${versionNumber}/${title}/${description}/${imageUrl}/og.png`;
 
             var metaTag = document.createElement('meta');
             // Set the attributes for the meta tag
