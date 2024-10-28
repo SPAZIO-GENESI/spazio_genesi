@@ -30,12 +30,19 @@ function cycleAndRenderImages(jsonData, personName) {
 
             // CREAZIONE CANONICAL
             
-                    const linkTag = document.createElement('link');
-                    linkTag.setAttribute('rel', 'canonical');
-                    linkTag.href = 'https://spaziogenesi.org/biografie/bio.htm?artista=' + artist.cartella;
-                    document.head.appendChild(linkTag);
-                    console.log(linkTag);
-             
+                const linkTag = document.createElement('link');
+                linkTag.setAttribute('rel', 'canonical');
+                linkTag.href = 'https://spaziogenesi.org/biografie/bio.htm?artista=' + artist.cartella;
+                document.head.appendChild(linkTag);
+                console.log(linkTag);
+            
+            // CREAZIONE DESCRIPTION
+
+                const desTag = document.createElement('meta');
+                desTag.setAttribute('name', 'description');
+                desTag.setAttribute ('content',"Biografia dell'artista " + artist.cartella + " associata SPAZIO GENESI ets");
+                document.head.appendChild(desTag);
+                console.log(desTag);
 
             // GENERAZIONE OG
             const title = encodeURIComponent(document.title);
