@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="it" class="h-100">
+    <head>
+        <title>SG qrcode</title>
+        <script async src="./script.js"></script>
+    </head>
+    <body>
+        <form action="get">
+            <label for="fonte" class="form-label">Link</label>
+            <input type="url" placeholder="https://"  onblur="qrcode();" class="form-control" name="link1" id="link1" title="link1" maxlength="300">
+            <small id="descrlink1" class="form-text text-muted">Caratteri <span id="charlink1"></span>/300</small>
+        </form>
+
+    </body>
+</html>
