@@ -13,8 +13,8 @@ function shortu(){
     if (quales){
       urls = JSON.parse(Get("https://sentinelle.mappa.asud.net/qr?qrcodeinput="+quales));
       console.log(urls);
-      link1 = document.getElementById("link1");
-      link1.value =urls.secureShortURL;
+      qr = document.getElementById("qr");
+      qr.src =qr.payload;
     }
   }
 
