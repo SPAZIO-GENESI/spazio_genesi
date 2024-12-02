@@ -121,6 +121,20 @@
                 "3":[{"img":"IMG_20210612_200434-SaraDias.jpg","des":"","deslunga":""}],
                 "4":[{"img":"IMG_20221009_155045-SaraDias.jpg","des":"","deslunga":""}]
                 }]            
+        },
+        {
+            "cartella":"mariannamancini",
+            "nome": "Marianna Mancini",
+            "IG": "mariannamnc",
+            "social": "",
+            "portfolio": "",
+            "bio": "Nata a Pescara del 1984 Marianna Mancini vive e lavora a Chieti (CH), studia Decorazione presso l'Accademia di Belle Arti dell'Aquila.<br>Il suo lavoro affronta tematiche prevalentemente intimistiche, legate alle trasformazioni mentali e fisiche che caratterizzano l’esistenza. La fotografia, il disegno attraverso vari materiali ed il legno sono i materiali che predilige nelle sue narrazioni. Le fotografie ripensate come pagine su cui riscrivere gli avvenimenti, trasformate da espressione compiuta in mezzo, in materiale da manipolare. Il disegno per appuntare, glossare ed enfatizzare alcuni aspetti di quelle narrazioni. Nella poetica emergono frequentemente elementi quali la sovrapposizione, la trasparenza e il racconto fotografico e diaristico. Alla base della sua ricerca c’è un profondo interesse per la memoria, il vissuto personale e le sue rivisitazione.",
+            "img": [ {
+                "1":[{"img":"reconstruction_2019.jpg","des":"","deslunga":"Reconstruction 2019, lastre in teca di legno, 34x25x20cm, 2022"}],
+                "2":[{"img":"crosswolk.jpg","des":"","deslunga":"Crosswalk, pannelli in plexiglass 35x50cm incisi con penna"}],
+                "3":[{"img":"tracce_elettriche.jpg","des":"","deslunga":"Tracce elettriche, stampe fotografiche, carta e filo di rame, 40x50cm, 2024"}]
+                }]            
         }
+
     ]
 }
