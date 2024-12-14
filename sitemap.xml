@@ -4,82 +4,139 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<!-- created with Free Online Sitemap Generator https://smallseotools.com/xml-sitemap-generator/ -->
 
 
+<?xml version="1.0" encoding="UTF-8"?> 
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"> 
 <url>
-  <loc>https://spaziogenesi.org/</loc>
-  <lastmod>2024-12-09T08:47:23+00:00</lastmod>
-  <priority>1.00</priority>
+<loc>https://spaziogenesi.org/./</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/chisiamo.html</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://spaziogenesi.org/chisiamo.html</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://spaziogenesi.org/biografie/</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=saradias</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/archivio/</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=federicobattisti</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/./img/spaziogenesi_trattienimipure.jpeg</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=gretadinaccio</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=francescachiola</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=davidemariani</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=saradias</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=nevoanarua</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=nevoanarua</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=francescachiola</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=sabrinaiezzi</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=francescarinella</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=mariannamancini</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=deborapanaccione</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=elenamussi</loc>
-  <lastmod>2024-10-28T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/./bio.htm?artista=francescachiola</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=francescarinella</loc>
-  <lastmod>2024-12-02T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/./bio.htm?artista=saradias</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=mariannamancini</loc>
-  <lastmod>2024-12-05T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/./bio.htm?artista=nevoanarua</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 <url>
-  <loc>https://spaziogenesi.org/biografie/bio.htm?artista=sabrinaiezzi</loc>
-  <lastmod>2024-12-09T08:47:23+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>https://spaziogenesi.org/./bio.htm?artista=federicobattisti</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/./bio.htm?artista=deborapanaccione</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/./bio.htm?artista=davidemariani</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/./bio.htm?artista=elenamussi</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/./bio.htm?artista=francescarinella</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/./bio.htm?artista=mariannamancini</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/./bio.htm?artista=sabrinaiezzi</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/che_non_si_potra_mai_avere.html</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=deborapanaccione</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/biografie/bio.htm?artista=davidemariani</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/img/festa_matricole.jpeg</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
+</url>
+<url>
+<loc>https://spaziogenesi.org/possibile_da_scrivere.html</loc>
+<changefreq>weekly</changefreq>
+<lastmod>2024-12-14</lastmod>
 </url>
 </urlset>
