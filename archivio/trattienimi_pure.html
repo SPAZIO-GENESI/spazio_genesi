@@ -112,7 +112,7 @@
                     <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(2).jpg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_2.jpg">
                   </div>
                   <div class="col-md-3">
-                    <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_bstage.jpeg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_bstage.jpeg">
+                    <img class="img-fluid mt-5 thumbnail" data-description="con il Prof. Giuseppe Armogida (Estetica)"  data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_bstage.jpeg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_bstage.jpeg">
                   </div>
                   <div class="col-md-3">
                     <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(3).jpg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_3.jpg">
@@ -126,7 +126,7 @@
                     <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(6).jpg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_6.jpg">
                   </div>
                   <div class="col-md-3">
-                    <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(7).jpg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_7.jpg">
+                    <img class="img-fluid mt-5 thumbnail" data-description="con il Prof. Giancarlo Buzzanca (Informatica per beni culturali)" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(7).jpg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_7.jpg">
                   </div>
                   <div class="col-md-3">
                     <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(8).jpg"  src="./img/Monica_Toscani_Spazio_Genesi_191224_8.jpg">
@@ -182,7 +182,7 @@
                     <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(26).jpg" src="./img/Monica_Toscani_Spazio_Genesi_191224_26.jpg">
                   </div>
                   <div class="col-md-3">
-                    <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(27).jpg" src="./img/Monica_Toscani_Spazio_Genesi_191224_27.jpg">
+                    <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-description="con il Prof. Matteo Ludovico (Scultura)" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(27).jpg" src="./img/Monica_Toscani_Spazio_Genesi_191224_27.jpg">
                   </div>
                   <div class="col-md-3">
                     <img class="img-fluid mt-5 thumbnail" data-toggle="modal" data-target="#imageModal" data-image="./img/Monica_Toscani_Spazio_Genesi_191224_(29).jpg" src="./img/Monica_Toscani_Spazio_Genesi_191224_29.jpg">
@@ -316,6 +316,7 @@
               </div>
               <div class="modal-body text-center">
                 <img src="" id="modalImage" class="img-fluid" alt="Crediti Monica Toscani">
+                <p id="modalDescription"></p>
               </div>
             </div>
           </div>
@@ -324,6 +325,31 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <script> $('#imageModal').on('show.bs.modal', function (event) { var button = $(event.relatedTarget); var imageSrc = button.data('image'); var modal = $(this); modal.find('#modalImage').attr('src', imageSrc); }); </script>
+        <script>
+          /*
+         $('#imageModal').on('show.bs.modal', function (event) { 
+          var button = $(event.relatedTarget); 
+          var imageSrc = button.data('image'); 
+          var modal = $(this);
+           modal.find('#modalImage').attr('src', imageSrc); 
+           }); 
+
+          */
+          document.addEventListener('DOMContentLoaded', function() {
+          const thumbnails = document.querySelectorAll('.thumbnail');
+
+          thumbnails.forEach(thumbnail => {
+              thumbnail.addEventListener('click', function() {
+                  const modalImage = document.getElementById('modalImage');
+                  const modalDescription = document.getElementById('modalDescription');
+                  modalImage.src = this.src;
+                  modalDescription.textContent = this.getAttribute('data-description');
+
+                  $('#imageModal').modal('show');
+              });
+          });
+          });
+
+        </script>
     </body>
 </html>
