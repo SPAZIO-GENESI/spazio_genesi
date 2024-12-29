@@ -19,10 +19,12 @@
   }
 }
 
-
+/*
 p {
     text-align: left;
 }
+*/
+
 /* Per dispositivi con larghezza massima di 576px (smartphone) */
 @media (max-width: 576px) {
     .regdiv {
@@ -76,7 +78,10 @@ p {
     }
 }
 
+/*
 body {
     box-shadow: unset !important;
     text-shadow: unset !important;
+    text-align: left;
 }
+    */
