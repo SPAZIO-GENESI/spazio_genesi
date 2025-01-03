@@ -32,6 +32,16 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+        <style>
+          .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; }
+
+          .table-fixed-header thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 1;
+          }
+        </style>
     </head>
     <body>
         <div class="cover-container d-flex  p-3 mx-auto flex-column">
@@ -69,7 +79,7 @@
           <main role="main" class="mt-5">
             <div class="container">
               <h6 id="dispo"></h6>
-                  <div id="tabella_phone"></div>
+                  <div id="tabella_phone" class="table-responsive table-wrapper"></div>
                   <hr>
                   <table id="tabella_pc" class="table table-striped table-bordered table-condensed" style="width:100%">
                     <thead>
@@ -142,11 +152,12 @@
               // Code for mobile devices
               dispo.innerHTML = 'On a smartphone';
               tabella_pc.style.display = 'none';
-              fetchData;
+              fetchData();
           } else {
               // Code for non-mobile devices
               dispo.innerHTML = 'On PC device';
-              fetchData2;
+              tabella_pc.style.display = 'visible';
+              fetchData2();
           }
 
           
@@ -182,7 +193,7 @@
 
 
             function populateDataTable(data) {
-               $('#example').DataTable({ 
+               $('#tabella_pc').DataTable({ 
                 data: data.slice(1),// skip the header row 
                  columns: data[0].map(header => ({ title: header })),
                  language: { url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Italian.json" }
@@ -191,16 +202,35 @@
             
             function displayData(data) {
               const table = document.createElement('table');
-              data.forEach(row => {
+              table.classList.add("table");
+              //table.classList.add("table-sm");
+              table.classList.add("table-striped");
+              table.classList.add("table-bordered");
+              table.classList.add("table-fixed-header");
+              // Create the table head and the table body
+              const thead = document.createElement('thead');
+              const tbody = document.createElement('tbody');
+              // Create the header row
+              const headerRow = document.createElement('tr');
+              data[0].forEach(headerText => { 
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+              });
+              thead.appendChild(headerRow);
+              table.appendChild(thead);
+              // Create the body rows
+              data.slice(1).forEach(rowData => {
                 const tr = document.createElement('tr');
-                row.forEach(cell => {
+                rowData.forEach(cellData => {
                   const td = document.createElement('td');
-                  td.textContent = cell;
+                  td.textContent = cellData;
                   tr.appendChild(td);
                 });
-                table.appendChild(tr);
+                tbody.appendChild(tr);
               });
-                
+              table.appendChild(tbody);
+
               tabella_phone.appendChild(table);
             }
         
