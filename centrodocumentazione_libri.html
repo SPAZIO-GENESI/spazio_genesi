@@ -317,7 +317,14 @@
                 const tr = document.createElement('tr');
                 rowData.forEach(cellData => {
                   const td = document.createElement('td');
-                  td.textContent = cellData;
+                  
+                  
+                  if (cellData.startsWith("http")){
+                    td.innerHTML = "<img width='100px' src='"+cellData+"'>";
+                  } else {
+                    td.textContent = cellData;
+                  }
+                  
                   tr.appendChild(td);
                 });
                 tbody.appendChild(tr);
