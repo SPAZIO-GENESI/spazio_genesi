@@ -263,8 +263,18 @@
                $('#tabella_pc').DataTable({ 
                 data: data.slice(1),// skip the header row 
                  columns: data[0].map(header => ({ title: header })),
-                 language: { url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Italian.json" }
+                 language: { url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Italian.json" },
+                 "columnDefs": [{
+                  "targets": 4,
+                  "render": function(data, type, row, meta) {
+                    return '<img src="' + data + '" alt="Image" width="50" height="50">';
+                  }
+                 }]
+               
                });
+
+               
+                
             }
             
             function displayData(data) {
@@ -306,6 +316,19 @@
             $(document).ready(isMobile());
 
             //$(document).ready(function() { fetchData2(); });
+
+/*
+            $(document).ready(function() {
+              $('#tabella_pc').DataTable({
+                "columnDefs": [{
+                  "targets": 4,
+                  "render": function(data, type, row, meta) {
+                    return '<img src="' + data + '" alt="Image" width="50" height="50">';
+                  }
+                 }]
+                });
+              });
+              */
           </script>
         
 
