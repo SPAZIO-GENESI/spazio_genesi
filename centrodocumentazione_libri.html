@@ -152,6 +152,7 @@
                   <table id="tabella_pc" class="regdiv table table-striped table-bordered table-condensed" style="width:100%">
                     <thead>
                      <tr>
+                      <th>Id</th>
                       <th>Autore</th>
                       <th>Titolo</th>
                       <th>Editore</th>
@@ -282,7 +283,7 @@
                  columns: data[0].map(header => ({ title: header })),
                  language: { url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Italian.json" },
                  "columnDefs": [{
-                  "targets": 4,
+                  "targets": 5,
                   "render": function(data, type, row, meta) {
                     return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + data + '" alt="Image" width="50">';
                   }
