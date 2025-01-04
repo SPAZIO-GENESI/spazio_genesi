@@ -34,8 +34,9 @@
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <style>
-           .thumbnail { cursor: pointer; /* This line adds the hand pointer on hover */ }
+          .thumbnail { cursor: pointer; /* This line adds the hand pointer on hover */ }
           .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; }
+          .modal-body img { max-width: none; height: auto; }
 
           .table-fixed-header thead th {
             position: sticky;
@@ -144,7 +145,7 @@
 
               <h4>Centro Documentazione</h4>
               <h5>Ivan Donatelli</h5>
-              <p style="font-size:xx-small"><a href="https://www.instagram.com/cdivandonatelli/">CDID su Instagram</a><br>L'archivio è un progetto privato nato itinerante nel 2018.<br>Ora ospitato come consultazione e servizio per le associate.<br>Consta di un migliaio di testi e cataloghi, con rarità.<br>Inoltre riviste, fanzine, depliant, poster, donazioni di opere d'arte.<br>Lista in via di aggiornamento continuo.<br>Classificazione a cura di <a href="https://www.instagram.com/marracash.albani/">Mara Albani</a></p>
+              <p style="font-size:xx-small"><a href="https://www.instagram.com/cdivandonatelli/">CDID su Instagram</a><br>L'archivio è un progetto privato nato itinerante nel 2018.<br>Ora ospitato come consultazione e servizio per le associate.<br>Consta di un migliaio di testi e cataloghi, con rarità.<br>Inoltre riviste, fanzine, depliant, poster, donazioni di opere d'arte.<br>Lista in via di aggiornamento continuo.<br>Classificazione a cura di <a href="https://www.instagram.com/marracash.albani/">Mara Albani</a><br>La qualità delle immagini è la massima resa dal servizio Google Books.</p>
               <h6 id="dispo"></h6>
                   <div id="tabella_phone" class="regdiv table-responsive table-wrapper "></div>
                   <hr>
@@ -213,7 +214,7 @@
               </button>
             </div>
             <div class="modal-body text-center">
-              <img src="" id="modalImage" class="img-fluid" alt="Copertina">
+              <img src="" id="modalImage" width="50%" class="img-fluid" alt="Copertina">
               <p id="modalDescription"></p>
             </div>
           </div>
