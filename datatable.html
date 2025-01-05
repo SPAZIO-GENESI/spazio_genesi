@@ -153,13 +153,10 @@
                     <thead>
                      <tr>
                       <th>Id</th>
-                      <th>Autore</th>
-                      <th>Titolo</th>
-                      <th>Editore</th>
-                      <th>ISBN</th>
-                      <th>Google Books</th>
-                      <th>Copertina</th>
-                      <th>Link</th>
+                      <th>immagine</th>
+                      <th>File</th>
+                      
+                      
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -267,7 +264,7 @@
           async function fetchData2() {
             const sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
             const apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
-            const url="https://sheets.googleapis.com/v4/spreadsheets/1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4/values/Disponibili?key=AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0";
+            const url="https://sheets.googleapis.com/v4/spreadsheets/1EzXaN4W8VIPpIRgmOIVAEwT8WSldoVTOYOdi2UZ2iO4/values/Foglio1?key=AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0";
             //  
             try {
               const response = await fetch(url);
@@ -285,29 +282,59 @@
                  columns: data[0].map(header => ({ title: header })),
                  language: { url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Italian.json" },
                  "columnDefs": [
-                  {
-                  "targets": 5,
-                  "render": function(data, type, row, meta) {
-                    return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + data + '" alt="Image" width="50">';
-                  }
+                 {targets:2,
+                  "visible":false
                  },
-                {
-                  targets:6,
-                  visible:false
-                },
-                {
-                  targets: 7,
+                 {
+                  "targets": 1  ,
                   "render": function(data, type, row, meta) {
-                    return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + data + '" alt="Image" width="50">';
-                  }
-                }
-              ]
-               
-               });
+                    /*var fileID = data.split('/');
+                    console.log(fileID[0]);
+                    console.log(fileID[1]);
 
-               
-                
+                    var folderName = fileID[0];
+                    return getFolderId(folderName).then(
+                      function(folderId) {
+                         return getFileId(folderId, fileID[1]).then(
+                          function(fileId) {
+                             var imageUrl = 'https://drive.google.com/uc?export=view&id=' + fileId;
+                      })});
+                          
+                    //var imageUrl = 'https://drive.google.com/uc?export=view&id=' + fileID;
+                    console.log (imageUrl);*/
+                    return '<img data-toggle="modal" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + data + '" alt="Image" width="50">';
+                  }
+                 }]
+               });
             }
+
+            function getFolderId(folderName) {
+  var url = 'https://www.googleapis.com/drive/v3/files?q=name=\'' + folderName + '\' and mimeType=\'application/vnd.google-apps.folder\'&key=AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+  return $.ajax({
+    url: url,
+    method: 'GET',
+    dataType: 'json'
+  }).then(function(response) {
+    if (response.files.length > 0) {
+      return response.files[0].id;
+    }
+    throw new Error('Folder not found');
+  });
+}
+function getFileId(folderId, fileName) {
+  var url = 'https://www.googleapis.com/drive/v3/files?q=name=\'' + fileName + '\' and \'' + folderId + '\' in parents&key=AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+  return $.ajax({
+    url: url,
+    method: 'GET',
+    dataType: 'json'
+  }).then(function(response) {
+    if (response.files.length > 0) {
+      return response.files[0].id;
+    }
+    throw new Error('File not found');
+  });
+}
+
             
             function displayData(data) {
               const table = document.createElement('table');
