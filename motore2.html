@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <form id="searchForm">
+        <input type="text" id="searchQuery" placeholder="Search">
+        <button type="submit">Search</button>
+    </form>
+    <div id="searchResults"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var query = document.getElementById('searchQuery').value;
+
+            fetch('https://api.appsheet.com/api/v2/apps/6d3533de-7e81-47eb-90f8-a71d1d2d233f/tables/libri/Action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ApplicationAccessKey': 'V2-vAZS8-t9PrI-Z8FGn-5Jpod-8QE1Q-k5IsX-qWr4W-daoEz'
+                },
+                body: JSON.stringify({
+                    Action: "Find",
+                    Properties: {
+                        Locale: "it-IT",
+                        Location: "47.623098, -122.330184",
+                        RunAsUserEmail: "it@spaziogenesi.org"
+                    },
+                    Rows: [
+                        {
+                            ColumnName: "Titolo",
+                            Value: query
+                        }
+                    ]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var results = data;
+                var resultDiv = document.getElementById('searchResults');
+                resultDiv.innerHTML = ''; // Clear previous results
+                results.forEach(row => {
+                    var rowElement = document.createElement('div');
+                    rowElement.textContent = JSON.stringify(row);
+                    resultDiv.appendChild(rowElement);
+                });
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('searchResults').innerText = 'Error fetching data';
+            });
+        });
+    </script>
+</body>
+</html>

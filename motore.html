@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <form id="searchForm">
+        <input type="text" id="searchQuery" placeholder="Search">
+        <button type="submit">Search</button>
+    </form>
+    <div id="searchResults"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var query = document.getElementById('searchQuery').value;
+
+            fetch('https://script.google.com/macros/s/AKfycbyOXYffz-qwzbrlUOKfhsGie1SenVhdi8B5FUmKtcNLgulA7XnaKRMq8O4dxlKKJ4rZ8g/exec'+ encodeURIComponent(query), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('searchResults').innerText = data.results.join(', ');
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('searchResults').innerText = 'Error fetching data';
+            });
+        });
+    </script>
+</body>
+</html>
+
