@@ -17,7 +17,7 @@
             event.preventDefault();
             var query = document.getElementById('searchQuery').value;
 
-            fetch('https://api.appsheet.com/api/v2/apps/6d3533de-7e81-47eb-90f8-a71d1d2d233f/tables/libri/Action', {
+            fetch('https://api.appsheet.com/api/v2/apps/6d3533de-7e81-47eb-90f8-a71d1d2d233f/tables/Libri/Action', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,23 +32,22 @@
                     },
                     Rows: [
                         {
-                            ColumnName: "Titolo",
+                            ColumnName: "Autore",
                             Value: query
                         }
                     ]
                 })
             })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
-                var results = data;
-                var resultDiv = document.getElementById('searchResults');
-                resultDiv.innerHTML = ''; // Clear previous results
-                results.forEach(row => {
-                    var rowElement = document.createElement('div');
-                    rowElement.textContent = JSON.stringify(row);
-                    resultDiv.appendChild(rowElement);
-                });
-            })
+                console.log('Response:', data);
+                try { var parsedData = JSON.parse(data); 
+                    // Then parse JSON 
+                document.getElementById('searchResults').innerText = parsedData.results.join(', ');
+             } catch (error) {
+                console.error('JSON parse error:', error);
+                document.getElementById('searchResults').innerText = 'Error parsing data';
+             }            })
             .catch(error => {
                 console.error('Fetch error:', error);
                 document.getElementById('searchResults').innerText = 'Error fetching data';

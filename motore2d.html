@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <form id="searchForm">
+        <input type="text" id="searchQuery" placeholder="Search">
+        <button type="submit">Search</button>
+    </form>
+    <div id="searchResults"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var query = document.getElementById('searchQuery').value;
+
+            var query = 'titolo';
+            var url = 'https://api.appsheet.com/api/v2/apps/6d3533de-7e81-47eb-90f8-a71d1d2d233f/tables/Libri/Action';
+
+            fetch(url + '?query=' + encodeURIComponent(query), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ApplicationAccessKey': 'V2-vAZS8-t9PrI-Z8FGn-5Jpod-8QE1Q-k5IsX-qWr4W-daoEz'
+                }
+            })
+            .then(response => response.text())  // Parse as text first
+            .then(data => {
+                console.log('Response:', data);
+                try {
+                    var parsedData = JSON.parse(data);  // Then parse JSON
+                    console.log('Parsed Data:', parsedData);
+                } catch (error) {
+                    console.error('JSON parse error:', error);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+
+
+
+
+
+
+        });
+    </script>
+</body>
+</html>
