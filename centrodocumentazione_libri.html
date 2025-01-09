@@ -309,15 +309,6 @@
                           "responsive": true
                       });
           }
-
-
-
-
-
-
-
-
-
           
           async function fetchData() {
             const sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
@@ -334,39 +325,8 @@
               console.error('Error fetching data:', error);
               }
             }
-
-
-
-            function populateDataTable(data) {
-               $('#tabella_pc').DataTable({ 
-                data: data.slice(1),// skip the header row 
-                 columns: data[0].map(header => ({ title: header })),
-                 language: { url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Italian.json" },
-                 "columnDefs": [
-                  {
-                  "targets": 5,
-                    visible:false
-                  }
-                 ,
-                {
-                  targets:6,
-                  visible:false
-                },
-                {
-                  targets: 7,
-                  "render": function(data, type, row, meta) {
-                    return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + data + '" alt="Image" width="50">';
-                  }
-                }
-              ]
-               
-               });
-
-               
-                
-            }
-            
-            function displayData(data) {
+         
+          function displayData(data) {
               const columnsToHide = [5,6];
               const table = document.createElement('table');
               table.classList.add("table");
@@ -410,24 +370,7 @@
               tabella_phone.appendChild(table);
             }
         
-            $(document).ready(isMobile());
-
-            /*
-        document.addEventListener('DOMContentLoaded', function() {
-          const thumbnails = document.querySelectorAll('.thumbnail');
-
-          thumbnails.forEach(thumbnail => {
-              thumbnail.addEventListener('click', function() {
-                  const modalImage = document.getElementById('modalImage');
-                  const modalDescription = document.getElementById('modalDescription');
-                  modalImage.src = this.src;
-                  modalDescription.textContent = this.getAttribute('data-description');
-
-                  $('#imageModal').modal('show');
-              });
-          });
-          });
-          */
+          $(document).ready(isMobile());
           
           $(document).ready(function() { 
             $('#imageModal').on('show.bs.modal',
