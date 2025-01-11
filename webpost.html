@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppSheet DataTable</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Data from AppSheet</h2>
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    
+                    <th>Column 2</th>
+                    <th>Column 3</th>
+                    <th>Column 3</th>
+                    <th>Column 3</th>
+                    <th>Column 3</th>
+                    <th>Column 3</th>
+                    
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var appId = '6d3533de-7e81-47eb-90f8-a71d1d2d233f';
+            var tableName = 'immaginecdn';
+            var apiKey = 'V2-vAZS8-t9PrI-Z8FGn-5Jpod-8QE1Q-k5IsX-qWr4W-daoEz';
+            const url = `https://api.appsheet.com/api/v2/apps/${appId}/tables/${tableName}/data`;
+
+            const requestBody = {
+                "Action": "Find",
+                "Properties": {
+                    "Locale": "it-IT",
+                },
+                "Rows": []
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ApplicationAccessKey': apiKey
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const rows = data.reduce((acc, row) => {
+                    acc.push(
+                        `<tr>
+                            
+                            <td>${row.row_id}</td>
+                            <td>${row.autore}</td>
+                            <td>${row.titolo}</td>
+                            <td>${row.editore}</td>
+                            <td>${row.isbn}</td>
+                            <td>${row.cdn}</td>
+                            
+                        </tr>`
+                    );
+                    return acc;
+                }, []).join('');
+
+                $('#example tbody').html(rows);
+                $('#example').DataTable({
+                    "paging": true,
+                    "pageLength": 10,
+                    "lengthMenu": [5, 10, 25, 50, 100],
+                    "ordering": true,
+                    "info": true,
+                    "searching": true,
+                    "autoWidth": true,
+                    "responsive": true
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        });
+    </script>
+</body>
+</html>
