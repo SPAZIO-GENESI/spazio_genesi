@@ -23,6 +23,7 @@
                     <th>Editore</th>
                     <th>ISBN</th>
                     <th>Copertina</th>
+                    <th>Visibile</th>
              </tr>
             </thead>
             <tbody></tbody>
@@ -51,6 +52,8 @@
             var table = $('#tabella_pc').DataTable({
                 "processing": true,
                 "serverSide": true,
+                "ordering":true,
+                "stateSave":true,
                 "ajax": function(data, callback, settings) {
                     const appId = '6d3533de-7e81-47eb-90f8-a71d1d2d233f';
                     const tableName = 'immaginecdn';
@@ -59,15 +62,21 @@
                     const start = data.start;
                     const length = data.length;
                     const searchValue = data.search.value;
+                    const colonna = 'visibile';
+                    const quale = true;
 
                     const requestBody = {
                         "Action": "Find",
                         "Properties": {
-                            "Locale": "en-US",
+                            "Locale": "it-IT"
 
                         },
-                        "Rows": []
+                        "Rows": [
+                         
+                            ]
                     };
+
+
 
                     fetch(url, {
                         method: 'POST',
@@ -85,10 +94,12 @@
                     })
                     .then(data => {
                         const filteredData = data.filter(row => {
-                            return Object.values(row).some(cell => {
+                            return row.visibile === "Y" && Object.values(row).some(cell => {
                                 return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
                             });
                         });
+
+                        
 
                         const pageData = filteredData.slice(start, start + length).map(row => {
                             return [
@@ -98,7 +109,8 @@
                                 row.titolo,
                                 row.editore,
                                 row.isbn,
-                                JSON.parse(row.cdn).Url
+                                JSON.parse(row.cdn).Url,
+                                row.visibile
                             ];
                         });
 
@@ -110,8 +122,8 @@
                                 <td>${row[3]}</td>
                                 <td>${row[4]}</td>
                                 <td>${row[5]}</td>
-                                
                                 <td><img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'${row[6]}'" src="'${row[6]}'" alt="Image" width="50">'<td>
+                                <td>${row[7]}</td>
                             </tr>`;
                         }).join('');
 
