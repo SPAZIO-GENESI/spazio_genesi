@@ -264,7 +264,7 @@
 
                               $.getJSON(url, function(sheetData) {
                                   var filteredData = sheetData.values.slice(1).filter(function(row) {
-                                      return row.some(function(cell) {
+                                      return row[1] === "TRUE" && row.some(function(cell) {
                                           return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
                                       });
                                   });
