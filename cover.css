@@ -131,6 +131,9 @@ body{
   font-weight: 700;
 }
 
+.bio-h1 {
+  font-size: 1.5rem;
+}
 
 /*
  * Footer
