@@ -260,6 +260,8 @@
                               var start = data.start;
                               var length = data.length;
                               var searchValue = data.search.value;
+                              var orderColumn = data.order[0].column;
+                              var orderDirection = data.order[0].dir; 
                               var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
 
                               $.getJSON(url, function(sheetData) {
@@ -267,6 +269,17 @@
                                       return row[1] === "TRUE" && row.some(function(cell) {
                                           return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
                                       });
+                                  });
+
+                                  filteredData.sort(function(a, b) {
+                                      var aVal = a[orderColumn].toString();
+                                      var bVal = b[orderColumn].toString();
+
+                                      if (orderDirection === 'asc') {
+                                          return aVal.localeCompare(bVal, undefined, {numeric: true});
+                                      } else {
+                                          return bVal.localeCompare(aVal, undefined, {numeric: true});
+                                      }
                                   });
 
                                   var pageData = filteredData.slice(start, start + length).map(function(row) {
@@ -308,7 +321,8 @@
                         ],
                           "pageLength": 10,
                           "lengthMenu": [5, 10, 25, 50, 100],
-                          //"ordering": true,
+                          "ordering": true,
+                          "order": [[0, 'desc']],
                           "info": true,
                           "searching": true,
                           "autoWidth": true,
