@@ -149,7 +149,7 @@
               <h6 id="dispo"></h6>
                   <div id="tabella_phone" class="regdiv table-responsive table-wrapper "></div>
                   <hr>
-                  <table id="tabella_pc" class="regdiv table table-striped table-bordered table-condensed" style="width:100%">
+                  <table id="tabella_pc" class="regdiv table-responsive table-wrapper table-striped table-bordered table-condensed" style="width:100%">
                     <thead>
                      <tr>
                       <th>Id</th>
@@ -239,8 +239,10 @@
           if (isMobile()) {
               // Code for mobile devices
               dispo.innerHTML = 'On a smartphone';
-              tabella_pc.style.display = 'none';
-              fetchData();
+              tabella_pc.style.display = 'visible'; //none
+              
+              //fetchData();
+              pcpaginato();
           } else {
               // Code for non-mobile devices
               dispo.innerHTML = 'On PC device';
