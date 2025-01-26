@@ -321,6 +321,7 @@
                         ],
                           "pageLength": 10,
                           "lengthMenu": [5, 10, 25, 50, 100],
+                          'pagingType': 'full_numbers',
                           "ordering": true,
                           "order": [[0, 'desc']],
                           "info": true,
@@ -328,6 +329,31 @@
                           "autoWidth": true,
                           "responsive": true
                       });
+
+            // URL Update Function
+            function updateUrl(page, search) {
+                if (history.pushState) {
+                    var url = new URL(window.location);
+                    url.searchParams.set('page', page);
+                    url.searchParams.set('search', search);
+                    history.pushState(null, '', url);
+                }
+            }
+
+            // Set the initial page and search term based on URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var page = parseInt(urlParams.get('page')) || 1;
+            var search = urlParams.get('search') || '';
+            table.page(page - 1).draw(false); 
+            table.search(search).draw(false);
+
+            // Update the URL when the page or search changes
+            table.on('page.dt search.dt', function() {
+                var info = table.page.info();
+                var searchTerm = table.search();
+                updateUrl(info.page + 1, searchTerm); 
+            });
+                      
           }
           
           async function fetchData() {
