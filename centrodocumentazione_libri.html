@@ -36,7 +36,10 @@
         <style>
           .thumbnail { cursor: pointer; /* This line adds the hand pointer on hover */ }
           .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; }
-          .modal-body img { max-width: none; height: auto; }
+          .modal-body img { max-width: none; 
+            height: auto !important;
+            max-height: 100vh;
+            object-fit: contain; }
 
           .table-fixed-header thead th {
             position: sticky;
@@ -47,6 +50,13 @@
 
           div.dataTables_wrapper div.dataTables_paginate {
             margin: 2em;}
+
+            .modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Aligns modal vertically */
+}
         </style>
         <!-- Matomo -->
         <script>
