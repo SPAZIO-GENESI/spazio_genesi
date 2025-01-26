@@ -248,87 +248,82 @@
               pcpaginato();
           }
 
-          async function pcpaginato() {
+         function pcpaginato() {
+ 
             var table = $('#tabella_pc').DataTable({
-                          "processing": true,
-                          "serverSide": true,
-                          "ajax": function(data, callback, settings) {
+                "processing": true,
+                "serverSide": true,
+                "ajax": async function(data, callback, settings) {
+                    try {
+                        var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
+                        var apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
 
-                              var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
-                              var apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+                        var start = data.start;
+                        var length = data.length;
+                        var searchValue = data.search.value;
+                        var orderColumn = data.order[0].column;
+                        var orderDirection = data.order[0].dir; 
+                        var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
 
-                              var start = data.start;
-                              var length = data.length;
-                              var searchValue = data.search.value;
-                              var orderColumn = data.order[0].column;
-                              var orderDirection = data.order[0].dir; 
-                              var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
+                        let response = await fetch(url);
+                        let sheetData = await response.json();
 
-                              $.getJSON(url, function(sheetData) {
-                                  var filteredData = sheetData.values.slice(1).filter(function(row) {
-                                      return row[1] === "TRUE" && row.some(function(cell) {
-                                          return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
-                                      });
-                                  });
+                        var filteredData = sheetData.values.slice(1).filter(function(row) {
+                            return row[1] === "TRUE" && row.some(function(cell) {
+                                return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
+                            });
+                        });
 
-                                  filteredData.sort(function(a, b) {
-                                      var aVal = a[orderColumn].toString();
-                                      var bVal = b[orderColumn].toString();
+                        filteredData.sort(function(a, b) {
+                            var aVal = a[orderColumn].toString();
+                            var bVal = b[orderColumn].toString();
 
-                                      if (orderDirection === 'asc') {
-                                          return aVal.localeCompare(bVal, undefined, {numeric: true});
-                                      } else {
-                                          return bVal.localeCompare(aVal, undefined, {numeric: true});
-                                      }
-                                  });
-
-                                  var pageData = filteredData.slice(start, start + length).map(function(row) {
-                                      return row.map(function(cell) {
-                                          return cell;
-                                      });
-                                  });
-
-                                  callback({
-                                      draw: data.draw,
-                                      recordsTotal: sheetData.values.length - 1,
-                                      recordsFiltered: filteredData.length,
-                                      data: pageData
-                                  });
-                              });
-                          },
-                          language: { url: "/Italian.json" },
-                          "columnDefs": [
-                            {
-                              "targets":1,
-                              visible:false
-                            },
-                            {
-                            "targets": 6,
-                              visible:false
+                            if (orderDirection === 'asc') {
+                                return aVal.localeCompare(bVal, undefined, {numeric: true});
+                            } else {
+                                return bVal.localeCompare(aVal, undefined, {numeric: true});
                             }
-                          ,
-                          {
-                            targets:7,
-                            visible:false
-                          },
-                          {
-                            targets: 8,
-                            "render": function(data, type, row, meta) {
-                              var thumbnailData = row[10];
-                              return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
-                            }
-                          }
-                        ],
-                          "pageLength": 10,
-                          "lengthMenu": [5, 10, 25, 50, 100],
-                          'pagingType': 'full_numbers',
-                          "ordering": true,
-                          "order": [[0, 'desc']],
-                          "info": true,
-                          "searching": true,
-                          "autoWidth": true,
-                          "responsive": true
-                      });
+                        });
+
+                        var pageData = filteredData.slice(start, start + length).map(function(row) {
+                            return row.map(function(cell) {
+                                return cell;
+                            });
+                        });
+
+                        callback({
+                            draw: data.draw,
+                            recordsTotal: sheetData.values.length - 1,
+                            recordsFiltered: filteredData.length,
+                            data: pageData
+                        });
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                },
+                language: { url: "/Italian.json" },
+                "columnDefs": [
+                    { "targets": 1, visible: false },
+                    { "targets": 6, visible: false },
+                    { "targets": 7, visible: false },
+                    {
+                        "targets": 8,
+                        "render": function(data, type, row, meta) {
+                            var thumbnailData = row[10];
+                            return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
+                        }
+                    }
+                ],
+                "pageLength": 10,
+                "lengthMenu": [5, 10, 25, 50, 100],
+                'pagingType': 'full_numbers',
+                "ordering": true,
+                "order": [[0, 'desc']],
+                "info": true,
+                "searching": true,
+                "autoWidth": true,
+                "responsive": true
+            });
 
             // URL Update Function
             function updateUrl(page, search) {
@@ -353,8 +348,10 @@
                 var searchTerm = table.search();
                 updateUrl(info.page + 1, searchTerm); 
             });
+        };
+
                       
-          }
+          
           
           async function fetchData() {
     const sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
