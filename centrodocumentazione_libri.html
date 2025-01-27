@@ -35,36 +35,32 @@
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <style>
           .thumbnail { cursor: pointer; /* This line adds the hand pointer on hover */ }
-          .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; }
+          .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; } 
           
+          .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;}
           .modal-body {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 0;
-            }
+                padding: 0;}
           .modal-body img {  
-            height: auto !important;
-            max-height: 100vh;
+            max-height: 90vh;
             width: auto;
-            object-fit: contain; }
+            object-fit: contain;}
 
           .table-fixed-header thead th {
             position: sticky;
             top: 0;
             background-color: #f8f9fa;
-            z-index: 1;
-          }
+            z-index: 1;}
 
           div.dataTables_wrapper div.dataTables_paginate {
             margin: 2em;}
 
-            .modal-dialog {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh; /* Aligns modal vertically */
-}
         </style>
         <!-- Matomo -->
         <script>
