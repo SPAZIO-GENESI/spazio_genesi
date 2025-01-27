@@ -394,7 +394,13 @@
                     var searchTerm = table.search();
                     updateUrl(info.page + 1, searchTerm);
                 });
-            }, 500)
+            }, 500);
+            $('#tabella_pc tbody').on('click', '.thumbnail', function() {
+                var rowData = table.row($(this).closest('tr')).data();
+                var valueToTrack = rowData[0];
+                
+                _paq.push(['trackEvent', 'Copertina', 'Click', valueToTrack]);
+            });
             
         };
       
