@@ -279,6 +279,9 @@
           }
 
          function pcpaginato() {
+          var urlParams = new URLSearchParams(window.location.search);
+          var page = parseInt(urlParams.get('page')) || 1;
+          var search = urlParams.get('search') || ''
  
             var table = $('#tabella_pc').DataTable({
                 "processing": true,
@@ -355,6 +358,9 @@
                 "responsive": true
             });
 
+            table.page(page - 1).draw(false);
+            table.search(search).draw(false);
+            
             // URL Update Function
             function updateUrl(page, search) {
                 if (history.pushState) {
@@ -365,26 +371,33 @@
                 }
             }
 
-            // Set the initial page and search term based on URL parameters
-            var urlParams = new URLSearchParams(window.location.search);
-            var page = parseInt(urlParams.get('page')) || 1;
-            var search = urlParams.get('search') || '';
-            table.page(page - 1).draw(false); 
-            table.search(search).draw(false);
-
+            // Scroll to top on pagination change
             table.on('draw.dt', function() {
+              var pageInfo = table.page.info();
+              _paq.push(['trackEvent', 'DataTable', 'Page Change', 'Entrato nella pagina ' + (pageInfo.page + 1)]);
                 $('html, body').animate({
                     scrollTop: $("#tabella_pc").offset().top
                 }, 500); // Adjust the speed as needed
             });
+
             // Update the URL when the page or search changes
             table.on('page.dt search.dt', function() {
                 var info = table.page.info();
                 var searchTerm = table.search();
-                updateUrl(info.page + 1, searchTerm); 
+                updateUrl(info.page + 1, searchTerm);
             });
-        };
 
+            // Prevent immediate URL update on initial load
+            setTimeout(function() {
+                table.on('page.dt search.dt', function() {
+                    var info = table.page.info();
+                    var searchTerm = table.search();
+                    updateUrl(info.page + 1, searchTerm);
+                });
+            }, 500)
+            
+        };
+      
                       
           
           
