@@ -53,6 +53,19 @@
             object-fit: contain;
           }
 
+          /* Ensure pagination is visible and accessible */
+          .dataTables_paginate {
+              display: flex;
+              justify-content: center;
+              padding: 1rem;
+          }
+
+          .dataTables_paginate .pagination {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+          }
+
           .table-fixed-header thead th {
             position: sticky;
             top: 0;
