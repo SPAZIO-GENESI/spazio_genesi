@@ -372,6 +372,11 @@
             table.page(page - 1).draw(false); 
             table.search(search).draw(false);
 
+            table.on('draw.dt', function() {
+                $('html, body').animate({
+                    scrollTop: $("#tabella_pc").offset().top
+                }, 500); // Adjust the speed as needed
+            });
             // Update the URL when the page or search changes
             table.on('page.dt search.dt', function() {
                 var info = table.page.info();
