@@ -260,6 +260,8 @@
 
           dispo = document.getElementById("dispo");
 
+          $(document).ready(isMobile());
+
           function isMobile() {
               return /Mobi|Android/i.test(navigator.userAgent);
           }
@@ -278,134 +280,138 @@
               pcpaginato();
           }
 
-         function pcpaginato() {
-          var urlParams = new URLSearchParams(window.location.search);
-          var page = parseInt(urlParams.get('page')) || 1;
-          var search = urlParams.get('search') || ''
- 
-            var table = $('#tabella_pc').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": async function(data, callback, settings) {
-                    try {
-                        var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
-                        var apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+          function pcpaginato() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var page = parseInt(urlParams.get('page')) || 1;
+  var search = urlParams.get('search') || '';
 
-                        var start = data.start;
-                        var length = data.length;
-                        var searchValue = data.search.value;
-                        var orderColumn = data.order[0].column;
-                        var orderDirection = data.order[0].dir; 
-                        var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
+  console.log('Initial page:', page);
+  console.log('Initial search:', search);
 
-                        let response = await fetch(url);
-                        let sheetData = await response.json();
+  // Nascondi il DataTable all'avvio
+  $('#tabella_pc').hide();
 
-                        var filteredData = sheetData.values.slice(1).filter(function(row) {
-                            return row[1] === "TRUE" && row.some(function(cell) {
-                                return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
-                            });
-                        });
+  var table = $('#tabella_pc').DataTable({
+    "processing": true,
+    "serverSide": true,
+    "ajax": async function(data, callback, settings) {
+      try {
+        var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
+        var apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
 
-                        filteredData.sort(function(a, b) {
-                            var aVal = a[orderColumn].toString();
-                            var bVal = b[orderColumn].toString();
+        var start = data.start;
+        var length = data.length;
+        var searchValue = data.search.value;
+        var orderColumn = data.order[0].column;
+        var orderDirection = data.order[0].dir;
+        var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
 
-                            if (orderDirection === 'asc') {
-                                return aVal.localeCompare(bVal, undefined, {numeric: true});
-                            } else {
-                                return bVal.localeCompare(aVal, undefined, {numeric: true});
-                            }
-                        });
+        let response = await fetch(url);
+        let sheetData = await response.json();
 
-                        var pageData = filteredData.slice(start, start + length).map(function(row) {
-                            return row.map(function(cell) {
-                                return cell;
-                            });
-                        });
+        var filteredData = sheetData.values.slice(1).filter(function(row) {
+          return row[1] === "TRUE" && row.some(function(cell) {
+            return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
+          });
+        });
 
-                        callback({
-                            draw: data.draw,
-                            recordsTotal: sheetData.values.length - 1,
-                            recordsFiltered: filteredData.length,
-                            data: pageData
-                        });
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                    }
-                },
-                language: { url: "/Italian.json" },
-                "columnDefs": [
-                    { "targets": 1, visible: false },
-                    { "targets": 6, visible: false },
-                    { "targets": 7, visible: false },
-                    {
-                        "targets": 8,
-                        "render": function(data, type, row, meta) {
-                            var thumbnailData = row[10];
-                            return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
-                        }
-                    }
-                ],
-                "pageLength": 10,
-                "lengthMenu": [5, 10, 25, 50, 100],
-                'pagingType': 'full_numbers',
-                "ordering": true,
-                "order": [[0, 'desc']],
-                "info": true,
-                "searching": true,
-                "autoWidth": true,
-                "responsive": true
-            });
+        filteredData.sort(function(a, b) {
+          var aVal = a[orderColumn].toString();
+          var bVal = b[orderColumn].toString();
 
-            table.page(page - 1).draw(false);
-            table.search(search).draw(false);
-            
-            // URL Update Function
-            function updateUrl(page, search) {
-                if (history.pushState) {
-                    var url = new URL(window.location);
-                    url.searchParams.set('page', page);
-                    url.searchParams.set('search', search);
-                    history.pushState(null, '', url);
-                }
-            }
+          if (orderDirection === 'asc') {
+            return aVal.localeCompare(bVal, undefined, {numeric: true});
+          } else {
+            return bVal.localeCompare(aVal, undefined, {numeric: true});
+          }
+        });
 
-            // Scroll to top on pagination change
-            table.on('draw.dt', function() {
-              var pageInfo = table.page.info();
-              _paq.push(['trackEvent', 'DataTable', 'Page Change', 'Entrato nella pagina ' + (pageInfo.page + 1)]);
-                $('html, body').animate({
-                    scrollTop: $("#tabella_pc").offset().top
-                }, 500); // Adjust the speed as needed
-            });
+        var pageData = filteredData.slice(start, start + length).map(function(row) {
+          return row.map(function(cell) {
+            return cell;
+          });
+        });
 
-            // Update the URL when the page or search changes
-            table.on('page.dt search.dt', function() {
-                var info = table.page.info();
-                var searchTerm = table.search();
-                updateUrl(info.page + 1, searchTerm);
-            });
+        callback({
+          draw: data.draw,
+          recordsTotal: sheetData.values.length - 1,
+          recordsFiltered: filteredData.length,
+          data: pageData
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    language: { url: "/Italian.json" },
+    "columnDefs": [
+      { "targets": 1, visible: false },
+      { "targets": 6, visible: false },
+      { "targets": 7, visible: false },
+      {
+        "targets": 8,
+        "render": function(data, type, row, meta) {
+          var thumbnailData = row[10];
+          return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
+        }
+      }
+    ],
+    "pageLength": 10,
+    "lengthMenu": [5, 10, 25, 50, 100],
+    'pagingType': 'full_numbers',
+    "ordering": true,
+    "order": [[0, 'desc']],
+    "info": true,
+    "searching": true,
+    "autoWidth": true,
+    "responsive": true
+  });
 
-            // Prevent immediate URL update on initial load
-            setTimeout(function() {
-                table.on('page.dt search.dt', function() {
-                    var info = table.page.info();
-                    var searchTerm = table.search();
-                    updateUrl(info.page + 1, searchTerm);
-                });
-            }, 500);
-            $('#tabella_pc tbody').on('click', '.thumbnail', function() {
-                var rowData = table.row($(this).closest('tr')).data();
-                var valueToTrack = rowData[0];
-                
-                _paq.push(['trackEvent', 'Copertina', 'Click', valueToTrack]);
-            });
-            
-        };
-      
-                      
-          
+  // Delay setting the initial page and search parameters
+  setTimeout(function() {
+    console.log('Setting initial page and search.');
+    table.page(page - 1).draw(false);
+    table.search(search).draw(false);
+    
+    // Mostra il DataTable dopo aver impostato i parametri
+    $('#tabella_pc').show();
+  }, 1000);
+
+  // URL Update Function
+  function updateUrl(page, search) {
+    if (history.pushState) {
+      var url = new URL(window.location);
+      url.searchParams.set('page', page);
+      url.searchParams.set('search', search);
+      history.pushState(null, '', url);
+    }
+  }
+
+  // Scroll to top on pagination change
+  table.on('draw.dt', function() {
+    var pageInfo = table.page.info();
+    console.log('Draw event triggered. Page info:', pageInfo);
+    _paq.push(['trackEvent', 'DataTable', 'Page Change', 'Entrato nella pagina ' + (pageInfo.page + 1)]);
+    $('html, body').animate({
+      scrollTop: $("#tabella_pc").offset().top
+    }, 500);
+  });
+
+  // Update the URL when the page or search changes
+  table.on('page.dt search.dt', function() {
+    var info = table.page.info();
+    var searchTerm = table.search();
+    console.log('Page change event triggered. New page:', info.page + 1);
+    console.log('Search change event triggered. Search term:', searchTerm);
+    updateUrl(info.page + 1, searchTerm);
+  });
+
+  $('#tabella_pc tbody').on('click', '.thumbnail', function() {
+    var rowData = table.row($(this).closest('tr')).data();
+    var valueToTrack = rowData[0];
+    _paq.push(['trackEvent', 'Copertina', 'Click', valueToTrack]);
+  });
+}
+    
           
           async function fetchData() {
     const sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
@@ -484,7 +490,7 @@
               tabella_phone.appendChild(table);
             }
         
-          $(document).ready(isMobile());
+          
           
           $(document).ready(function() { 
             $('#imageModal').on('show.bs.modal',
