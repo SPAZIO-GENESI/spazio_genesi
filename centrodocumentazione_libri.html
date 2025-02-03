@@ -246,7 +246,8 @@
               </button>
             </div>
             <div class="modal-body text-center">
-              <img src="" id="modalImage" width="50%" class="img-fluid mb-5" alt="Copertina">
+              <img id="loadingGif" src="/img/clBlack45_50_128.gif" alt="Loading..." class="img-fluid mb-5" >
+              <img src="" id="modalImage" width="50%" class="img-fluid mb-5" alt="Copertina" >
               <p id="modalDescription"></p>
             </div>
           </div>
@@ -492,15 +493,28 @@
         
           
           
-          $(document).ready(function() { 
-            $('#imageModal').on('show.bs.modal',
-            function(event) { 
-              var button = $(event.relatedTarget); // Button that triggered the modal
-              var imageSrc = button.data('image'); // Extract info from data-* attributes
-              var modal = $(this);
-              modal.find('.modal-body img').attr('src', imageSrc); 
-            }); 
-          });
+            $(document).ready(function() {
+              $('#imageModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var imageSrc = button.data('image'); // Extract info from data-* attributes
+                var modal = $(this);
+                var modalImage = modal.find('#modalImage');
+                var loadingGif = modal.find('#loadingGif');
+
+                // Show the loading GIF
+                loadingGif.show();
+                // Hide the final image initially
+                modalImage.hide();
+
+                // Set the image source and handle the load event
+                modalImage.on('load', function() {
+                  // Hide the loading GIF
+                  loadingGif.hide();
+                  // Show the final image
+                  $(this).show();
+                }).attr('src', imageSrc);
+              });
+            });
 
         
           </script>
