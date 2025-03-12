@@ -149,6 +149,17 @@
                 "2":[{"img":"sabrina_iezzi_riparazione_di_caduta.jpg","des":"","deslunga":"Riparazione di caduta,frame di video 2’,95”"}],
                 "3":[{"img":"sabrina_iezzi_aspettando_incolto.jpg","des":"","deslunga":"Aspettando l’incolto, casa di bambole vintage, animale in tassidermia."}]
                 }]            
+        },
+        {
+            "cartella":"davidemeola",
+            "nome": "Davide Meola ",
+            "IG": "",
+            "social": "https://www.gigarte.com/davide-meola",
+            "portfolio": "",
+            "bio": "Preferisco dare vita a narrazioni spontanee, lasciando spazio all'immaginazione umana, guidata dalla pittura, ampliando progressivamente l'immagine mentale, modificandola ed esaurendola. Di conseguenza, il processo artistico è più sincero e spontaneo. I miei lavori di pittura vengono eseguiti su tele, tavole e supporti di piccole e medie dimensioni, necessari per riuscire a catturare in modo completo e semplice ciò che amo di più con un carattere disinteressato e interessante. Estrapolo e creo qualcosa che è rilevante per me, trasmettendo nel dipinto, un mondo istintivo e rapido. La mia intenzione non è creare una narrazione conclusiva, ma permettere all'osservatore di completare la lettura dell'opera attraverso la propria posizione di visione.",
+            "img": [ {
+                "1":[{"img":"a.jpg","des":"","deslunga":""}]
+                }]            
         }
 
 
