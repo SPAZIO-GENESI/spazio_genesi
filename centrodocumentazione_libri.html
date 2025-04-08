@@ -37,20 +37,40 @@
           .thumbnail { cursor: pointer; /* This line adds the hand pointer on hover */ }
           .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; } 
           
-          .modal-dialog {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;}
           .modal-body {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0;}
-          .modal-body img {  
-            max-height: 90vh;
+            padding: 20px;
+          }
+
+          /* Contenitore immagine */
+          .image-container {
+            position: relative;
+            max-width: 100%;
+          }
+
+          /* Immagine principale */
+          .main-image {
+            max-height: 70vh;
             width: auto;
-            object-fit: contain;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+          }
+
+          /* Stile descrizione */
+          .description-text {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            word-break: break-word;
+          }
+
+          /* Loading centrato */
+          #loadingGif {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
           }
 
           /* Ensure pagination is visible and accessible */
@@ -189,6 +209,9 @@
                       <th>Google Books</th>
                       <th>Copertina</th>
                       <th>Copertina</th>
+                      <th>Estratto</th>
+                      <th>Estratto</th>
+                      <th>Estratto</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -242,13 +265,13 @@
             <div class="modal-content"> <div class="modal-header">
               <h5 class="modal-title" id="imageModalLabel">Copertina</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                <span >&times;</span>
               </button>
             </div>
             <div class="modal-body text-center">
-              <img id="loadingGif" src="/img/clBlack45_50_128.gif" alt="Loading..." class="img-fluid mb-5" >
-              <img src="" id="modalImage" width="50%" class="img-fluid mb-5" alt="Copertina" >
-              <p id="modalDescription"></p>
+              <img id="loadingGif" src="/img/clBlack45_50_128.gif" alt="Loading..." class="img-fluid mb-3" >
+              <img src="" id="modalImage" width="50%" class="img-fluid img-modal mb-3" alt="Copertina" >
+              <p id="modalDescription"  class="description-text  w-100  text-center"></p>
             </div>
           </div>
         </div>
@@ -352,9 +375,14 @@
         "targets": 8,
         "render": function(data, type, row, meta) {
           var thumbnailData = row[10];
-          return '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
+          var descrizione = escapeHtml(row[11]);
+          
+          return '<img data-toggle="modal" class="thumbnail" data-descrizione="'+descrizione+'" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
         }
-      }
+      },
+      { "targets": 9, visible: false },
+      { "targets": 10, visible: false },
+      { "targets": 11, visible: false }
     ],
     "pageLength": 10,
     "lengthMenu": [5, 10, 25, 50, 100],
@@ -413,6 +441,15 @@
   });
 }
     
+function escapeHtml(unsafe) {
+  if (!unsafe) return '';
+  return unsafe.toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
           
           async function fetchData() {
     const sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
@@ -497,9 +534,11 @@
               $('#imageModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 var imageSrc = button.data('image'); // Extract info from data-* attributes
+                var descrizione = button.data('descrizione');
                 var modal = $(this);
                 var modalImage = modal.find('#modalImage');
                 var loadingGif = modal.find('#loadingGif');
+                modal.find('#modalDescription').text(descrizione); // Set the description text
 
                 // Show the loading GIF
                 loadingGif.show();
