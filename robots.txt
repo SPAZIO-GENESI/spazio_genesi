@@ -5,7 +5,7 @@ Disallow: /ignore/
 Allow: /
 
 User-Agent: Googlebot
-Allow: .js
-Allow: .css
+Allow: /.js$
+Allow: /.css$
 
 Sitemap: https://spaziogenesi.org/sitemap.xml
