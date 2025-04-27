@@ -1,9 +1,9 @@
-const CACHE_NAME = 'static-cache-v3';
+const CACHE_NAME = 'static-cache-v3.webp';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/cover.css',
-  '/img/spazio_genesi_cio_che_conosco.jpeg',
+  '/img/spazio_genesi_cio_che_conosco.webp',
   '/img/gdc20.png'
 ];
 
