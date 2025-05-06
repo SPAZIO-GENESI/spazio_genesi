@@ -12,24 +12,40 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         return cache.addAll(ASSETS_TO_CACHE.map(url => new Request(url, {
-          headers: { 'Cache-Control': 'max-age=604800, immutable' } // 1 settimana in secondi
+          headers: { 'Cache-Control': 'max-age=604800, immutable' } // 1 settimana
         })));
       })
   );
 });
 
 self.addEventListener('fetch', (event) => {
+  // Ignora richieste non GET e richieste a /api o simili
+  if (
+    event.request.method !== 'GET' ||
+    event.request.url.includes('/api/') ||
+    event.request.url.includes('/matomo.php')
+  ) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Strategia Cache-First con aggiornamento in background
         const fetchPromise = fetch(event.request).then(networkResponse => {
-          // Aggiorna la cache se la risposta è valida
+          // Aggiorna solo se la risposta è valida e la richiesta è GET
           if (networkResponse.ok) {
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, networkResponse));
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, networkResponse.clone());
+            });
           }
-          return networkResponse.clone();
+          return networkResponse;
+        }).catch(() => {
+          // Fallback offline (opzionale)
+          if (event.request.destination === 'document') {
+            return caches.match('/'); // Pagina offline
+          }
         });
+
         return response || fetchPromise;
       })
   );
