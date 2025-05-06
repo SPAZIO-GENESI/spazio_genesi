@@ -12,11 +12,14 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         return cache.addAll(ASSETS_TO_CACHE.map(url => new Request(url, {
-          headers: { 'Cache-Control': 'max-age=3600, immutable' } // 1 settimana
+          headers: {
+            'Cache-Control': 'max-age=3600, immutable, no-cache, must-revalidate' // Combinate in un'unica stringa
+          }
         })));
       })
   );
 });
+
 
 self.addEventListener('fetch', (event) => {
   // Ignora richieste non GET e richieste a /api o simili
