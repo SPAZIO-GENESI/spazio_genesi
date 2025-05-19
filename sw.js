@@ -1,9 +1,9 @@
-const CACHE_NAME = 'static-cache-v3.webp';
+const CACHE_NAME = 'static-cache-maggio';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/cover.css',
-  '/img/spazio_genesi_cio_che_conosco.webp',
+  '/img/SPAZIOGENESI_LA_COMUNE_ESIGENZA_28MAGGIO.jpg',
   '/img/gdc20.png'
 ];
 
