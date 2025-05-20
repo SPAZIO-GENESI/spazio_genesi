@@ -1,4 +1,4 @@
-const CACHE_NAME = 'static-cache-maggio2';
+const CACHE_NAME = 'static-cache-maggio2-v1'; // Aggiungi un numero di versione
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -8,18 +8,34 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
+  // Salta la fase di waiting per attivare immediatamente la nuova versione
+  self.skipWaiting();
+  
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(ASSETS_TO_CACHE.map(url => new Request(url, {
-          headers: {
-            'Cache-Control': 'max-age=3600, immutable, no-cache, must-revalidate' // Combinate in un'unica stringa
-          }
-        })));
+        return cache.addAll(ASSETS_TO_CACHE);
       })
   );
 });
 
+self.addEventListener('activate', (event) => {
+  // Elimina vecchie cache quando la nuova versione è attivata
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  
+  // Prendi il controllo immediatamente
+  return self.clients.claim();
+});
 
 self.addEventListener('fetch', (event) => {
   // Ignora richieste non GET e richieste a /api o simili
@@ -34,22 +50,39 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        const fetchPromise = fetch(event.request).then(networkResponse => {
-          // Aggiorna solo se la risposta è valida e la richiesta è GET
-          if (networkResponse.ok) {
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, networkResponse.clone());
-            });
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+
+        // Altrimenti fai la richiesta alla rete
+        return fetch(event.request).then((networkResponse) => {
+          // Controlla se abbiamo ricevuto una risposta valida
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+            return networkResponse;
           }
+
+          // Clona la risposta per salvarla in cache e restituirla
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME)
+            .then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+
           return networkResponse;
         }).catch(() => {
-          // Fallback offline (opzionale)
+          // Fallback offline
           if (event.request.destination === 'document') {
-            return caches.match('/'); // Pagina offline
+            return caches.match('/');
           }
+          return new Response('Offline content', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({
+              'Content-Type': 'text/plain'
+            })
+          });
         });
-
-        return response || fetchPromise;
       })
   );
 });
