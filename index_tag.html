@@ -37,13 +37,6 @@
 
         <!-- SERVICE WORKER GITHUB PER CACHE -->
         <script>
-          if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register('./sw.js')
-                .then(registration => console.log('SW registrato con successo:', registration))
-                .catch(error => console.log('Registrazione SW fallita:', error));
-            });
-          }
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
@@ -101,7 +94,7 @@
           <main role="main" class="inner cover">
             <div class="container">
               <p class="lead">
-                <a id="logopopover" href="#" data-content="geometrismo anni '70, scuola di ULM (post Bauhaus) rif. Mimmo Castellano, Pino Tovaglia, Giulio Cittato, Giancarlo Illiprandi. Logo di névoa-na-rua" rel="popover" data-placement="bottom" data-original-title="Riferimenti" data-trigger="hover"0>
+                <a id="logopopover" href="#" data-content="geometrismo anni '70, scuola di ULM (post Bauhaus) rif. Mimmo Castellano, Pino Tovaglia, Giulio Cittato, Giancarlo Illiprandi. Logo di névoa-na-rua" rel="popover" data-placement="bottom" data-original-title="Riferimenti" data-trigger="hover">
                   <svg id="Layer_2" style="max-width: 100%; width:100%; height:auto; max-width:500px" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" width="500" viewBox="0 0 107.6 89.6">
                     <defs>
                       <style>
