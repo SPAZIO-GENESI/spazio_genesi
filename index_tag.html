@@ -803,6 +803,26 @@
           const date = 'yesterday'; // Date (e.g., 'today', '2023-10-22')
           const tokenAuth = 'ba8fc89122c43565eef77303744dd851'; // Your Matomo API token
 
+          window.addEventListener('load', function () {
+            function checkConsentAndLoad() {
+              if (typeof CookieYes !== 'undefined' &&
+                  CookieYes.consent &&
+                  CookieYes.consent.marketing) {
+                loadFacebookPixel();
+                loadLinkedInPixel();
+              }
+            }
+
+            checkConsentAndLoad();
+
+            document.addEventListener('cookieyes_consent_update', function () {
+              if (CookieYes.consent.marketing) {
+                loadFacebookPixel();
+                loadLinkedInPixel();
+              }
+            });
+          });
+
 
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
