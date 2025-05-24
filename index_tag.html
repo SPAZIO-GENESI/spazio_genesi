@@ -85,67 +85,66 @@
           <!--End of Tawk.to Script-->
 
 
+      <script>
+        // Funzione per caricare il pixel di Facebook
+        function loadFacebookPixel() {
+          if (window.fbPixelLoaded) return; // Evita caricamenti multipli
+          window.fbPixelLoaded = true;
 
-          <script>
-            // Controlla se CookieYes è caricato
-            window.addEventListener('load', function () {
-              // Attendi il consenso esplicito alla categoria 'marketing'
-              if (CookieYes && CookieYes.consent && CookieYes.consent.marketing) {
-                loadFacebookPixel();
-                loadLinkedInPixel();
-              }
+          // Codice standard di Meta Pixel
+          !(function(f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function() {
+              n.callMethod ?
+              n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = true;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = true;
+            t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+          })(window, document, 'script');
 
-              // Riascolta cambiamenti nel consenso
-              document.addEventListener('cookieyes_consent_update', function () {
-                if (CookieYes.consent.marketing) {
-                  loadFacebookPixel();
-                  loadLinkedInPixel();
-                }
-              });
-            });
+          fbq('init', 'YOUR_PIXEL_ID'); // Sostituisci con il tuo Pixel ID
+          fbq('track', 'PageView');
+        }
 
-            // Funzione per caricare il pixel
-            function loadFacebookPixel() {
-              if (window.fbPixelLoaded) return; // evita duplicazioni
-              window.fbPixelLoaded = true;
+        // Funzione per caricare il pixel di LinkedIn
+        function loadLinkedInPixel() {
+          if (window.liPixelLoaded) return;
+          window.liPixelLoaded = true;
 
-              // Codice standard di Meta Pixel (modificato per caricare dinamicamente)
-              !(function(f, b, e, v, n, t, s) {
-                if (f.fbq) return;
-                n = f.fbq = function() {
-                  n.callMethod ?
-                  n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-                };
-                if (!f._fbq) f._fbq = n;
-                n.push = n;
-                n.loaded = true;
-                n.version = '2.0';
-                n.queue = [];
-                t = b.createElement(e);
-                t.async = true;
-                t.src = 'https://connect.facebook.net/en_US/fbevents.js';
-                s = b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t, s);
-              })(window, document, 'script');
+          var s = document.createElement("script");
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+          document.head.appendChild(s);
 
-              fbq('init', '687401070598967'); // <-- sostituisci con il tuo Pixel ID
-              fbq('track', 'PageView');
+          window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+          window._linkedin_data_partner_ids.push(YOUR_LINKEDIN_PARTNER_ID); // Sostituisci con il tuo Partner ID
+        }
+
+        // Ascolta gli aggiornamenti del consenso
+        window.addEventListener('load', function () {
+          if (CookieYes && CookieYes.consent && CookieYes.consent.marketing) {
+            loadFacebookPixel();
+            loadLinkedInPixel();
+          }
+
+          document.addEventListener('cookieyes_consent_update', function () {
+            if (CookieYes.consent.marketing) {
+              loadFacebookPixel();
+              loadLinkedInPixel();
             }
+          });
+        });
+      </script>
 
-            function loadLinkedInPixel() {
-              if (window.liPixelLoaded) return;
-              window.liPixelLoaded = true;
-
-              var s = document.createElement("script");
-              s.type = "text/javascript";
-              s.async = true;
-              s.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
-              document.head.appendChild(s);
-
-              window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-              window._linkedin_data_partner_ids.push(8432361); // <-- sostituisci
-            }
-          </script>
 
     </head>
     <body>
