@@ -73,6 +73,25 @@
             transform: translate(-50%, -50%);
           }
 
+          .dataTables_processing {
+              top: 50% !important;
+              left: 50% !important;
+              transform: translate(-50%, -50%) !important;
+              background-color: rgba(255, 255, 255, 0.9) !important;
+              border: 2px solid #333 !important;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+              padding: 40px 40px !important;
+              
+              padding-inline: 40px !important; /* sinistra/destra */
+              padding-block: 40px !important;  /* sopra/sotto */
+              line-height: 1; /* Migliora la spaziatura interna del testo */
+              border-radius: 5px !important;
+              font-size: 18px !important;
+              font-weight: bold !important;
+              white-space: nowrap; /* Impedisce la spezzatura del testo */
+              min-width: 250px; /* Larghezza minima per evitare che sia troppo stretto */
+          }
+
           /* Ensure pagination is visible and accessible */
           .dataTables_paginate {
               display: flex;
@@ -318,6 +337,7 @@
   var table = $('#tabella_pc').DataTable({
     "processing": true,
     "serverSide": true,
+    "processing": true,
     "ajax": async function(data, callback, settings) {
       try {
         var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
@@ -366,7 +386,9 @@
         console.error('Error fetching data:', error);
       }
     },
-    language: { url: "/Italian.json" },
+    "language": { "url": "/Italian.json" ,
+        "processing": "<div style='font-size: 24px; color: #ff0000; font-weight: bold; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 5px;'><i class='fa fa-spinner fa-spin'></i> Elaborazione in corso...</div>"
+      },
     "columnDefs": [
       { "targets": 1, visible: false },
       { "targets": 6, visible: false },
