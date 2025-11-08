@@ -12,7 +12,8 @@
         <title>Spazio Genesi</title>
         <meta name="description" content="Spazio di interfaccia tra studenti studentesse Accademia di Belle Arti ABAQ L'Aquila">
         <meta name="revisit-after" content="1" />
-<meta http-equiv="Content-Security-Policy"
+
+        <meta http-equiv="Content-Security-Policy"
       content="
         default-src 'self';
         script-src 'self' 'unsafe-inline' 
@@ -21,7 +22,20 @@
           https://cdn.openshareweb.com 
           https://matomodocker.azurewebsites.net 
           https://embed.tawk.to
-          https://code.jquery.com;
+          https://code.jquery.com
+          https://cdn.jsdelivr.net
+          https://stackpath.bootstrapcdn.com
+          https://maxcdn.bootstrapcdn.com;
+        script-src-elem 'self' 'unsafe-inline'
+          https://cdn-cookieyes.com 
+          https://cdn.shareaholic.net 
+          https://cdn.openshareweb.com 
+          https://matomodocker.azurewebsites.net 
+          https://embed.tawk.to
+          https://code.jquery.com
+          https://cdn.jsdelivr.net
+          https://stackpath.bootstrapcdn.com
+          https://maxcdn.bootstrapcdn.com;
         connect-src 'self' 
           https://matomodocker.azurewebsites.net 
           https://embed.tawk.to 
@@ -30,14 +44,20 @@
           https://cdn.jsdelivr.net 
           https://va.tawk.to
           https://api.shareaholic.com
-          https://dsms0mj1bbhn4.cloudfront.net;
-        img-src 'self' data: https:;
+          https://dsms0mj1bbhn4.cloudfront.net
+          https://*.shareaholic.com
+          wss://va.tawk.to;
+        img-src 'self' data: https: blob:;
         style-src 'self' 'unsafe-inline' 
           https://fonts.googleapis.com 
           https://cdn.jsdelivr.net
-          https://embed.tawk.to;
+          https://embed.tawk.to
+          https://stackpath.bootstrapcdn.com
+          https://maxcdn.bootstrapcdn.com;
         font-src 'self' 
-          https://fonts.gstatic.com;
+          https://fonts.gstatic.com
+          https://embed.tawk.to
+          data:;
         frame-src https://embed.tawk.to;
         object-src 'none';
         base-uri 'self';
@@ -67,6 +87,9 @@
         <link rel="manifest" href="./img/manifest.json">
 
         <link rel="preload" as="image" href="/img/SPAZIO_GENESI_e_poi_quando_tutto_e_a_posto_p.webp" fetchpriority="high">
+
+
+
 
         <!-- SERVICE WORKER GITHUB PER CACHE -->
         <script>
@@ -111,7 +134,7 @@
           <!--End of Tawk.to Script-->
     </head>
     <body>
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      
         <div class="cover-container d-flex  p-3 mx-auto flex-column">
           <header class="masthead mb-auto">
             <div class="inner">
@@ -759,24 +782,44 @@
             </div>
           </footer>
         </div>
-        
-        <script>
-          const siteId = '7'; // Your Matomo site ID
-          const period = 'day'; // Period (day, week, month, year)
-          const date = 'yesterday'; // Date (e.g., 'today', '2023-10-22')
-          const tokenAuth = 'ba8fc89122c43565eef77303744dd851'; // Your Matomo API token
 
-          getMatomoVisitors(siteId, period, date, tokenAuth).then(visitors => {
-            console.log(`Number of visitors: ${visitors}`);
-          });
-        </script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <script>
-          $('#logopopover').popover({ trigger: "hover" });
-          $('#cdpopover').popover({ trigger: "hover" });
-          $('#sspopover').popover({ trigger: "hover" });
-        </script>
+        
+      <script>
+      // Funzione per ottenere visitatori da Matomo
+      async function getMatomoVisitors() {
+        try {
+          const response = await fetch('https://matomodocker.azurewebsites.net/index.php?module=API&method=VisitsSummary.getVisits&idSite=1&period=day&date=today&format=JSON&token_auth=anonymous');
+          
+          if (!response.ok) {
+            console.warn('Matomo API non disponibile');
+            return 0;
+          }
+          
+          const data = await response.json();
+          return data.value || 0;
+        } catch (error) {
+          console.error('Errore Matomo:', error);
+          return 0;
+        }
+      }
+
+      // Usa la funzione
+      getMatomoVisitors().then(visitors => {
+        console.log('Visitatori oggi:', visitors);
+        // Aggiorna UI se necessario
+        const el = document.getElementById('matomo-visitors');
+        if (el) el.textContent = visitors;
+      });
+      </script>
+        
+      <script>
+        $('#logopopover').popover({ trigger: "hover" });
+        $('#cdpopover').popover({ trigger: "hover" });
+        $('#sspopover').popover({ trigger: "hover" });
+      </script>
     </body>
 </html>
