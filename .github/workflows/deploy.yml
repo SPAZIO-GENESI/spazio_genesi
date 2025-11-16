@@ -1,73 +1,56 @@
-name: Deploy multipli su GitHub Pages
+name: Deploy GitHub Pages
 
+# Trigger su push ai branch main e dutyfree
 on:
   push:
     branches:
       - main
       - dutyfree
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # 1. Checkout del branch corrente
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      # 2. Installare Node se serve (esempio per build JS/React/Vite)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          fi
-
+      # 3. Build del progetto (modifica secondo il tuo progetto)
       - name: Build
         run: |
           if [ -f package.json ]; then
-            npm run build || echo "Nessuno script di build trovato"
+            npm install
+            npm run build
           fi
 
-      # directory locale di build
-      - name: Prepare output directory
+      # 4. Impostare la cartella da deployare in base al branch
+      - name: Set folder
+        id: set-folder
         run: |
-          mkdir -p output
-          if [ -d dist ]; then
-            cp -r dist/* output/
-          elif [ -d build ]; then
-            cp -r build/* output/
-          else
-            cp -r * output/ || true
-          fi
-
-      # cartella di destinazione basata sul branch
-      - name: Set target folder
-        id: target
-        run: |
-          if [ "${{ github.ref_name }}" = "main" ]; then
+          BRANCH=${GITHUB_REF#refs/heads/}
+          if [ "$BRANCH" = "main" ]; then
             echo "folder=main" >> $GITHUB_OUTPUT
-          else
+            echo "hostname=www.miosito.com" >> $GITHUB_OUTPUT
+          elif [ "$BRANCH" = "dutyfree" ]; then
             echo "folder=dutyfree" >> $GITHUB_OUTPUT
+            echo "hostname=dutyfree.miosito.com" >> $GITHUB_OUTPUT
+          else
+            echo "folder=unknown" >> $GITHUB_OUTPUT
+            echo "hostname=unknown" >> $GITHUB_OUTPUT
           fi
 
-      - name: Deploy to gh-pages
+      # 5. Deploy su GitHub Pages usando peaceiris/actions-gh-pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./output
-          destination_dir: ${{ steps.target.outputs.folder }}
+          publish_dir: ${{ steps.set-folder.outputs.folder }}
+          # Se vuoi usare un custom domain:
+          # cname: ${{ steps.set-folder.outputs.hostname }}
