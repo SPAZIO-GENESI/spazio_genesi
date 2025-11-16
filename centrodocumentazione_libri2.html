@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="it" class="h-100">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Centro Documentazione Ivan Donatelli</title>
+        <meta name="description" content="Spazio Genesi, Centro Documentazione libri consultazione">
+        <meta name="revisit-after" content="1" />
+        <meta name="robots" content="index, follow">
+        <meta name="author" content="Tangram.page">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="./cover.css" rel="stylesheet">
+        <link href="./biografie/bio.css" rel="stylesheet">
+
+        <meta property="og:image" content="https://ogcdn.net/e4b8c678-7bd5-445d-ba03-bfaad510c686/v4/Spazio%20Genesi%20ETS/Spazio%20Genesi/https%3A%2F%2Fspaziogenesi.org%2Fimg%2Fspaziogenesi_trattienimipure.jpeg/og.png">
+        <meta property="og:url" content="https://spaziogenesi.org/">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Spazio Genesi - Evento Opening, arte contemporanea">
+        <meta property="og:description" content="Spazio di interfaccia tra studenti studentesse Accademia di Belle Arti ABAQ L'Aquila">
+
+        <link rel="shortcut icon" href="./img/favicon.ico?v=4" sizes="any">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="msapplication-starturl" content="/">
+
+        <link href="./img/icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+        <link href="./img/icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+        <link href="./img/icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+        <link rel="manifest" href="./img/manifest.json">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="preconnect">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="preconnect">
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" rel="preconnect"></script>
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" rel="preconnect"></script>
+        <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" rel="preconnect"></script>
+        <style>
+          .thumbnail { cursor: pointer; /* This line adds the hand pointer on hover */ }
+          .table-responsive { overflow: hidden; } .table-wrapper { overflow-x: auto; } .table-fixed-header { position: relative; } 
+          
+          .modal-body {
+            padding: 20px;
+          }
+
+          /* Contenitore immagine */
+          .image-container {
+            position: relative;
+            max-width: 100%;
+          }
+
+          /* Immagine principale */
+          .main-image {
+            max-height: 70vh;
+            width: auto;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+          }
+
+          /* Stile descrizione */
+          .description-text {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            word-break: break-word;
+          }
+
+          /* Loading centrato */
+          #loadingGif {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+          }
+
+          .dataTables_processing {
+              top: 50% !important;
+              left: 50% !important;
+              transform: translate(-50%, -50%) !important;
+              background-color: rgba(255, 255, 255, 0.9) !important;
+              border: 2px solid #333 !important;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+              padding: 40px 40px !important;
+              
+              padding-inline: 40px !important; /* sinistra/destra */
+              padding-block: 40px !important;  /* sopra/sotto */
+              line-height: 1; /* Migliora la spaziatura interna del testo */
+              border-radius: 5px !important;
+              font-size: 18px !important;
+              font-weight: bold !important;
+              white-space: nowrap; /* Impedisce la spezzatura del testo */
+              min-width: 250px; /* Larghezza minima per evitare che sia troppo stretto */
+          }
+
+          /* Ensure pagination is visible and accessible */
+          .dataTables_paginate {
+              display: flex;
+              justify-content: center;
+              padding: 1rem;
+          }
+
+          .dataTables_paginate .pagination {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+          }
+
+          .table-fixed-header thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 1;}
+
+          div.dataTables_wrapper div.dataTables_paginate {
+            margin: 2em;}
+
+        </style>
+        <!-- Matomo -->
+        <script>
+          var _paq = window._paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+          var u="//matomodocker.azurewebsites.net/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '7']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+          })();
+          </script>
+          <!-- End Matomo Code -->
+    </head>
+    <body>
+        <div class="cover-container d-flex  p-3 mx-auto flex-column">
+          <header class="masthead mb-auto">
+            <div class="inner">
+              <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+              width="60px"  viewBox="0 0 580.000000 481.000000"
+              preserveAspectRatio="xMidYMid meet">
+  
+              <g transform="translate(0.000000,481.000000) scale(0.100000,-0.100000)"
+              fill="#000000" stroke="none">
+              <path d="M2175 4799 c-729 -75 -1378 -467 -1780 -1074 -82 -124 -203 -366
+              -252 -505 -100 -282 -137 -506 -137 -815 0 -222 6 -283 46 -497 l23 -118 1396
+              0 1397 0 26 -83 c37 -117 49 -216 43 -332 -24 -405 -299 -739 -698 -847 -120
+              -32 -328 -32 -448 0 -105 29 -210 76 -301 138 -77 51 -201 176 -240 242 l-25
+              41 -368 1 -368 0 63 -76 c142 -172 345 -355 533 -479 124 -82 366 -203 505
+              -252 281 -100 505 -137 815 -137 310 0 534 37 815 137 139 49 381 170 505 252
+              265 175 514 425 690 690 94 141 214 391 269 558 l49 147 534 0 533 0 0 565 0
+              565 -1944 0 -1943 0 -27 59 c-53 119 -70 203 -70 361 0 168 18 251 84 388 51
+              106 88 161 169 246 83 86 166 145 275 197 142 66 218 82 391 82 122 0 165 -4
+              228 -21 99 -27 232 -89 310 -146 74 -52 190 -172 232 -238 l30 -48 413 0 c226
+              0 412 2 412 5 0 14 -172 214 -256 299 -190 190 -374 323 -619 447 -232 117
+              -479 196 -735 234 -127 19 -452 27 -575 14z"/>
+              </g>
+              </svg>
+              <h3 class="masthead-brand">Spazio Genesi</h3>
+              <nav class="nav nav-masthead justify-content-center">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/chisiamo.html">Chi siamo</a>
+                <a class="nav-link" href="/biografie/">Biografie</a>
+                <a class="nav-link" href="/archivio/">Archivio</a>
+              </nav>
+            </div>
+          </header>
+          <main role="main" class="mt-5">
+            <div class="container">
+              <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                width="110.000000pt" height="60.000000pt" viewBox="0 0 492.000000 224.000000"
+                preserveAspectRatio="xMidYMid meet">
+
+                <g transform="translate(0.000000,224.000000) scale(0.100000,-0.100000)"
+                fill="#000000" stroke="none">
+                <path d="M850 2120 c-102 -16 -170 -33 -170 -42 0 -5 14 -30 32 -55 l31 -46
+                36 42 36 41 110 0 c339 -1 652 -62 867 -170 166 -83 335 -216 412 -324 56 -79
+                75 -93 45 -35 -147 292 -453 489 -884 570 -122 23 -419 34 -515 19z"/>
+                <path d="M4642 1969 c-335 -171 -553 -232 -1057 -294 -358 -44 -471 -61 -617
+                -91 -361 -76 -538 -196 -538 -365 0 -121 86 -329 219 -530 83 -126 169 -225
+                184 -210 5 5 10 34 10 63 0 66 -22 110 -103 203 -114 132 -158 263 -139 414
+                10 82 33 133 81 177 116 107 255 151 767 239 465 80 615 113 819 181 182 61
+                412 183 492 260 13 13 22 23 20 23 -3 -1 -65 -32 -138 -70z"/>
+                <path d="M395 1893 c-33 -2 -64 -8 -69 -13 -5 -5 0 -31 12 -62 11 -29 29 -80
+                39 -112 25 -84 39 -82 47 6 11 120 -13 108 231 108 512 0 921 -106 1300 -337
+                44 -27 94 -57 110 -67 78 -48 -173 163 -260 219 -134 85 -290 153 -450 195
+                -206 55 -275 62 -600 65 -165 1 -327 0 -360 -2z"/>
+                <path d="M4328 1635 c-84 -46 -354 -96 -925 -171 -161 -21 -289 -42 -285 -46
+                9 -9 618 35 782 57 221 29 340 69 430 145 39 33 38 36 -2 15z"/>
+                <path d="M545 1579 c-121 -12 -241 -35 -351 -66 l-92 -25 31 -52 c73 -122 91
+                -147 109 -157 28 -15 30 -9 17 49 -15 64 -3 112 32 129 44 21 218 32 459 28
+                307 -5 541 -31 986 -110 109 -20 202 -34 207 -32 13 4 -442 131 -598 166 -287
+                65 -594 92 -800 70z"/>
+                <path d="M1968 1333 c7 -3 16 -2 19 1 4 3 -2 6 -13 5 -11 0 -14 -3 -6 -6z"/>
+                <path d="M3820 1329 c-36 -4 -168 -8 -295 -9 -253 -1 -496 -14 -620 -33 -79
+                -13 -78 -13 170 -20 348 -10 495 -9 600 4 101 12 234 44 249 59 11 11 -7 11
+                -104 -1z"/>
+                <path d="M675 1240 c-180 -15 -372 -40 -501 -66 -130 -25 -174 -38 -174 -52 0
+                -5 53 -53 117 -108 206 -174 730 -644 913 -818 41 -39 104 -99 140 -133 l65
+                -62 70 20 c334 94 878 99 1403 13 l44 -7 -44 69 c-53 82 -189 315 -318 544
+                -51 91 -140 245 -198 343 -119 200 -96 182 -267 211 -217 37 -369 48 -755 51
+                -212 2 -434 -1 -495 -5z" fill="#CD161E"/>
+                <path d="M2920 1145 c223 -44 640 -64 750 -36 30 7 66 20 80 28 14 8 17 12 8
+                9 -45 -14 -239 -17 -398 -7 -96 6 -251 13 -345 16 l-170 5 75 -15z"/>
+                <path d="M2820 1036 c41 -13 108 -35 149 -50 206 -75 425 -100 538 -62 29 10
+                55 21 58 26 2 4 -37 8 -89 8 -100 1 -122 4 -396 57 -96 18 -211 36 -255 39
+                l-80 6 75 -24z"/>
+                <path d="M2670 961 c19 -11 88 -75 153 -144 134 -143 172 -167 264 -167 73 0
+                158 39 218 100 l39 40 -29 0 c-212 1 -311 24 -449 108 -51 30 -192 83 -221 82
+                -5 -1 6 -9 25 -19z"/>
+                </g>
+              </svg>
+
+              <h4>Centro Documentazione</h4>
+              <h5>Ivan Donatelli</h5>
+              <p style="font-size:xx-small"><a href="https://www.instagram.com/cdivandonatelli/">CDID su Instagram</a><br>L'archivio è un progetto privato nato itinerante nel 2008.<br>Ora ospitato come consultazione e servizio per le associate.<br>Consta di un migliaio di testi e cataloghi, con rarità.<br>Inoltre riviste, fanzine, depliant, poster, donazioni di opere d'arte.<br>Lista in via di aggiornamento continuo.<br>Classificazione a cura di <a href="https://www.instagram.com/marracash.albani/">Mara Albani</a> e <a href="https://www.instagram.com/giuli_acreator/">Giulia Bartolomei</a><br>Le immagini grandi sono servite dal servizio Google Drive.<br>Le immagini delle copertine nella lista sono rese tramite SIRV.<br>I testi sono generati ad AI qwen/qwen1.5-1.8b-chat (potrebbero esserci imprecisioni) tramite Cloudflare.</p>
+              <h6 id="dispo"></h6>
+                  <div id="tabella_phone" class="regdiv table-responsive table-wrapper "></div>
+                  <hr>
+                  <table id="tabella_pc" class="regdiv table-responsive table-wrapper table-striped table-bordered table-condensed" style="width:100%">
+                    <thead>
+                     <tr>
+                      <th>Id</th>
+                      <th>visibile</th>
+                      <th>Autore</th>
+                      <th>Titolo</th>
+                      <th>Editore</th>
+                      <th>ISBN</th>
+                      <th>Google Books</th>
+                      <th>Copertina</th>
+                      <th>Copertina</th>
+                      <th>Estratto</th>
+                      <th>Estratto</th>
+                      <th>Estratto</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+            </div>             
+          </main>
+    
+          <footer class="mastfoot mt-auto">
+            <div class="inner">
+              <p>Spazio Genesi ETS - CF 96602450585<br>sede operativa <a href="https://maps.app.goo.gl/3JEsBLW5Xx8aE2mj9">Galleria Via Roma o da Via Vicentini</a> - L'Aquila (AQ)<br>info@spaziogenesi.org spaziogenesi@pec.it</p>
+              <p>Lo spazio è gentilmente concesso da:
+                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 1382 713" xmlns:xlink="http://www.w3.org/1999/xlink" height="40px" version="1.1" >
+                  <g id="surface1">
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 429.253906 184 L 451.253906 181 L 445.253906 221 L 341.253906 237 L 322.253906 371 L 299.253906 371 L 323.253906 217 L 426.753906 201.5 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 623.5 153.5 L 645.5 150.5 L 639.5 190.5 L 535.5 206.5 L 516.5 340.5 L 493.5 340.5 L 517.5 186.5 L 621 171 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 717 139 L 737 136 L 678 537 L 655 540 Z M 717 139 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 751 557 L 771 554 L 768 593 L 623 617 L 627 595 L 749 575 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 556 588 L 577.5 585.5 L 573 626 L 428.21875 647.5 L 432 626 L 554 607 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 360.5 619.5 L 382.140625 616.5 L 376.5 656.5 L 232.378906 679 L 234.5 656.5 L 358 639 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 394.621094 394.21875 L 414 390 L 410 432 L 310 447 L 286 601 L 265.019531 601 L 290.941406 429.5 L 392 412 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 230 218 L 253 214 L 247 253 L 142 269 L 121 409 L 98.941406 409 L 122 251 L 229 234 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 193 425 L 215 422 L 211 464 L 109.5 479.660156 L 76 706 L 32 713 L 36 689 L 55 687 L 92 460 L 192 445 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1002 92 L 1023 88 L 952 563 L 908 571 L 912 549 L 932.5 545.898438 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1084 97 L 1049.578125 102.5 L 1047 123 L 1084 116.78125 Z M 1084 97 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1213.019531 56 L 1233.179688 56 L 1229 92 L 1159.738281 102.5 L 1090.621094 540 L 1047 549 L 1051 528 L 1072 524 L 1140.089844 88 L 1210 76 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1256 282 L 1261 264 L 1229 269 L 1223 286 Z M 1256 282 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1236 446 L 1261 357.261719 L 1336 219 L 1361 215 Z M 1236 446 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1241 463.820313 L 1256.941406 463.820313 L 1248 512 L 1205 520 L 1207 503 L 1235.179688 499.820313 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 1361 31.339844 L 1382 28 L 1311 199 L 1293.179688 199 Z M 1361 31.339844 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(68.998718%,70.199585%,69.398499%);fill-opacity:1;" d="M 588 362 L 609 359 L 605 400 L 506 414 L 481 568 L 460.378906 568 L 486.78125 398 L 586 381 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 71 206 L 219 180 L 214 220 L 108 237 L 84 404 L 182 390 L 179 430 L 77 447 L 43 673 L 0 679 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 271.5 173.5 L 416.5 148.5 L 411.5 188.5 L 308.5 204.5 L 282.5 373.5 L 382.5 357.5 L 376.5 398.5 L 276.5 413.5 L 248.5 599.5 L 350.5 584.5 L 343.5 624.5 L 198.5 647.5 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 467.621094 140.398438 L 612.621094 115.398438 L 607.621094 155.398438 L 504.621094 171.398438 L 478.621094 340.398438 L 578.621094 324.398438 L 572.621094 365.398438 L 472.621094 380.398438 L 444.621094 566.398438 L 546.621094 551.398438 L 539.621094 591.398438 L 394.621094 614.398438 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 663.5 109.5 L 706.5 102.5 L 639.5 537.5 L 740.5 521.5 L 734.5 561.5 L 590.5 583.5 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 948 63 L 991 56 L 917 531 L 874 537 Z M 948 63 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 1177.738281 491.910156 L 1185.660156 442.5 L 1228 436 L 1221 486 Z M 1177.738281 491.910156 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 1208 417 L 1256.941406 246.378906 L 1194 259 L 1273 16 L 1354 0 L 1274 194.539063 L 1333 186 "/>
+                  <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 1012 92 L 1018 51 L 1202 22 L 1196 62 L 1127 72 L 1058 509 L 1016 515 L 1084 79.339844 "/>
+                  </g>
+                  </svg>
+                  
+                <a href="https://feelitshop.com/">Feel it!</a>
+              </p>
+             <p>Realizzato da <a href="https://tangram.page/">Tangram.page</a> - <a href="/sg_privacy.html">Privacy Policy</a></p> 
+            </div>
+          </footer>
+        </div>
+
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content"> <div class="modal-header">
+              <h5 class="modal-title" id="imageModalLabel">Copertina</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span >&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <img id="loadingGif" src="/img/clBlack45_50_128.gif" alt="Loading..." class="img-fluid mb-3" >
+              <img src="" id="modalImage" width="50%" class="img-fluid img-modal mb-3" alt="Copertina" >
+              <p id="modalDescription"  class="description-text  w-100  text-center"></p>
+            </div>
+          </div>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" rel="preconnect" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" rel="preconnect" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script>
+          var tabella_phone = document.getElementById('tabella_phone');
+          var tabella_pc = document.getElementById("tabella_pc");
+
+          dispo = document.getElementById("dispo");
+
+          $(document).ready(isMobile());
+
+          function isMobile() {
+              return /Mobi|Android/i.test(navigator.userAgent);
+          }
+
+          if (isMobile()) {
+              // Code for mobile devices
+              dispo.innerHTML = 'On a smartphone';
+              tabella_pc.style.display = 'visible'; //none
+              
+              //fetchData();
+              pcpaginato();
+          } else {
+              // Code for non-mobile devices
+              dispo.innerHTML = 'On PC device';
+              tabella_pc.style.display = 'visible';
+              pcpaginato();
+          }
+
+          function pcpaginato() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var page = parseInt(urlParams.get('page')) || 1;
+  var search = urlParams.get('search') || '';
+
+  console.log('Initial page:', page);
+  console.log('Initial search:', search);
+
+  // Nascondi il DataTable all'avvio
+  $('#tabella_pc').hide();
+
+  var table = $('#tabella_pc').DataTable({
+    "processing": true,
+    "serverSide": true,
+    "processing": true,
+    "ajax": async function(data, callback, settings) {
+      try {
+        var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
+        var apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+
+        var start = data.start;
+        var length = data.length;
+        var searchValue = data.search.value;
+        var orderColumn = data.order[0].column;
+        var orderDirection = data.order[0].dir;
+        var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
+
+        let response = await fetch(url);
+        let sheetData = await response.json();
+
+        var filteredData = sheetData.values.slice(1).filter(function(row) {
+          return row[1] === "TRUE" && row.some(function(cell) {
+            return cell.toString().toLowerCase().includes(searchValue.toLowerCase());
+          });
+        });
+
+        filteredData.sort(function(a, b) {
+          var aVal = a[orderColumn].toString();
+          var bVal = b[orderColumn].toString();
+
+          if (orderDirection === 'asc') {
+            return aVal.localeCompare(bVal, undefined, {numeric: true});
+          } else {
+            return bVal.localeCompare(aVal, undefined, {numeric: true});
+          }
+        });
+
+        var pageData = filteredData.slice(start, start + length).map(function(row) {
+          return row.map(function(cell) {
+            return cell;
+          });
+        });
+
+        callback({
+          draw: data.draw,
+          recordsTotal: sheetData.values.length - 1,
+          recordsFiltered: filteredData.length,
+          data: pageData
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    "language": { "url": "/Italian.json" ,
+        "processing": "<div style='font-size: 24px; color: #ff0000; font-weight: bold; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 5px;'><i class='fa fa-spinner fa-spin'></i> Elaborazione in corso...</div>"
+      },
+    "columnDefs": [
+      { "targets": 1, visible: false },
+      { "targets": 6, visible: false },
+      { "targets": 7, visible: false },
+      {
+        "targets": 8,
+        "render": function(data, type, row, meta) {
+          var thumbnailData = row[10];
+          var descrizione = escapeHtml(row[11]);
+          
+          return '<img data-toggle="modal" class="thumbnail" data-descrizione="'+descrizione+'" data-target="#imageModal" data-image="'+data+'" src="' + thumbnailData + '" alt="Image" width="50">';
+        }
+      },
+      { "targets": 9, visible: false },
+      { "targets": 10, visible: false },
+      { "targets": 11, visible: false }
+    ],
+    "pageLength": 10,
+    "lengthMenu": [5, 10, 25, 50, 100],
+    'pagingType': 'full_numbers',
+    "ordering": true,
+    "order": [[0, 'desc']],
+    "info": true,
+    "searching": true,
+    "autoWidth": true,
+    "responsive": true
+  });
+
+  // Delay setting the initial page and search parameters
+  setTimeout(function() {
+    console.log('Setting initial page and search.');
+    table.page(page - 1).draw(false);
+    table.search(search).draw(false);
+    
+    // Mostra il DataTable dopo aver impostato i parametri
+    $('#tabella_pc').show();
+  }, 1000);
+
+  // URL Update Function
+  function updateUrl(page, search) {
+    if (history.pushState) {
+      var url = new URL(window.location);
+      url.searchParams.set('page', page);
+      url.searchParams.set('search', search);
+      history.pushState(null, '', url);
+    }
+  }
+
+  // Scroll to top on pagination change
+  table.on('draw.dt', function() {
+    var pageInfo = table.page.info();
+    console.log('Draw event triggered. Page info:', pageInfo);
+    _paq.push(['trackEvent', 'DataTable', 'Page Change', 'Entrato nella pagina ' + (pageInfo.page + 1)]);
+    $('html, body').animate({
+      scrollTop: $("#tabella_pc").offset().top
+    }, 500);
+  });
+
+  // Update the URL when the page or search changes
+  table.on('page.dt search.dt', function() {
+    var info = table.page.info();
+    var searchTerm = table.search();
+    console.log('Page change event triggered. New page:', info.page + 1);
+    console.log('Search change event triggered. Search term:', searchTerm);
+    updateUrl(info.page + 1, searchTerm);
+  });
+
+  $('#tabella_pc tbody').on('click', '.thumbnail', function() {
+    var rowData = table.row($(this).closest('tr')).data();
+    var valueToTrack = rowData[0];
+    _paq.push(['trackEvent', 'Copertina', 'Click', valueToTrack]);
+  });
+}
+    
+function escapeHtml(unsafe) {
+  if (!unsafe) return '';
+  return unsafe.toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+          
+          async function fetchData() {
+    const sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
+    const apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const headers = data.values[0]; // Get header row
+        const values = data.values.slice(1); // Skip header row
+
+        // Apply default order - Example: Sort by the first column (index 0)
+        const defaultOrderColumn = 0;
+        const defaultOrderDirection = 'desc'; // or 'desc' for descending
+
+        values.sort((a, b) => {
+            const aVal = parseFloat(a[defaultOrderColumn]);
+            const bVal = parseFloat(b[defaultOrderColumn]);
+
+            if (defaultOrderDirection === 'asc') {
+                return aVal - bVal;
+            } else {
+                return bVal - aVal;
+            }
+        });
+
+        displayData(headers,values);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+         
+          function displayData(headers, values) {
+              const columnsToHide = [1,6,7,8,9];
+              const table = document.createElement('table');
+              table.classList.add("table");
+              //table.classList.add("table-sm");
+              table.classList.add("table-striped");
+              table.classList.add("table-bordered");
+              table.classList.add("table-fixed-header");
+              // Create the table head and the table body
+              const thead = document.createElement('thead');
+              const tbody = document.createElement('tbody');
+              // Create the header row
+              const headerRow = document.createElement('tr');
+              headers.forEach((headerText,index) => { 
+                if (!columnsToHide.includes(index)) {
+                  const th = document.createElement('th');
+                  th.textContent = headerText;
+                  headerRow.appendChild(th);                  
+                }
+              });
+              thead.appendChild(headerRow);
+              table.appendChild(thead);
+              // Create the body rows
+              values.forEach(rowData => {
+                const tr = document.createElement('tr');
+                rowData.forEach((cellData, index) => {
+                  if (!columnsToHide.includes(index)) {
+                    const td = document.createElement('td');
+                    if (cellData.startsWith("http")){
+                      td.innerHTML = '<img data-toggle="modal" class="thumbnail" data-description="copertina" data-target="#imageModal" data-image="'+cellData+'"" width="100px" src="'+cellData+'">';
+                    } else {
+                      td.textContent = cellData;
+                    }
+                    
+                    tr.appendChild(td);
+                  }
+                });
+                tbody.appendChild(tr);
+              });
+              table.appendChild(tbody);
+
+              tabella_phone.appendChild(table);
+            }
+        
+          
+          
+            $(document).ready(function() {
+              $('#imageModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var imageSrc = button.data('image'); // Extract info from data-* attributes
+                var descrizione = button.data('descrizione');
+                var modal = $(this);
+                var modalImage = modal.find('#modalImage');
+                var loadingGif = modal.find('#loadingGif');
+                modal.find('#modalDescription').text(descrizione); // Set the description text
+
+                // Show the loading GIF
+                loadingGif.show();
+                // Hide the final image initially
+                modalImage.hide();
+
+                // Set the image source and handle the load event
+                modalImage.on('load', function() {
+                  // Hide the loading GIF
+                  loadingGif.hide();
+                  // Show the final image
+                  $(this).show();
+                }).attr('src', imageSrc);
+              });
+            });
+
+        
+          </script>
+        
+
+
+      </body>
+</html>
