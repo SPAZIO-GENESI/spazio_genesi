@@ -1,6 +1,5 @@
 name: Deploy GitHub Pages
 
-# Trigger su push ai branch main e dutyfree
 on:
   push:
     branches:
@@ -12,45 +11,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout del branch corrente
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Installare Node se serve (esempio per build JS/React/Vite)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # 3. Build del progetto (modifica secondo il tuo progetto)
-      - name: Build
+      - name: Build project
         run: |
           if [ -f package.json ]; then
             npm install
             npm run build
           fi
 
-      # 4. Impostare la cartella da deployare in base al branch
-      - name: Set folder
+      - name: Set deploy folder and hostname
         id: set-folder
         run: |
           BRANCH=${GITHUB_REF#refs/heads/}
+          echo "Current branch: $BRANCH"
           if [ "$BRANCH" = "main" ]; then
-            echo "folder=main" >> $GITHUB_OUTPUT
+            echo "folder=build" >> $GITHUB_OUTPUT
             echo "hostname=www.miosito.com" >> $GITHUB_OUTPUT
           elif [ "$BRANCH" = "dutyfree" ]; then
-            echo "folder=dutyfree" >> $GITHUB_OUTPUT
+            echo "folder=build" >> $GITHUB_OUTPUT
             echo "hostname=dutyfree.miosito.com" >> $GITHUB_OUTPUT
           else
-            echo "folder=unknown" >> $GITHUB_OUTPUT
+            echo "folder=build" >> $GITHUB_OUTPUT
             echo "hostname=unknown" >> $GITHUB_OUTPUT
           fi
 
-      # 5. Deploy su GitHub Pages usando peaceiris/actions-gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_dir: ${{ steps.set-folder.outputs.folder }}
-          # Se vuoi usare un custom domain:
-          # cname: ${{ steps.set-folder.outputs.hostname }}
+          cname: ${{ steps.set-folder.outputs.hostname }}
