@@ -342,14 +342,15 @@
     "ajax": async function(data, callback, settings) {
       try {
         var sheetId = '1Ef7n23TnmRFfpdzp4D24v0kKDrBxGQnhUPI6CNOASU4';
-        var apiKey = 'AIzaSyCMXIpwnasucNpyuY_Z5v4cCUuGBEiiZJ0';
+        
+        // GOOGLE_API_KEY_A3SD21
 
         var start = data.start;
         var length = data.length;
         var searchValue = data.search.value;
         var orderColumn = data.order[0].column;
         var orderDirection = data.order[0].dir;
-        var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}`;
+        var url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Disponibili?key=${apiKey}&f=A3SD21`;
 
         let response = await fetch(url);
         let sheetData = await response.json();

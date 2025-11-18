@@ -347,7 +347,7 @@
         var searchValue = data.search.value;
         var orderColumn = data.order[0].column;
         var orderDirection = data.order[0].dir;
-        var url = `https://cfg_googledata.it-e3f.workers.dev/?sheet=${sheetId}`;
+        var url = `https://cfg_googledata.it-e3f.workers.dev/?sheet=${sheetId}&f=A3SD21`;
 
         let response = await fetch(url);
         let sheetData = await response.json();
