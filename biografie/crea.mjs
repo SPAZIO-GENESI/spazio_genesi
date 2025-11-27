@@ -131,14 +131,14 @@ function renderImage(image, numimg, artist) {
     if (image.img){
         imgElement.src = "./"+artist.cartella+"/"+image.img;
         // imgElement.style.width = "100px";
-        imgElement.className="img-fluid ";
+        imgElement.className="img-fluid w-100 ";
         imgElement.alt = image.des;
         //console.log(imgElement);
         //console.log("img"+numimg);
         document.getElementById('img'+numimg).appendChild(imgElement);
 
         const di = document.createElement('p');
-        di.className = "regdiv";
+        di.className = "regdiv text-justify mt-2 w-100";
         di.innerHTML = image.deslunga;
         
         document.getElementById('img'+numimg).appendChild(di);
