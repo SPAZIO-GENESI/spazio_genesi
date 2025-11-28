@@ -1,0 +1,35 @@
+# .github/workflows/ricostruisci.yml
+name: Ricostruisci artista
+
+on:
+  workflow_dispatch:
+    inputs:
+      artista:
+        description: "ID artista da ricostruire"
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo principale
+        uses: actions/checkout@v3
+
+      - name: Genera pagina con Worker
+        run: |
+          curl -s "https://sgcreaartistastatic.it-e3f.workers.dev/?artista=${{ github.event.inputs.artista }}" > index.html
+
+      - name: Aggiorna repo artista
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          ARTISTA=${{ github.event.inputs.artista }}
+          git clone https://x-access-token:${GH_TOKEN}@github.com/SPAZIO-GENESI/$ARTISTA.git
+          cd $ARTISTA
+          mv ../index.html ./index.html
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add index.html
+          git commit -m "Update pagina artista $ARTISTA" || true
+          git push
