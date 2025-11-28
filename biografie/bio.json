@@ -211,6 +211,19 @@
                 "4":[{"img":"VincenzoDamianoCristallo_Oggetti della memoria_oliosutela_cm80x120_2023.jpg","des":"","deslunga":"Vincenzo Damiano Cristallo, Oggetti della memoria, olio su tela, cm80x120, 2023"}],
                 "5":[{"img":"VincenzoDamianoCristallo_Naturamorta_oliosutela_cm100x100_2024.jpg","des":"","deslunga":"Vincenzo Damiano Cristallo Natura morta, olio su tela, cm100x100, 2024"}]
                 }]            
+        },
+        {
+            "cartella":"milenasofkovaignatova",
+            "nome": "Milena Sofkova Ignatova",
+            "IG": "millyyy19",
+            "social": "",
+            "portfolio": "",
+            "bio": "É un'artista visiva il cui percorso si sviluppa tra pittura, installazioni interattive e videoarte. Riflette su temi intimi e esistenziali, rapporti umani e identitari degli individui della società odierna.",
+            "img": [ {
+                "1":[{"img":"milena_sofkova_ignatov_Darkly_Art_Magazine.jpg","des":"","deslunga":"Darkly Art Magazine Paris (France) “Adamo & Eva” pubblicazione di 15 foto e copertina del n. di Settembre 2025"}],
+                "2":[{"img":"milena_sofkova_ignatova_Le_Desir_Élite_Publication_Magazine.jpg","des":"","deslunga":"Le Desir Élite Publication Magazine, Athens (Greese) “RIFLESSI” pubblicazione di 7 foto e copertina del n. di Febbraio 2025"}],
+                "3":[{"img":"milena_sofkova_ignatova_Stories_Untold_Magazine_Los_Angeles_red_passion.jpg","des":"","deslunga":"Stories Untold Magazine Los Angeles Red passion, pubblicazione di 7 foto copertina nel n. di Febbraio 2025"}]
+                }]            
         }
     ]
 }
