@@ -2,73 +2,66 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Genera pagina artista</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ricostruisci pagina artista</title>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 2rem; }
-    label { display: block; margin-bottom: 0.5rem; }
+    body { font-family: sans-serif; margin: 2rem; }
     select, button { padding: 0.5rem; font-size: 1rem; }
-    .row { display: flex; gap: 1rem; align-items: center; }
-    .status { margin-top: 1rem; color: #555; }
   </style>
 </head>
 <body>
-  <h1>Genera pagina artista</h1>
+  <h1>Ricostruisci pagina artista</h1>
 
-  <form id="gen-form" method="GET" action="https://sgcreaartistastatic.it-e3f.workers.dev/">
-    <div class="row">
-      <div>
-        <label for="artista">Seleziona artista</label>
-        <select id="artista" name="artista" required>
-          <option value="" disabled selected>Caricamento lista…</option>
-        </select>
-      </div>
-      <div>
-        <button type="submit">Genera</button>
-      </div>
-    </div>
-  </form>
+  <label for="artista">Seleziona artista:</label>
+  <select id="artista"></select>
+  <button id="run">Ricostruisci</button>
 
-  <p class="status" id="status">Fonte: https://spaziogenesi.org/biografie/static/artisti.json</p>
+  <p id="status"></p>
 
   <script>
-    (async function loadArtisti() {
-      const statusEl = document.getElementById('status');
-      const selectEl = document.getElementById('artista');
+    const selectEl = document.getElementById('artista');
+    const statusEl = document.getElementById('status');
 
-      try {
-        const res = await fetch('./artisti.json', { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-
-        // Svuota e popola il select con id=chiave, label=nome (fallback su id)
+    // Carica lista artisti
+    fetch('https://spaziogenesi.org/biografie/static/artisti.json')
+      .then(r => r.json())
+      .then(data => {
         selectEl.innerHTML = '';
-        const ids = Object.keys(data).sort((a, b) => {
-          const an = (data[a]?.nome || a).toLowerCase();
-          const bn = (data[b]?.nome || b).toLowerCase();
-          return an.localeCompare(bn, 'it');
-        });
-
-        for (const id of ids) {
-          const nome = data[id]?.nome || id;
+        Object.keys(data).forEach(id => {
           const opt = document.createElement('option');
           opt.value = id;
-          opt.textContent = nome;
+          opt.textContent = data[id].nome || id;
           selectEl.appendChild(opt);
-        }
+        });
+      });
 
-        statusEl.textContent = `Caricati ${ids.length} artisti.`;
-        // Preseleziona l’artista dall’URL se presente (?artista=...)
-        const url = new URL(window.location.href);
-        const pre = url.searchParams.get('artista');
-        if (pre && ids.includes(pre)) {
-          selectEl.value = pre;
-        }
-      } catch (err) {
-        selectEl.innerHTML = '<option value="" disabled selected>Errore nel caricamento</option>';
-        statusEl.textContent = 'Errore nel caricamento della lista: ' + err.message;
+    document.getElementById('run').addEventListener('click', async () => {
+      const artista = selectEl.value;
+      statusEl.textContent = "Lancio workflow per " + artista + "...";
+
+      // API GitHub Actions: workflow_dispatch
+      const owner = "SPAZIO-GENESI";
+      const repo = "spazio_genesi"; // <-- sostituisci con il nome del repo principale
+      const workflow_id = "ricostruisci_artista.yml"; // nome file workflow
+      const token = "PAT_TOKEN"; // meglio salvarlo come secret e iniettare
+
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, {
+        method: "POST",
+        headers: {
+          "Authorization": `token ${token}`,
+          "Accept": "application/vnd.github+json"
+        },
+        body: JSON.stringify({
+          ref: "main", // branch su cui gira la Action
+          inputs: { artista }
+        })
+      });
+
+      if (res.ok) {
+        statusEl.textContent = "Workflow avviato per " + artista;
+      } else {
+        statusEl.textContent = "Errore: " + res.status;
       }
-    })();
+    });
   </script>
 </body>
 </html>
