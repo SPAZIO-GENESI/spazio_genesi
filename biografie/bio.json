@@ -196,6 +196,20 @@
                 "8":[{"img":"lisa_rastelli_emano1.jpg","des":"","deslunga":""}],
                 "9":[{"img":"lisa_rastelli_emano2.jpg","des":"","deslunga":"EMano realizzato con Satya Forte, Gaia Liberatore, Susanna Sforza, videoarte: 7’28’’, 2022 <a href='https://youtu.be/pkrM26_yKNI?si=9_Yxo5L0w5X5ertW'>Video YouTube</a> , 2022"}]
                 }]            
+        },
+        {
+            "cartella":"vincenzodamianocristallo",
+            "nome": "Vincenzo Damiano Cristallo",
+            "IG": "vincenzodamianocristallo",
+            "social": "",
+            "portfolio": "",
+            "bio": "Laureato in Scienze Politiche, dopo aver concluso il percorso lavorativo in Banca, nel 2024 ha conseguito il Diploma di I livello in Pittura presso l’Accademia di Belle Arti dell’Aquila.<br>Dopo una prima fase improntata a una cifra più figurativa, ha orientato la ricerca verso una sintesi tra figurazione ed astrazione.<br>Una rappresentazione non del tutto astratta ma che richiama il riferimento figurativo di partenza per trasformarlo in una visione dissolta in macchie di colore geometriche e libere allo stesso tempo che si ricompongono a livello “retinico”.<br>Un processo che Deleuze definisce come un passaggio dal “figurativo al figurale”: non una mera rappresentazione della realtà ma una visione filtrata e alterata dell’oggetto. La pittura strappa in tal modo la ‘figura-oggetto’ al figurativo dissolvendosi in una rappresentazione astratta sebbene ancora riconoscibile.<br>Tale processo viene evidenziato in un lavoro che costituisce l’incipit della ricerca. Il lavoro rappresenta la dissoluzione dell’immagine della piazza Pio II di Pienza. <br>Paradigma degli stilemi rinascimentali della città ideale, la piazza, pensata secondo i criteri della perfezione e delle proporzionalità, viene ‘’decostruita’’ in un linguaggio di astrazione. <br>Riprodotta tridimensionalmente in una maquette e successivamente dipinta in una visione zenitale che, in quattro riquadri accostati nello stesso perimetro pittorico, si dissolve gradualmente in una rappresentazione astratta sebbene ancora riconoscibile.<br>La resa pittorica è realizzata con la pittura ad olio diluita e per campiture poco omogenee. Tale scelta è dettata dall’esigenza di trasformare il tratto grafico in segno pittorico e il riferimento figurativo in una nuova lettura del reale che mi piace definire Realismo Visionario.",
+            "img": [ {
+                "1":[{"img":"VincenzoDamianoCristallo_RiflessoalTramonto_oliosutela_cm70x100_2022.jpg","des":"","deslunga":"Vincenzo Damiano Cristallo, Riflesso al Tramonto, olio su tela, cm70x100, 2022"}],
+                "2":[{"img":"VincenzoDamianoCristallo_PiazzaPioIIPienza_modellinoincartonlegno_cm 30x33_2023.jpg","des":"","deslunga":"Vincenzo Damiano Cristallo, Piazza Pio II Pienza, modellino in cartonlegno, cm 30x33, 2023"}],
+                "3":[{"img":"VincenzoDamianoCristallo_Oggetti della memoria_oliosutela_cm80x120_2023.jpg","des":"","deslunga":"Vincenzo Damiano Cristallo, Oggetti della memoria, olio su tela, cm80x120, 2023"}],
+                "4":[{"img":"VincenzoDamianoCristallo_Naturamorta_oliosutela_cm100x100_2024.jpg","des":"","deslunga":"Vincenz Damiano Cristallo Natura morta, olio su tela, cm100x100, 2024"}]
+                }]            
         }
     ]
 }
