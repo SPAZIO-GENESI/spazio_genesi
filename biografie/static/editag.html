@@ -41,11 +41,11 @@ button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b
 </div>
 
 <script>
-const WORKER_URL = 'https://artistajson.it-e3f.workers.dev';
+const WORKER_URL = 'https://artistajson.it-e3f.workers.dev/'; // cambia con il tuo worker
 let currentArtist = null;
 let userEmail = null;
 
-// --- Google OAuth callback ---
+// --- Google OAuth ---
 function handleCredentialResponse(response) {
   const jwt = parseJwt(response.credential);
   userEmail = jwt.email;
@@ -58,16 +58,17 @@ function parseJwt(token) {
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Carica solo i dati dell'artista loggato dal Worker ---
-async function loadArtistFromWorker(email) {
+// --- Carica solo il record dell'artista ---
+async function loadArtistFromWorker(email){
   try {
     const resp = await fetch(`${WORKER_URL}?email=${encodeURIComponent(email)}`);
-    if(!resp.ok) throw new Error('Errore caricamento dati: ' + resp.status);
-    currentArtist = await resp.json();
+    const json = await resp.json();
+    if (!resp.ok) throw new Error(json.error || 'Errore caricamento artista');
+    currentArtist = json;
     loadArtist(currentArtist);
-    document.getElementById('editor').style.display = 'block';
-  } catch(e) {
-    alert('Errore: ' + e.message);
+    document.getElementById('editor').style.display='block';
+  } catch(e){
+    alert('Errore caricamento artista: '+e.message);
   }
 }
 
@@ -82,6 +83,7 @@ function loadArtist(artist){
 }
 
 function applyChanges(){
+  if(!currentArtist) return;
   currentArtist.cartella = document.getElementById('field_cartella').value;
   currentArtist.nome = document.getElementById('field_nome').value;
   currentArtist.IG = document.getElementById('field_ig').value;
@@ -92,21 +94,24 @@ function applyChanges(){
 }
 
 function updatePreview(){
-  document.getElementById('jsonPreview').textContent = JSON.stringify({artisti:[currentArtist]}, null,2);
+  document.getElementById('jsonPreview').textContent = JSON.stringify(currentArtist, null,2);
 }
 
+// --- Salvataggio ---
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
     const resp = await fetch(WORKER_URL, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ userEmail, data:{artisti:[currentArtist]} })
+      body: JSON.stringify({ userEmail, data: { artisti:[currentArtist] } })
     });
-    const result = await resp.json();
-    if(result.error) throw new Error(result.error);
+    const json = await resp.json();
+    if (!resp.ok) throw new Error(json.error || 'Errore salvataggio');
     alert('Salvataggio completato!');
-  }catch(e){alert('Errore: '+e.message)}
+  }catch(e){
+    alert('Errore salvataggio: '+e.message);
+  }
 });
 </script>
 </body>
