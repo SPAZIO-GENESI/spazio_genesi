@@ -12,13 +12,11 @@ label {display:block;margin-top:8px;font-size:13px;}
 input,textarea {width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4;}
 textarea {min-height:120px;}
 button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer;}
-
-.img-card {display:flex; flex-wrap:wrap; gap:16px; max-height:500px; overflow-y:auto;}
-.img-card div {flex:1 0 300px; display:flex; flex-direction:column; align-items:center; border:1px solid #ccc; padding:8px; border-radius:6px; background:#fefefe;}
-.img-card img {width:100%; max-width:280px; border-radius:6px; margin-bottom:4px;}
-.img-card textarea {width:100%; min-height:80px; resize: vertical; margin-top:4px; font-size:12px; padding:4px; border-radius:4px; border:1px solid #ccc;}
-
-
+.img-card {display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
+.img-card div {position:relative;width:200px;text-align:center;display:flex;flex-direction:column;}
+.img-card img {width:100%;border-radius:6px;border:1px solid #ccc;margin-bottom:4px;}
+.img-card input {width:100%;margin-bottom:4px;font-size:12px;}
+.upload-container {margin-top:12px;border:1px dashed #aaa;padding:12px;border-radius:8px;}
 </style>
 </head>
 <body>
@@ -39,19 +37,14 @@ button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2
 <label>Portfolio <input id="field_portfolio" type="text"></label>
 <label>Bio <textarea id="field_bio"></textarea></label>
 
-<h4>Immagini</h4>
+<h4>Immagini esistenti</h4>
 <div class="img-card" id="imagesContainer"></div>
-<h4>Carica nuova immagine</h4>
-<div class="card">
-  <form id="uploadForm">
-    <label>Seleziona file
-      <input type="file" name="file" accept="image/*" required>
-    </label>
-    <label>Descrizione lunga (deslunga)
-      <textarea name="deslunga" placeholder="Inserisci la descrizione lunga"></textarea>
-    </label>
-    <button type="submit">Carica immagine</button>
-  </form>
+
+<h4>Aggiungi nuova immagine</h4>
+<div class="upload-container">
+  <label>Seleziona file <input type="file" id="newImageFile"></label>
+  <label>Descrizione (deslunga) <input type="text" id="newImageDeslunga"></label>
+  <button id="uploadImageBtn">Carica immagine</button>
 </div>
 
 <div style="margin-top:12px">
@@ -81,14 +74,14 @@ function parseJwt(token) {
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Caricamento singolo artista dal Worker ---
+// --- Caricamento artista dal Worker ---
 async function loadArtistFromWorker(email) {
   try {
     const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(email)}`);
     if (!resp.ok) throw new Error('Errore caricamento artista');
     currentArtist = await resp.json();
     if (!currentArtist) throw new Error('Artista non trovato');
-    data.artisti = [currentArtist]; // solo record utente
+    data.artisti = [currentArtist]; 
     document.getElementById('editor').style.display='block';
     loadFields();
     renderImages();
@@ -119,54 +112,50 @@ function applyChanges(){
   data.artisti[0] = currentArtist;
 }
 
-// --- Flatten immagini ---
-function getAllImages(artist){
-  const imgs = [];
-  if(!artist.img || artist.img.length===0) return imgs;
-  const keys = Object.keys(artist.img[0]).sort((a,b)=>Number(a)-Number(b));
-  keys.forEach(key=>{
-    artist.img[0][key].forEach(imObj=>{
-      imgs.push(imObj);
-    });
-  });
-  return imgs;
-}
-
 // --- Rendering immagini ---
 function renderImages(){
   const container = document.getElementById('imagesContainer');
   container.innerHTML='';
-  const imgs = getAllImages(currentArtist).slice(0,maxImages);
-  imgs.forEach((im,i)=>{
+  if(!currentArtist.img) currentArtist.img=[];
+  currentArtist.img.slice(0,maxImages).forEach((im,i)=>{
+    // se la struttura JSON è con chiavi numeriche
+    const imgObj = Object.values(im)[0][0]; // estrae {img, des, deslunga}
+
     const div = document.createElement('div');
     const imgElem = document.createElement('img');
-    imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.img}`;
+    imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${imgObj.img}`;
+
     const descInput = document.createElement('input');
     descInput.type='text';
     descInput.placeholder='deslunga';
-    descInput.value = im.deslunga || '';
+    descInput.value = imgObj.deslunga || '';
     descInput.addEventListener('input', ()=>{
-      im.deslunga = descInput.value;
+      imgObj.deslunga = descInput.value;
       updatePreview();
     });
+
     div.appendChild(imgElem);
     div.appendChild(descInput);
     container.appendChild(div);
   });
 }
 
-// --- Aggiungi nuova immagine ---
-document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const file = form.file.files[0];
-  const deslunga = form.deslunga.value.trim();
-  if (!file) return alert('Seleziona un file');
+// --- Upload nuova immagine ---
+document.getElementById('uploadImageBtn').addEventListener('click', async ()=>{
+  const fileInput = document.getElementById('newImageFile');
+  const deslInput = document.getElementById('newImageDeslunga');
+  const file = fileInput.files[0];
+  const desl = deslInput.value.trim();
+  const cartella = currentArtist.cartella;
+
+  if(!file || !desl || !cartella) return alert('Compila tutti i campi per l\'upload');
+
+  if(currentArtist.img.length >= maxImages) return alert('Numero massimo immagini raggiunto');
 
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('deslunga', deslunga);
-  formData.append('cartella', currentArtist.cartella);
+  formData.append('deslunga', desl);
+  formData.append('cartella', cartella);
   formData.append('userEmail', userEmail);
 
   try {
@@ -175,20 +164,20 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       body: formData
     });
     const result = await resp.json();
-    if (result.error) throw new Error(result.error);
+    if(result.error) throw new Error(result.error);
 
-    // Aggiorna l'artista in locale
-    if (!currentArtist.img) currentArtist.img = [];
-    currentArtist.img.push({ nome: file.name, deslunga });
+    // aggiungi al JSON locale
+    const newImgObj = { [currentArtist.img.length + 1]: [{img: file.name, des: '', deslunga: desl}] };
+    currentArtist.img.push(newImgObj);
+
+    fileInput.value=''; deslInput.value='';
     renderImages();
     updatePreview();
-    form.reset();
-    alert('Immagine caricata correttamente!');
-  } catch (err) {
-    alert('Errore upload: ' + err.message);
+    alert('Immagine caricata con successo!');
+  } catch(e) {
+    alert('Errore upload: ' + e.message);
   }
 });
-
 
 // --- Anteprima JSON ---
 function updatePreview(){
