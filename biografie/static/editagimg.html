@@ -105,25 +105,34 @@ function applyChanges(){
   data.artisti[0] = currentArtist;
 }
 
+// --- Flatten immagini ---
+function getAllImages(artist){
+  const imgs = [];
+  if(!artist.img || artist.img.length===0) return imgs;
+  const keys = Object.keys(artist.img[0]).sort((a,b)=>Number(a)-Number(b));
+  keys.forEach(key=>{
+    artist.img[0][key].forEach(imObj=>{
+      imgs.push(imObj);
+    });
+  });
+  return imgs;
+}
+
 // --- Rendering immagini ---
 function renderImages(){
   const container = document.getElementById('imagesContainer');
-  container.innerHTML = '';
-  if(!currentArtist.img) currentArtist.img = [];
-  const folder = currentArtist.cartella || '';
-  currentArtist.img.slice(0, maxImages).forEach((im, i)=>{
-    if(!im.nome) return; // salta immagini senza nome
+  container.innerHTML='';
+  const imgs = getAllImages(currentArtist).slice(0,maxImages);
+  imgs.forEach((im,i)=>{
     const div = document.createElement('div');
     const imgElem = document.createElement('img');
-    // Usa URL corretto con escape per sicurezza
-    imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${encodeURIComponent(folder)}/${encodeURIComponent(im.nome)}`;
-    imgElem.alt = im.deslunga || '';
+    imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.img}`;
     const descInput = document.createElement('input');
-    descInput.type = 'text';
-    descInput.placeholder = 'deslunga';
+    descInput.type='text';
+    descInput.placeholder='deslunga';
     descInput.value = im.deslunga || '';
     descInput.addEventListener('input', ()=>{
-      currentArtist.img[i].deslunga = descInput.value;
+      im.deslunga = descInput.value;
       updatePreview();
     });
     div.appendChild(imgElem);
@@ -132,14 +141,16 @@ function renderImages(){
   });
 }
 
-
 // --- Aggiungi nuova immagine ---
 document.getElementById('addImageBtn').addEventListener('click', ()=>{
-  if(currentArtist.img.length >= maxImages) return alert('Numero massimo immagini raggiunto');
+  const imgs = getAllImages(currentArtist);
+  if(imgs.length >= maxImages) return alert('Numero massimo immagini raggiunto');
   const newImgName = prompt('Nome file immagine (con estensione):');
   if(!newImgName) return;
   const desl = prompt('Descrizione (deslunga) della nuova immagine:') || '';
-  currentArtist.img.push({nome:newImgName, deslunga:desl});
+  // Inserimento in chiave "nuovo" o "10" come esempio
+  if(!currentArtist.img[0]["10"]) currentArtist.img[0]["10"] = [];
+  currentArtist.img[0]["10"].push({ img: newImgName, deslunga: desl });
   renderImages();
   updatePreview();
 });
@@ -153,7 +164,7 @@ function updatePreview(){
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/', {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/update', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ userEmail, data })
