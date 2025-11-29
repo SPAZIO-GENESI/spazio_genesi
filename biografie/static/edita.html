@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Editor JSON Artisti — Static</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;color:#111}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    main{display:grid;grid-template-columns:320px 1fr;gap:12px}
+    .card{background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px}
+    label{display:block;margin-top:8px;font-size:13px}
+    input[type=text], textarea, select{width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4}
+    textarea{min-height:120px}
+    .small{font-size:12px;color:#555}
+    button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer}
+    button.ghost{background:#eee;color:#111}
+    .row{display:flex;gap:8px}
+    .images-list{max-height:200px;overflow:auto;border:1px dashed #ddd;padding:6px;border-radius:6px}
+    pre{background:#0f1720;color:#d6f8ff;padding:12px;border-radius:6px;overflow:auto}
+    .danger{background:#c53030}
+    .muted{color:#666;font-size:13px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Editor statico JSON — Artisti</h2>
+    <div class="muted">Carica un file JSON pubblico o usa URL raw GitHub. Salva localmente o (opzionale) committa via GitHub API inserendo un token personale.</div>
+  </header>
+  <main>
+    <aside class="card">
+      <label>URL JSON (raw)</label>
+      <input id="jsonUrl" placeholder="https://raw.githubusercontent.com/SPAZIO-GENESI/spazio_genesi/refs/heads/main/biografie/bio.json">
+      <div class="row">
+        <button id="loadBtn">Carica</button>
+        <button id="resetBtn" class="ghost">Carica esempio</button>
+      </div>
+      <hr>
+      <label>Seleziona artista</label>
+      <select id="artistSelect"></select>
+      <div class="row">
+        <button id="newArtist">Nuovo artista</button>
+        <button id="deleteArtist" class="ghost">Elimina</button>
+      </div>
+      <hr>
+      <label>GitHub - push opzionale</label>
+      <div class="small muted">Per committare direttamente inserire owner, repo, path, branch e token (PAT con scope repo).</div>
+      <label>Owner</label><input id="ghOwner" placeholder="owner">
+      <label>Repo</label><input id="ghRepo" placeholder="repo">
+      <label>Path nel repo</label><input id="ghPath" placeholder="cartella/bio.json">
+      <label>Branch</label><input id="ghBranch" placeholder="main">
+      <label>Token</label><input id="ghToken" placeholder="ghp_..." type="text">
+      <div class="actions">
+        <button id="downloadBtn">Scarica JSON</button>
+        <button id="saveGitHub">Salva su GitHub (opzionale)</button>
+      </div>
+      <hr>
+      <div class="small muted">Nota: il salvataggio su GitHub è opzionale; se non fornisci token puoi comunque scaricare il file e sostituirlo manualmente nel repo pubblico via interfaccia GitHub.</div>
+    </aside>
+
+    <section class="card">
+      <form id="editorForm">
+        <h3>Dettagli artista</h3>
+        <label>cartella <input id="field_cartella" type="text"></label>
+        <label>nome <input id="field_nome" type="text"></label>
+        <label>IG <input id="field_ig" type="text"></label>
+        <label>social <input id="field_social" type="text"></label>
+        <label>portfolio <input id="field_portfolio" type="text"></label>
+        <label>bio <textarea id="field_bio"></textarea></label>
+
+        <h4>Immagini (struttura semplificata)</h4>
+        <div class="images-list" id="imagesList"></div>
+        <div style="margin-top:8px">
+          <button id="addImage" type="button">Aggiungi immagine</button>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <button id="applyBtn" type="button">Applica modifiche</button>
+          <button id="showJson" type="button" class="ghost">Mostra JSON</button>
+        </div>
+
+        <hr>
+        <h4>Anteprima JSON</h4>
+        <pre id="jsonPreview">{ }
+        </pre>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // Esempio minimo coerente con input utente
+    const example = {
+      "artisti": [
+        {
+          "cartella":"nevoanarua",
+          "nome":"N%C3%A9voa Na Rua",
+          "IG":"nevoanarua",
+          "social":"https://www.linkedin.com/in/massimocamplone/",
+          "portfolio":"Névoa-na-rua_portfolio2024.pdf",
+          "bio":"Classe 1964...",
+          "img":[{"1":[{"img":"nevoanarua_ramo_isole.jpg","des":"Isole..."}]}]
+        }
+      ]
+    };
+
+    let data = null;
+    const jsonUrlEl = document.getElementById('jsonUrl');
+    const loadBtn = document.getElementById('loadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const artistSelect = document.getElementById('artistSelect');
+    const fieldIds = {
+      cartella: 'field_cartella', nome: 'field_nome', ig: 'field_ig', social: 'field_social', portfolio: 'field_portfolio', bio: 'field_bio'
+    };
+
+    function el(id){return document.getElementById(id)}
+
+    function loadExample(){ data = structuredClone(example); renderArtistList(); updatePreview(); }
+
+    async function loadFromUrl(){
+      const url = jsonUrlEl.value.trim();
+      if(!url){alert('Inserisci URL raw');return}
+      try{
+        const r = await fetch(url);
+        if(!r.ok) throw new Error(r.status+' '+r.statusText);
+        data = await r.json();
+        renderArtistList(); updatePreview();
+        alert('JSON caricato');
+      }catch(e){alert('Errore caricamento: '+e.message)}
+    }
+
+    function renderArtistList(){
+      artistSelect.innerHTML='';
+      const arr = Array.isArray(data?.artisti) ? data.artisti : [];
+      arr.forEach((a,i)=>{
+        const opt = document.createElement('option');
+        opt.value = i; opt.textContent = (a.nome||a.cartella||('artista '+i));
+        artistSelect.appendChild(opt);
+      });
+      if(arr.length) { artistSelect.selectedIndex = 0; loadArtist(0); }
+      else clearForm();
+    }
+
+    function clearForm(){ for(const k in fieldIds) el(fieldIds[k]).value=''; el('imagesList').innerHTML=''; }
+
+    function loadArtist(index){
+      const a = data.artisti[index];
+      if(!a) return clearForm();
+      el('field_cartella').value = a.cartella || '';
+      el('field_nome').value = a.nome || '';
+      el('field_ig').value = a.IG || '';
+      el('field_social').value = a.social || '';
+      el('field_portfolio').value = a.portfolio || '';
+      el('field_bio').value = a.bio || '';
+      renderImages(a.img || []);
+    }
+
+    function renderImages(imgArray){
+      const container = el('imagesList'); container.innerHTML='';
+      imgArray.forEach((group,gi)=>{
+        const wrapper = document.createElement('div'); wrapper.style.borderBottom='1px solid #eee'; wrapper.style.padding='6px 0';
+        wrapper.dataset.index = gi;
+        wrapper.innerHTML = '<div class="muted small">Gruppo '+gi+'</div>';
+        // group is expected to be object like {"1":[{...}]}
+        try{
+          for(const key in group){
+            const items = group[key];
+            items.forEach((it,iit)=>{
+              const row = document.createElement('div');
+              row.innerHTML = `<label>img <input data-path="${gi}|${key}|${iit}" value="${it.img||''}"></label>
+                <label>des <input data-path="${gi}|${key}|${iit}|des" value="${escapeHtml(it.des||'')}"></label>
+                <div><button type=button class=ghost data-remove="${gi}|${key}|${iit}">Rimuovi</button></div>`;
+              wrapper.appendChild(row);
+            })
+          }
+        }catch(e){console.warn(e)}
+        container.appendChild(wrapper);
+      })
+      // attach remove handlers
+      container.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',ev=>{
+        const [g,k,i] = btn.dataset.remove.split('|');
+        const giN = Number(g), iN = Number(i);
+        // remove item
+        const groupObj = data.artisti[artistSelect.value].img[giN];
+        const key = Object.keys(groupObj)[0];
+        groupObj[key].splice(iN,1);
+        // if empty, remove group
+        if(groupObj[key].length===0) data.artisti[artistSelect.value].img.splice(giN,1);
+        renderImages(data.artisti[artistSelect.value].img || []);
+        updatePreview();
+      }))
+    }
+
+    function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function applyChanges(){
+      const idx = Number(artistSelect.value);
+      if(!Number.isInteger(idx) || !data.artisti[idx]){alert('Seleziona un artista');return}
+      const a = data.artisti[idx];
+      a.cartella = el('field_cartella').value;
+      a.nome = el('field_nome').value;
+      a.IG = el('field_ig').value;
+      a.social = el('field_social').value;
+      a.portfolio = el('field_portfolio').value;
+      a.bio = el('field_bio').value;
+
+      // read image inputs
+      const imgs = [];
+      const container = el('imagesList');
+      // naive parse: rebuild as single group
+      container.querySelectorAll('input[data-path]').forEach(inp=>{
+        const parts = inp.dataset.path.split('|');
+        const [g, key, i] = parts; // use first two
+        // We'll push to a single group for simplicity
+        const imgVal = inp.value;
+        const desInp = container.querySelector(`input[data-path="${g}|${key}|${i}|des"]`);
+        const desVal = desInp ? desInp.value.replace(/&lt;/g,'<').replace(/&gt;/g,'>') : '';
+        // collect in simple structure: {"1":[{img,des}]}
+        imgs.push({ img: imgVal, des: desVal });
+      });
+      if(imgs.length) {
+        a.img = [{"1": imgs}];
+      } else {
+        a.img = [];
+      }
+      updatePreview();
+      alert('Modifiche applicate');
+      renderArtistList();
+    }
+
+    function updatePreview(){
+      el('jsonPreview').textContent = JSON.stringify(data, null, 2);
+    }
+
+    function downloadJson(){
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'bio.json'; a.click(); URL.revokeObjectURL(url);
+    }
+
+    async function saveToGitHub(){
+      const owner = el('ghOwner').value.trim();
+      const repo = el('ghRepo').value.trim();
+      const path = el('ghPath').value.trim();
+      const branch = el('ghBranch').value.trim() || 'main';
+      const token = el('ghToken').value.trim();
+      if(!owner||!repo||!path||!token){alert('Compila owner/repo/path/token');return}
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+      try{
+        // get current file to obtain sha (if exists)
+        const getResp = await fetch(apiUrl+'?ref='+branch, {headers:{Authorization:'token '+token}});
+        let sha = null;
+        if(getResp.ok){
+          const existing = await getResp.json(); sha = existing.sha;
+        }
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+        const body = { message: 'Aggiorna bio.json via editor statico', content };
+        if(sha) body.sha = sha;
+        body.branch = branch;
+        const putResp = await fetch(apiUrl, {method:'PUT', headers:{Authorization:'token '+token,'Content-Type':'application/json'}, body: JSON.stringify(body)});
+        const putJson = await putResp.json();
+        if(putResp.ok){ alert('Salvataggio su GitHub riuscito: ' + (putJson.content?.path || 'ok')); }
+        else throw new Error(JSON.stringify(putJson));
+      }catch(e){ alert('Errore salvataggio GitHub: '+e.message); }
+    }
+
+    // UI wiring
+    loadBtn.addEventListener('click', loadFromUrl);
+    resetBtn.addEventListener('click', loadExample);
+    artistSelect.addEventListener('change', e=> loadArtist(Number(e.target.value)));
+    document.getElementById('addImage').addEventListener('click', ()=>{
+      // add blank image entry to current artist
+      const idx = Number(artistSelect.value); if(!Number.isInteger(idx) || !data.artisti[idx]) { alert('Seleziona artista'); return }
+      if(!Array.isArray(data.artisti[idx].img)) data.artisti[idx].img = [];
+      data.artisti[idx].img.push({"1":[{img:'',des:''}]});
+      renderImages(data.artisti[idx].img);
+      updatePreview();
+    });
+    document.getElementById('applyBtn').addEventListener('click', applyChanges);
+    document.getElementById('showJson').addEventListener('click', ()=>{ alert(JSON.stringify(data, null, 2).slice(0,2000)); });
+    document.getElementById('downloadBtn').addEventListener('click', downloadJson);
+    document.getElementById('saveGitHub').addEventListener('click', saveToGitHub);
+    document.getElementById('newArtist').addEventListener('click', ()=>{
+      if(!data) data = {artisti:[]};
+      data.artisti.push({cartella:'nuova_cartella', nome:'Nuovo Nome', IG:'', social:'', portfolio:'', bio:'', img:[]});
+      renderArtistList(); updatePreview();
+    });
+    document.getElementById('deleteArtist').addEventListener('click', ()=>{
+      const idx = Number(artistSelect.value); if(!Number.isInteger(idx) || !data.artisti[idx]) return alert('Seleziona');
+      if(!confirm('Eliminare artista selezionato?')) return;
+      data.artisti.splice(idx,1); renderArtistList(); updatePreview();
+    });
+
+    // auto-load example on first open
+    loadExample();
+  </script>
+</body>
+</html>
