@@ -13,10 +13,10 @@ input,textarea {width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d
 textarea {min-height:120px;}
 button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer;}
 .img-card {display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
-.img-card div {position:relative;width:200px;text-align:center;display:flex;flex-direction:column;}
-.img-card img {width:100%;border-radius:6px;border:1px solid #ccc;margin-bottom:4px;}
-.img-card input {width:100%;margin-bottom:4px;font-size:12px;}
-.upload-container {margin-top:12px;border:1px dashed #aaa;padding:12px;border-radius:8px;}
+.img-card div {position:relative;width:180px;text-align:center;}
+.img-card img {width:100%;border-radius:6px;border:1px solid #ccc;}
+.img-card input {width:100%;margin-top:4px;font-size:12px;}
+#newImageForm {margin-top:12px;border-top:1px solid #ccc;padding-top:12px;}
 </style>
 </head>
 <body>
@@ -41,11 +41,11 @@ button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2
 <div class="img-card" id="imagesContainer"></div>
 
 <h4>Aggiungi nuova immagine</h4>
-<div class="upload-container">
-  <label>Seleziona file <input type="file" id="newImageFile"></label>
-  <label>Descrizione (deslunga) <input type="text" id="newImageDeslunga"></label>
-  <button id="uploadImageBtn">Carica immagine</button>
-</div>
+<form id="newImageForm">
+  <label>Seleziona file <input type="file" id="newImageFile" accept="image/*"></label>
+  <label>Descrizione lunga (deslunga) <input type="text" id="newImageDeslunga"></label>
+  <button type="submit">Carica immagine</button>
+</form>
 
 <div style="margin-top:12px">
 <button id="saveBtn">Salva modifiche</button>
@@ -74,14 +74,14 @@ function parseJwt(token) {
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Caricamento artista dal Worker ---
+// --- Caricamento singolo artista dal Worker ---
 async function loadArtistFromWorker(email) {
   try {
     const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(email)}`);
     if (!resp.ok) throw new Error('Errore caricamento artista');
     currentArtist = await resp.json();
     if (!currentArtist) throw new Error('Artista non trovato');
-    data.artisti = [currentArtist]; 
+    data.artisti = [currentArtist];
     document.getElementById('editor').style.display='block';
     loadFields();
     renderImages();
@@ -118,68 +118,45 @@ function renderImages(){
   container.innerHTML='';
   if(!currentArtist.img) currentArtist.img=[];
   
-  currentArtist.img.slice(0,maxImages).forEach((im, i) => {
-    // Itera su tutte le chiavi numeriche dell'oggetto
-    Object.keys(im).forEach(key => {
-      im[key].forEach((imgObj, idx) => {
-        const div = document.createElement('div');
-        const imgElem = document.createElement('img');
-        imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${imgObj.img}`;
-
-        const descInput = document.createElement('input');
-        descInput.type='text';
-        descInput.placeholder='deslunga';
-        descInput.value = imgObj.deslunga || '';
-        descInput.addEventListener('input', () => {
-          imgObj.deslunga = descInput.value;
-          updatePreview();
-        });
-
-        div.appendChild(imgElem);
-        div.appendChild(descInput);
-        container.appendChild(div);
-      });
+  currentArtist.img.slice(0,maxImages).forEach((imgObj)=>{
+    const key = Object.keys(imgObj)[0];
+    imgObj[key].forEach((im, i)=>{
+      const div = document.createElement('div');
+      const imgElem = document.createElement('img');
+      imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.img}`;
+      const descInput = document.createElement('input');
+      descInput.type='text';
+      descInput.placeholder='deslunga';
+      descInput.value = im.deslunga || '';
+      descInput.addEventListener('input', ()=>{ im.deslunga = descInput.value; updatePreview(); });
+      div.appendChild(imgElem);
+      div.appendChild(descInput);
+      container.appendChild(div);
     });
   });
 }
 
-// --- Upload nuova immagine ---
-document.getElementById('uploadImageBtn').addEventListener('click', async ()=>{
+// --- Caricamento nuova immagine ---
+document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
   const fileInput = document.getElementById('newImageFile');
   const deslInput = document.getElementById('newImageDeslunga');
+  if(!fileInput.files.length) return alert('Seleziona un file');
+  if(Object.keys(currentArtist.img).length >= maxImages) return alert('Numero massimo immagini raggiunto');
+
   const file = fileInput.files[0];
-  const desl = deslInput.value.trim();
-  const cartella = currentArtist.cartella;
-
-  if(!file || !desl || !cartella) return alert('Compila tutti i campi per l\'upload');
-
-  if(currentArtist.img.length >= maxImages) return alert('Numero massimo immagini raggiunto');
-
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('deslunga', desl);
-  formData.append('cartella', cartella);
-  formData.append('userEmail', userEmail);
-
-  try {
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', {
-      method: 'POST',
-      body: formData
-    });
-    const result = await resp.json();
-    if(result.error) throw new Error(result.error);
-
-    // aggiungi al JSON locale
-    const newImgObj = { [currentArtist.img.length + 1]: [{img: file.name, des: '', deslunga: desl}] };
+  const desl = deslInput.value || '';
+  const reader = new FileReader();
+  reader.onload = function(evt){
+    const base64Content = evt.target.result.split(',')[1];
+    const nextKey = (Object.keys(currentArtist.img).length + 1).toString();
+    const newImgObj = {};
+    newImgObj[nextKey] = [{ img: file.name, deslunga: desl, des: '' }];
     currentArtist.img.push(newImgObj);
-
-    fileInput.value=''; deslInput.value='';
     renderImages();
     updatePreview();
-    alert('Immagine caricata con successo!');
-  } catch(e) {
-    alert('Errore upload: ' + e.message);
-  }
+  };
+  reader.readAsDataURL(file);
 });
 
 // --- Anteprima JSON ---
