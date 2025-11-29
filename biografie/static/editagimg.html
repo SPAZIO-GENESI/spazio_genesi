@@ -62,7 +62,7 @@ button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2
 
 <div id="editor" style="display:none" class="card">
 <h3>Modifica i tuoi dati</h3>
-<label>Cartella <input id="field_cartella" type="text"></label>
+<label>Cartella <input id="field_cartella" type="text" disabled></label>
 <label>Nome <input id="field_nome" type="text"></label>
 <label>IG <input id="field_ig" type="text"></label>
 <label>Social <input id="field_social" type="text"></label>
@@ -173,21 +173,41 @@ function renderImages(){
 }
 
 // --- Caricamento nuova immagine ---
-document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const fileInput = document.getElementById('newImageFile');
-  const deslInput = document.getElementById('newImageDeslunga');
-  if(!fileInput.files.length) return alert('Seleziona un file');
+    document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fileInput = document.getElementById('newImageFile');
+    const deslInput = document.getElementById('newImageDeslunga');
+    if(!fileInput.files.length) return alert('Seleziona un file');
 
-  const file = fileInput.files[0];
-  const desl = deslInput.value || '';
-  const nextKey = (Object.keys(currentArtist.img[0]).length + 1).toString();
+    const file = fileInput.files[0];
+    const desl = deslInput.value || '';
 
-  currentArtist.img[0][nextKey] = [{ img: file.name, deslunga: desl, des: '' }];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('deslunga', desl);
+    formData.append('cartella', currentArtist.cartella);
+    formData.append('userEmail', userEmail);
 
-  renderImages();
-  updatePreview();
-});
+    try {
+        const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', {
+        method: 'POST',
+        body: formData
+        });
+        const result = await resp.json();
+        console.log(result); // <-- qui vedi il log completo
+        if(result.error) throw new Error(result.error);
+
+        // aggiorna anche il JSON locale
+        const nextKey = (Object.keys(currentArtist.img[0]).length + 1).toString();
+        currentArtist.img[0][nextKey] = [{ img: file.name, deslunga: desl, des: '' }];
+        renderImages();
+        updatePreview();
+        alert('Immagine caricata e salvata!');
+    } catch(e) {
+        alert('Errore upload: ' + e.message);
+    }
+    });
+
 
 // --- Anteprima JSON ---
 function updatePreview(){
