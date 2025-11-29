@@ -10,9 +10,10 @@ body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;
 .card{background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px;margin-bottom:16px}
 label{display:block;margin-top:8px;font-size:13px}
 input,textarea{width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4}
-textarea{min-height:120px}
+textarea{min-height:80px}
 button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer}
-img{max-width:200px;display:block;margin-top:4px;margin-bottom:4px;border:1px solid #ccc;border-radius:4px}
+img.preview{max-width:150px;max-height:150px;margin:4px;border:1px solid #ccc;border-radius:4px}
+.image-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -26,17 +27,20 @@ img{max-width:200px;display:block;margin-top:4px;margin-bottom:4px;border:1px so
 
 <div id="editor" style="display:none" class="card">
 <h3>Modifica i tuoi dati</h3>
-<label>cartella <input id="field_cartella" type="text" readonly></label>
-<label>nome <input id="field_nome" type="text"></label>
+<label>Cartella <input id="field_cartella" type="text" readonly></label>
+<label>Nome <input id="field_nome" type="text"></label>
 <label>IG <input id="field_ig" type="text"></label>
-<label>social <input id="field_social" type="text"></label>
-<label>portfolio <input id="field_portfolio" type="text"></label>
-<label>bio <textarea id="field_bio"></textarea></label>
+<label>Social <input id="field_social" type="text"></label>
+<label>Portfolio <input id="field_portfolio" type="text"></label>
+<label>Bio <textarea id="field_bio"></textarea></label>
 
 <h4>Immagini (max 10)</h4>
-<div id="imagePreview"></div>
-<input type="file" id="newImage" accept="image/*">
+<div id="imagesContainer"></div>
+<div style="margin-top:8px">
+<input type="file" id="newImageFile">
+<label>Descrizione lunga <input type="text" id="newImageDeslunga"></label>
 <button id="addImageBtn">Aggiungi immagine</button>
+</div>
 
 <div style="margin-top:12px">
 <button id="saveBtn">Salva modifiche</button>
@@ -47,125 +51,133 @@ img{max-width:200px;display:block;margin-top:4px;margin-bottom:4px;border:1px so
 </div>
 
 <script>
-let currentArtist = null;
 let userEmail = null;
+let currentArtist = null;
+let data = null;
 
 // --- Login Google ---
-function handleCredentialResponse(response){
+function handleCredentialResponse(response) {
   const jwt = parseJwt(response.credential);
   userEmail = jwt.email;
-  loadArtistData(userEmail);
+  loadArtistFromWorker(userEmail);
 }
 
-function parseJwt(token){
+function parseJwt(token) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Carica solo record dell'artista dal Worker ---
-async function loadArtistData(email){
-  try{
-    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(email)}`);
-    const result = await resp.json();
-    if(result.error) return alert(result.error);
-    currentArtist = result;
+// --- Carica dati solo dell'artista dal Worker ---
+async function loadArtistFromWorker(email) {
+  try {
+    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/artist?email=${encodeURIComponent(email)}`);
+    const artist = await resp.json();
+    if (artist.error) { alert(artist.error); return; }
+    currentArtist = artist;
+    data = { artisti: [artist] };
     document.getElementById('editor').style.display='block';
-    loadArtistFields(currentArtist);
-    renderImages();
-    updatePreview();
-  }catch(e){alert('Errore caricamento dati: '+e.message);}
+    loadArtist(artist);
+  } catch(e){ alert('Errore caricamento dati: '+e.message); }
 }
 
-// --- Carica campi testo ---
-function loadArtistFields(artist){
+// --- Carica campi ---
+function loadArtist(artist){
   document.getElementById('field_cartella').value = artist.cartella || '';
   document.getElementById('field_nome').value = artist.nome || '';
   document.getElementById('field_ig').value = artist.IG || '';
   document.getElementById('field_social').value = artist.social || '';
   document.getElementById('field_portfolio').value = artist.portfolio || '';
   document.getElementById('field_bio').value = artist.bio || '';
+  renderImages();
+  updatePreview();
 }
 
-// --- Applica modifiche campi testo ---
+// --- Aggiorna campi dati ---
 function applyChanges(){
+  currentArtist.cartella = document.getElementById('field_cartella').value;
   currentArtist.nome = document.getElementById('field_nome').value;
   currentArtist.IG = document.getElementById('field_ig').value;
   currentArtist.social = document.getElementById('field_social').value;
   currentArtist.portfolio = document.getElementById('field_portfolio').value;
   currentArtist.bio = document.getElementById('field_bio').value;
+  data.artisti[0] = currentArtist;
   updatePreview();
 }
 
-// --- Anteprima JSON ---
-function updatePreview(){
-  document.getElementById('jsonPreview').textContent = JSON.stringify({artisti:[currentArtist]},null,2);
-}
-
-// --- Render immagini e modifica campo deslunga ---
+// --- Render immagini ---
 function renderImages(){
-  const previewDiv = document.getElementById('imagePreview');
-  previewDiv.innerHTML = '';
-  if(currentArtist.img && currentArtist.img.length){
-    currentArtist.img.forEach((group,gIndex)=>{
-      Object.entries(group).forEach(([key,imgArr])=>{
-        imgArr.forEach((imgObj,i)=>{
-          const container = document.createElement('div');
-          container.style.marginBottom='8px';
+  const container = document.getElementById('imagesContainer');
+  container.innerHTML = '';
+  if(!currentArtist.img) currentArtist.img = [];
+  currentArtist.img.forEach((im,i)=>{
+    const row = document.createElement('div'); row.className='image-row';
+    const imgElem = document.createElement('img'); 
+    imgElem.src = `/biografie/${currentArtist.cartella}/${im.nome}`; 
+    imgElem.className='preview';
+    row.appendChild(imgElem);
 
-          const imgEl = document.createElement('img');
-          imgEl.src = '/biografie/'+currentArtist.cartella+'/'+imgObj.img;
-          imgEl.alt = imgObj.des || '';
-          container.appendChild(imgEl);
+    const input = document.createElement('input'); 
+    input.type='text'; input.value = im.deslunga||''; 
+    input.placeholder='Descrizione lunga';
+    input.addEventListener('input', ()=>{im.deslunga=input.value; updatePreview();});
+    row.appendChild(input);
 
-          const input = document.createElement('input');
-          input.type='text';
-          input.value = imgObj.deslunga || '';
-          input.placeholder = 'Descrizione lunga';
-          input.style.width='100%';
-          input.addEventListener('input', (e)=>{
-            currentArtist.img[gIndex][key][i].deslunga = e.target.value;
-            updatePreview();
-          });
-          container.appendChild(input);
-
-          previewDiv.appendChild(container);
-        });
-      });
+    const delBtn = document.createElement('button'); 
+    delBtn.textContent='X';
+    delBtn.addEventListener('click', ()=>{
+      currentArtist.img.splice(i,1); renderImages(); updatePreview();
     });
-  }
+    row.appendChild(delBtn);
+
+    container.appendChild(row);
+  });
 }
 
 // --- Aggiungi nuova immagine ---
-document.getElementById('addImageBtn').addEventListener('click',()=>{
-  const fileInput = document.getElementById('newImage');
-  if(!fileInput.files || !fileInput.files[0]) return alert('Seleziona un file');
-  if(!currentArtist.img) currentArtist.img=[{}];
-  const group = currentArtist.img[0];
-  const key = Object.keys(group)[0] || '1';
-  if(!group[key]) group[key]=[];
-  if(group[key].length>=10) return alert('Limite immagini raggiunto');
+document.getElementById('addImageBtn').addEventListener('click', async ()=>{
+  const fileInput = document.getElementById('newImageFile');
+  const deslungaInput = document.getElementById('newImageDeslunga');
+  if(!fileInput.files.length) { alert('Seleziona un file'); return; }
+  if(currentArtist.img.length>=10) { alert('Limite 10 immagini'); return; }
 
   const file = fileInput.files[0];
-  group[key].push({img:file.name, des:file.name, deslunga:''});
-  renderImages();
-  updatePreview();
-  fileInput.value='';
+  const deslunga = deslungaInput.value || '';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('deslunga', deslunga);
+  formData.append('cartella', currentArtist.cartella);
+  formData.append('userEmail', userEmail);
+
+  try {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', { method:'POST', body: formData });
+    const result = await resp.json();
+    if(result.error){ alert(result.error); return; }
+    currentArtist.img.push({nome:file.name, deslunga: deslunga});
+    renderImages();
+    updatePreview();
+    fileInput.value=''; deslungaInput.value='';
+  } catch(e){ alert('Errore upload: '+e.message); }
 });
 
-// --- Salvataggio sul Worker ---
+// --- Preview JSON ---
+function updatePreview(){
+  document.getElementById('jsonPreview').textContent = JSON.stringify(data, null,2);
+}
+
+// --- Salva ---
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
-  try{
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/',{
+  try {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/update', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ userEmail, data:{artisti:[currentArtist]} })
+      body: JSON.stringify({ userEmail, data })
     });
     const result = await resp.json();
-    if(result.error) alert('Errore salvataggio: '+result.error);
-    else alert('Salvataggio completato!');
-  }catch(e){alert('Errore: '+e.message);}
+    if(result.error) { alert('Errore salvataggio: '+result.error); return; }
+    alert('Salvataggio completato!');
+  } catch(e){ alert('Errore: '+e.message); }
 });
 </script>
 </body>
