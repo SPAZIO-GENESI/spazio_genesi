@@ -231,19 +231,35 @@ document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
 // --- Salvataggio JSON su worker (/update) ---
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
+
+  // pulizia preventiva: rimuovi chiavi vuote o undefined da img
+  if (currentArtist.img && currentArtist.img[0]) {
+    currentArtist.img[0] = Object.fromEntries(
+      Object.entries(currentArtist.img[0]).filter(([k,v]) => Array.isArray(v) && v.length)
+    );
+  }
+  data.artisti[0] = currentArtist;
+
+  // stampa il payload per debug
+  console.log("Payload inviato a /update:", JSON.stringify({ userEmail, data }, null, 2));
+
   try {
     const resp = await fetch('https://artistajson.it-e3f.workers.dev/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userEmail, data })
     });
-    const result = await resp.json();
+    const text = await resp.text(); // leggi come testo grezzo
+    let result;
+    try { result = JSON.parse(text); } catch(e) { throw new Error("Risposta non JSON: " + text); }
+
     if(result.error) throw new Error(result.error);
     alert('Dati salvati correttamente!');
   } catch(e) {
     alert('Errore salvataggio: ' + e.message);
   }
 });
+
 
 // --- Anteprima JSON ---
 function updatePreview(){
