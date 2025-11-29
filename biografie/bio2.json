@@ -1,0 +1,22 @@
+{
+  "artisti": [
+    {
+      "cartella": "nevoanarua",
+      "nome": "N%C3%A9voa Na Rua",
+      "IG": "nevoanarua",
+      "social": "https://www.linkedin.com/in/massimocamplone/",
+      "portfolio": "Névoa-na-rua_portfolio2024.pdf",
+      "bio": "Classe 1964...",
+      "img": [
+        {
+          "1": [
+            {
+              "img": "nevoanarua_ramo_isole.jpg",
+              "des": "Isole..."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
