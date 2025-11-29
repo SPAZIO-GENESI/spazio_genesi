@@ -31,7 +31,7 @@
   <main>
     <aside class="card">
       <label>URL JSON (raw)</label>
-      <input id="jsonUrl" placeholder="https://raw.githubusercontent.com/SPAZIO-GENESI/spazio_genesi/refs/heads/main/biografie/bio.json">
+      <input id="jsonUrl" placeholder="https://raw.githubusercontent.com/<user>/<repo>/<branch>/path/bio.json">
       <div class="row">
         <button id="loadBtn">Carica</button>
         <button id="resetBtn" class="ghost">Carica esempio</button>
@@ -82,36 +82,20 @@
 
         <hr>
         <h4>Anteprima JSON</h4>
-        <pre id="jsonPreview">{ }
-        </pre>
+        <pre id="jsonPreview">{ }</pre>
       </form>
     </section>
   </main>
 
   <script>
-    // Esempio minimo coerente con input utente
-    const example = {
-      "artisti": [
-        {
-          "cartella":"nevoanarua",
-          "nome":"N%C3%A9voa Na Rua",
-          "IG":"nevoanarua",
-          "social":"https://www.linkedin.com/in/massimocamplone/",
-          "portfolio":"Névoa-na-rua_portfolio2024.pdf",
-          "bio":"Classe 1964...",
-          "img":[{"1":[{"img":"nevoanarua_ramo_isole.jpg","des":"Isole..."}]}]
-        }
-      ]
-    };
+    const example = {"artisti":[{"cartella":"nevoanarua","nome":"N%C3%A9voa Na Rua","IG":"nevoanarua","social":"https://www.linkedin.com/in/massimocamplone/","portfolio":"Névoa-na-rua_portfolio2024.pdf","bio":"Classe 1964...","img":[{"1":[{"img":"nevoanarua_ramo_isole.jpg","des":"Isole..."}]}]}]};
 
     let data = null;
     const jsonUrlEl = document.getElementById('jsonUrl');
     const loadBtn = document.getElementById('loadBtn');
     const resetBtn = document.getElementById('resetBtn');
     const artistSelect = document.getElementById('artistSelect');
-    const fieldIds = {
-      cartella: 'field_cartella', nome: 'field_nome', ig: 'field_ig', social: 'field_social', portfolio: 'field_portfolio', bio: 'field_bio'
-    };
+    const fieldIds = {cartella: 'field_cartella', nome: 'field_nome', ig: 'field_ig', social: 'field_social', portfolio: 'field_portfolio', bio: 'field_bio'};
 
     function el(id){return document.getElementById(id)}
 
@@ -133,8 +117,7 @@
       artistSelect.innerHTML='';
       const arr = Array.isArray(data?.artisti) ? data.artisti : [];
       arr.forEach((a,i)=>{
-        const opt = document.createElement('option');
-        opt.value = i; opt.textContent = (a.nome||a.cartella||('artista '+i));
+        const opt = document.createElement('option'); opt.value = i; opt.textContent = (a.nome||a.cartella||('artista '+i));
         artistSelect.appendChild(opt);
       });
       if(arr.length) { artistSelect.selectedIndex = 0; loadArtist(0); }
@@ -161,7 +144,6 @@
         const wrapper = document.createElement('div'); wrapper.style.borderBottom='1px solid #eee'; wrapper.style.padding='6px 0';
         wrapper.dataset.index = gi;
         wrapper.innerHTML = '<div class="muted small">Gruppo '+gi+'</div>';
-        // group is expected to be object like {"1":[{...}]}
         try{
           for(const key in group){
             const items = group[key];
@@ -176,15 +158,12 @@
         }catch(e){console.warn(e)}
         container.appendChild(wrapper);
       })
-      // attach remove handlers
       container.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',ev=>{
         const [g,k,i] = btn.dataset.remove.split('|');
         const giN = Number(g), iN = Number(i);
-        // remove item
         const groupObj = data.artisti[artistSelect.value].img[giN];
         const key = Object.keys(groupObj)[0];
         groupObj[key].splice(iN,1);
-        // if empty, remove group
         if(groupObj[key].length===0) data.artisti[artistSelect.value].img.splice(giN,1);
         renderImages(data.artisti[artistSelect.value].img || []);
         updatePreview();
@@ -203,34 +182,23 @@
       a.social = el('field_social').value;
       a.portfolio = el('field_portfolio').value;
       a.bio = el('field_bio').value;
-
-      // read image inputs
       const imgs = [];
       const container = el('imagesList');
-      // naive parse: rebuild as single group
       container.querySelectorAll('input[data-path]').forEach(inp=>{
         const parts = inp.dataset.path.split('|');
-        const [g, key, i] = parts; // use first two
-        // We'll push to a single group for simplicity
+        const [g,key,i] = parts;
         const imgVal = inp.value;
         const desInp = container.querySelector(`input[data-path="${g}|${key}|${i}|des"]`);
         const desVal = desInp ? desInp.value.replace(/&lt;/g,'<').replace(/&gt;/g,'>') : '';
-        // collect in simple structure: {"1":[{img,des}]}
-        imgs.push({ img: imgVal, des: desVal });
+        imgs.push({img: imgVal, des: desVal});
       });
-      if(imgs.length) {
-        a.img = [{"1": imgs}];
-      } else {
-        a.img = [];
-      }
+      if(imgs.length){ a.img=[{"1": imgs}]; } else { a.img=[]; }
       updatePreview();
       alert('Modifiche applicate');
       renderArtistList();
     }
 
-    function updatePreview(){
-      el('jsonPreview').textContent = JSON.stringify(data, null, 2);
-    }
+    function updatePreview(){ el('jsonPreview').textContent = JSON.stringify(data, null, 2); }
 
     function downloadJson(){
       const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
@@ -247,12 +215,9 @@
       if(!owner||!repo||!path||!token){alert('Compila owner/repo/path/token');return}
       const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
       try{
-        // get current file to obtain sha (if exists)
         const getResp = await fetch(apiUrl+'?ref='+branch, {headers:{Authorization:'token '+token}});
         let sha = null;
-        if(getResp.ok){
-          const existing = await getResp.json(); sha = existing.sha;
-        }
+        if(getResp.ok){ const existing = await getResp.json(); sha = existing.sha; }
         const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
         const body = { message: 'Aggiorna bio.json via editor statico', content };
         if(sha) body.sha = sha;
@@ -264,12 +229,10 @@
       }catch(e){ alert('Errore salvataggio GitHub: '+e.message); }
     }
 
-    // UI wiring
     loadBtn.addEventListener('click', loadFromUrl);
     resetBtn.addEventListener('click', loadExample);
     artistSelect.addEventListener('change', e=> loadArtist(Number(e.target.value)));
     document.getElementById('addImage').addEventListener('click', ()=>{
-      // add blank image entry to current artist
       const idx = Number(artistSelect.value); if(!Number.isInteger(idx) || !data.artisti[idx]) { alert('Seleziona artista'); return }
       if(!Array.isArray(data.artisti[idx].img)) data.artisti[idx].img = [];
       data.artisti[idx].img.push({"1":[{img:'',des:''}]});
@@ -281,7 +244,7 @@
     document.getElementById('downloadBtn').addEventListener('click', downloadJson);
     document.getElementById('saveGitHub').addEventListener('click', saveToGitHub);
     document.getElementById('newArtist').addEventListener('click', ()=>{
-      if(!data) data = {artisti:[]};
+      if(!data) data={artisti:[]};
       data.artisti.push({cartella:'nuova_cartella', nome:'Nuovo Nome', IG:'', social:'', portfolio:'', bio:'', img:[]});
       renderArtistList(); updatePreview();
     });
@@ -291,7 +254,6 @@
       data.artisti.splice(idx,1); renderArtistList(); updatePreview();
     });
 
-    // auto-load example on first open
     loadExample();
   </script>
 </body>

@@ -102,6 +102,45 @@
   })();
 </script>
 <!-- End Matomo Code -->
+ <style>
+.card-img-wrapper {
+  width: 100%;
+  height: 200px; /* fallback per browser meno recenti */
+  aspect-ratio: 4/3; /* proporzione uniforme per browser moderni */
+  overflow: hidden;
+  position: relative;
+}
+
+.card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* Overlay */
+.card-img-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25); /* sfumatura scura */
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Effetto hover/active */
+.card-img-wrapper:hover img,
+.card-img-wrapper:active img {
+  transform: scale(1.1); /* mini zoom */
+}
+
+.card-img-wrapper:hover::after,
+.card-img-wrapper:active::after {
+  opacity: 1; /* overlay visibile */
+}
+
+
+ </style>
 
     </head>
     <body class="">
@@ -137,79 +176,215 @@
             </nav>
           </div>
         </header>
-  
-        <main role="main" class="mt-5">
-          <div class="container">
-            <div class="row">
-              <div class="col">
-                <table class="table table-condensed">
-                  <thead>
-                    <tr>
-                      <th>
-                        <h1 class="bio-h1">Biografia Student*/Artista Associata Spazio Genesi
-                        </h1>
-                        </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><a href="./bio.htm?artista=francescachiola">Francesca Chiola</a></td>
-                    </tr>
-                    <tr>
-                      <td><a href="./bio.htm?artista=saradias">Sara Dias</a></td>
-                    </tr> 
-                    <tr>
-                      <td><a href="./bio.htm?artista=nevoanarua">Névoa na Rua</a></td>
-                    </tr>
-                    <tr>
-                      <td><a href="./bio.htm?artista=federicobattisti">Federico Battisti</a></td>
-                    </tr>    
-                    <tr>
-                      <td><a href="./bio.htm?artista=deborapanaccione">Debora Panaccione</a></td>
-                    </tr> 
-                    <tr>
-                      <td><a href="./bio.htm?artista=davidemariani">Davide Mariani</a></td>
-                    </tr>                  
-                    <tr>
-                      <td><a href="./bio.htm?artista=elenamussi">Elena Mussi</a></td>
-                    </tr>                 
-                    <tr>
-                      <td><a href="./bio.htm?artista=francescarinella">Francesca Rinella</a></td>
-                    </tr>                 
-                    <tr>
-                      <td><a href="./bio.htm?artista=mariannamancini">Marianna Mancini</a></td>
-                    </tr>                 
-                    <tr>
-                      <td><a href="./bio.htm?artista=sabrinaiezzi">Sabrina Iezzi</a></td>
-                    </tr>                 
-                    <tr>
-                      <td><a href="./bio.htm?artista=davidemeola">Davide Meola</a></td>
-                    </tr>    
-                    <tr>
-                      <td><a href="./bio.htm?artista=alessiadonatelli">Alessia Donatelli</a></td>
-                    </tr>
-                    <tr>
-                      <td><a href="./bio.htm?artista=lisarastelli">Lisa Rastelli</a></td>
-                    </tr>
-                                        <tr>
-                      <td><a href="./bio.htm?artista=vincenzodamianocristallo">Vincenzo Damiano Cristallo</a></td>
-                    </tr>
-                  </tbody>
-                </table>                
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-md-12">
-                <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
-                  <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-danger py-2 text-white px-1 news"><span class="d-flex align-items-center">News</span></div>
-                  <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> laboratorio permanente di interazione - noi che...voi che...presente e futuro - autogestito - riservato ad iscritt* ABAQ + Erasmus - multi manifesto - tutte le tecniche - rotazione espositiva - archivio donazioni - caffè letterario - conviviale - assemblea aperta - spazio safe
-                  </marquee>
-                </div>
-              </div>
-            </div>
+        
+
+        <main role="main" class="mt-5">
+  <div class="container">
+    <h1 class="bio-h1 mb-4">Biografia Student*/Artista Associata Spazio Genesi</h1>
+    <div class="row">
+
+      <!-- Francesca Chiola -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/francescachiola/francesca_chiola_collezione_impermanente.jpg" alt="Francesca Chiola">
           </div>
-        </main>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=francescachiola" class="stretched-link">Francesca Chiola</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sara Dias -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/saradias/DSC_2798-SaraDias_.jpg" alt="Sara Dias">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=saradias" class="stretched-link">Sara Dias</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Névoa na Rua -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/nevoanarua/nevoanarua_eroalaquila_performative2024_museomaxxilaquila.png" alt="Névoa na Rua">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=nevoanarua" class="stretched-link">Névoa na Rua</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Federico Battisti -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/federicobattisti/aqab-federicobattisti.jpg" alt="Federico Battisti">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=federicobattisti" class="stretched-link">Federico Battisti</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debora Panaccione -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/deborapanaccione/2023_derma_debora_panaccione.jpeg" alt="Debora Panaccione">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=deborapanaccione" class="stretched-link">Debora Panaccione</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Davide Mariani -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/davidemariani/DavideMariani_waitingatthegate.jpeg" alt="Davide Mariani">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=davidemariani" class="stretched-link">Davide Mariani</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elena Mussi -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/elenamussi/lattesa-65hBeats.jpg" alt="Elena Mussi">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=elenamussi" class="stretched-link">Elena Mussi</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Francesca Rinella -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/francescarinella/3A-Francesca_Rinella.jpg" alt="Francesca Rinella">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=francescarinella" class="stretched-link">Francesca Rinella</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marianna Mancini -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/mariannamancini/CROSSWOLK.JPG" alt="Marianna Mancini">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=mariannamancini" class="stretched-link">Marianna Mancini</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sabrina Iezzi -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/sabrinaiezzi/sabrina_iezzi_casa_abbandonata.jpg" alt="Sabrina Iezzi">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=sabrinaiezzi" class="stretched-link">Sabrina Iezzi</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Davide Meola -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/davidemeola/davide_meola_serata_a_san_silvestro.jpeg" alt="Davide Meola">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=davidemeola" class="stretched-link">Davide Meola</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alessia Donatelli -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/alessiadonatelli/alessia_donatelli_prima_prova.jpeg" alt="Alessia Donatelli">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=alessiadonatelli" class="stretched-link">Alessia Donatelli</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lisa Rastelli -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/lisarastelli/lisa_rastelli_disincantato_naufragio_bussola.jpg" alt="Lisa Rastelli">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=lisarastelli" class="stretched-link">Lisa Rastelli</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vincenzo Damiano Cristallo -->
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-wrapper">
+            <img src="/biografie/vincenzodamianocristallo/VincenzoDamianoCristallo_PiazzaPioIIPienza_modellinoincartonlegno_cm 30x33_2023.jpg" alt="Vincenzo Damiano Cristallo">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">
+              <a href="./bio.htm?artista=vincenzodamianocristallo" class="stretched-link">Vincenzo Damiano Cristallo</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+
   
         <footer class="mastfoot mt-auto">
           <div class="inner">
