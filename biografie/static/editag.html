@@ -41,47 +41,36 @@ button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b
 </div>
 
 <script>
-// JSON iniziale (fallback) prima del fetch
-let data = { "artisti": [] };
-let userEmail = null;
+const WORKER_URL = 'https://artistajson.it-e3f.workers.dev';
 let currentArtist = null;
+let userEmail = null;
 
-// --- 1️⃣ Carica il JSON dal repo GitHub pubblico ---
-async function loadJSONFromGitHub() {
-  try {
-    const response = await fetch('https://raw.githubusercontent.com/SPAZIO-GENESI/spazio_genesi/main/biografie/bio2.json');
-    if (!response.ok) throw new Error('Errore nel caricamento del JSON');
-    data = await response.json();
-    console.log('JSON caricato:', data);
-  } catch(e) {
-    alert('Errore caricamento JSON: '+e.message);
-  }
-}
-
-// Chiamalo subito
-loadJSONFromGitHub();
-
-// --- 2️⃣ Google OAuth ---
+// --- Google OAuth callback ---
 function handleCredentialResponse(response) {
   const jwt = parseJwt(response.credential);
   userEmail = jwt.email;
-
-  // Trova l'artista corrispondente
-  currentArtist = data.artisti.find(a => a.email === userEmail);
-  if(!currentArtist) { alert('Non sei autorizzato'); return; }
-
-  document.getElementById('editor').style.display='block';
-  loadArtist(currentArtist);
+  loadArtistFromWorker(userEmail);
 }
 
-// Decodifica JWT Google
 function parseJwt(token) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- 3️⃣ Popola l'editor con i dati dell'artista ---
+// --- Carica solo i dati dell'artista loggato dal Worker ---
+async function loadArtistFromWorker(email) {
+  try {
+    const resp = await fetch(`${WORKER_URL}?email=${encodeURIComponent(email)}`);
+    if(!resp.ok) throw new Error('Errore caricamento dati: ' + resp.status);
+    currentArtist = await resp.json();
+    loadArtist(currentArtist);
+    document.getElementById('editor').style.display = 'block';
+  } catch(e) {
+    alert('Errore: ' + e.message);
+  }
+}
+
 function loadArtist(artist){
   document.getElementById('field_cartella').value = artist.cartella || '';
   document.getElementById('field_nome').value = artist.nome || '';
@@ -92,7 +81,6 @@ function loadArtist(artist){
   updatePreview();
 }
 
-// --- 4️⃣ Aggiorna i dati nel JSON locale ---
 function applyChanges(){
   currentArtist.cartella = document.getElementById('field_cartella').value;
   currentArtist.nome = document.getElementById('field_nome').value;
@@ -103,22 +91,20 @@ function applyChanges(){
   updatePreview();
 }
 
-// --- 5️⃣ Aggiorna anteprima JSON ---
 function updatePreview(){
-  document.getElementById('jsonPreview').textContent = JSON.stringify(data, null,2);
+  document.getElementById('jsonPreview').textContent = JSON.stringify({artisti:[currentArtist]}, null,2);
 }
 
-// --- 6️⃣ Salva tramite Cloudflare Worker ---
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/', {
+    const resp = await fetch(WORKER_URL, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ userEmail, data })
+      body: JSON.stringify({ userEmail, data:{artisti:[currentArtist]} })
     });
     const result = await resp.json();
-    console.log(result);
+    if(result.error) throw new Error(result.error);
     alert('Salvataggio completato!');
   }catch(e){alert('Errore: '+e.message)}
 });
