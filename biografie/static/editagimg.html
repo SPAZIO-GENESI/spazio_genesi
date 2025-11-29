@@ -6,14 +6,16 @@
 <title>Editor Artisti — Protetto</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;color:#111}
-.card{background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px;margin-bottom:16px}
-label{display:block;margin-top:8px;font-size:13px}
-input,textarea{width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4}
-textarea{min-height:80px}
-button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer}
-img.preview{max-width:150px;max-height:150px;margin:4px;border:1px solid #ccc;border-radius:4px}
-.image-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+body {font-family: system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;color:#111;}
+.card {background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px;margin-bottom:16px;}
+label {display:block;margin-top:8px;font-size:13px;}
+input,textarea {width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4;}
+textarea {min-height:120px;}
+button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer;}
+.img-card {display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
+.img-card div {position:relative;width:120px;text-align:center;}
+.img-card img {width:100%;border-radius:6px;border:1px solid #ccc;}
+.img-card input {width:100%;margin-top:4px;font-size:12px;}
 </style>
 </head>
 <body>
@@ -27,20 +29,16 @@ img.preview{max-width:150px;max-height:150px;margin:4px;border:1px solid #ccc;bo
 
 <div id="editor" style="display:none" class="card">
 <h3>Modifica i tuoi dati</h3>
-<label>Cartella <input id="field_cartella" type="text" readonly></label>
+<label>Cartella <input id="field_cartella" type="text"></label>
 <label>Nome <input id="field_nome" type="text"></label>
 <label>IG <input id="field_ig" type="text"></label>
 <label>Social <input id="field_social" type="text"></label>
 <label>Portfolio <input id="field_portfolio" type="text"></label>
 <label>Bio <textarea id="field_bio"></textarea></label>
 
-<h4>Immagini (max 10)</h4>
-<div id="imagesContainer"></div>
-<div style="margin-top:8px">
-<input type="file" id="newImageFile">
-<label>Descrizione lunga <input type="text" id="newImageDeslunga"></label>
+<h4>Immagini</h4>
+<div class="img-card" id="imagesContainer"></div>
 <button id="addImageBtn">Aggiungi immagine</button>
-</div>
 
 <div style="margin-top:12px">
 <button id="saveBtn">Salva modifiche</button>
@@ -53,7 +51,8 @@ img.preview{max-width:150px;max-height:150px;margin:4px;border:1px solid #ccc;bo
 <script>
 let userEmail = null;
 let currentArtist = null;
-let data = null;
+let data = { artisti: [] };
+const maxImages = 10;
 
 // --- Login Google ---
 function handleCredentialResponse(response) {
@@ -68,32 +67,34 @@ function parseJwt(token) {
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Carica dati solo dell'artista dal Worker ---
+// --- Caricamento singolo artista dal Worker ---
 async function loadArtistFromWorker(email) {
   try {
-    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/artist?email=${encodeURIComponent(email)}`);
-    const artist = await resp.json();
-    if (artist.error) { alert(artist.error); return; }
-    currentArtist = artist;
-    data = { artisti: [artist] };
+    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(email)}`);
+    if (!resp.ok) throw new Error('Errore caricamento artista');
+    currentArtist = await resp.json();
+    if (!currentArtist) throw new Error('Artista non trovato');
+    data.artisti = [currentArtist]; // solo record utente
     document.getElementById('editor').style.display='block';
-    loadArtist(artist);
-  } catch(e){ alert('Errore caricamento dati: '+e.message); }
+    loadFields();
+    renderImages();
+    updatePreview();
+  } catch(e) {
+    alert('Errore: ' + e.message);
+  }
 }
 
-// --- Carica campi ---
-function loadArtist(artist){
-  document.getElementById('field_cartella').value = artist.cartella || '';
-  document.getElementById('field_nome').value = artist.nome || '';
-  document.getElementById('field_ig').value = artist.IG || '';
-  document.getElementById('field_social').value = artist.social || '';
-  document.getElementById('field_portfolio').value = artist.portfolio || '';
-  document.getElementById('field_bio').value = artist.bio || '';
-  renderImages();
-  updatePreview();
+// --- Caricamento campi ---
+function loadFields(){
+  document.getElementById('field_cartella').value = currentArtist.cartella || '';
+  document.getElementById('field_nome').value = currentArtist.nome || '';
+  document.getElementById('field_ig').value = currentArtist.IG || '';
+  document.getElementById('field_social').value = currentArtist.social || '';
+  document.getElementById('field_portfolio').value = currentArtist.portfolio || '';
+  document.getElementById('field_bio').value = currentArtist.bio || '';
 }
 
-// --- Aggiorna campi dati ---
+// --- Modifica campi ---
 function applyChanges(){
   currentArtist.cartella = document.getElementById('field_cartella').value;
   currentArtist.nome = document.getElementById('field_nome').value;
@@ -102,82 +103,57 @@ function applyChanges(){
   currentArtist.portfolio = document.getElementById('field_portfolio').value;
   currentArtist.bio = document.getElementById('field_bio').value;
   data.artisti[0] = currentArtist;
-  updatePreview();
 }
 
-// --- Render immagini ---
+// --- Rendering immagini ---
 function renderImages(){
   const container = document.getElementById('imagesContainer');
-  container.innerHTML = '';
-  if(!currentArtist.img) currentArtist.img = [];
-  currentArtist.img.forEach((im,i)=>{
-    const row = document.createElement('div'); row.className='image-row';
-    const imgElem = document.createElement('img'); 
-    imgElem.src = `/biografie/${currentArtist.cartella}/${im.nome}`; 
-    imgElem.className='preview';
-    row.appendChild(imgElem);
-
-    const input = document.createElement('input'); 
-    input.type='text'; input.value = im.deslunga||''; 
-    input.placeholder='Descrizione lunga';
-    input.addEventListener('input', ()=>{im.deslunga=input.value; updatePreview();});
-    row.appendChild(input);
-
-    const delBtn = document.createElement('button'); 
-    delBtn.textContent='X';
-    delBtn.addEventListener('click', ()=>{
-      currentArtist.img.splice(i,1); renderImages(); updatePreview();
-    });
-    row.appendChild(delBtn);
-
-    container.appendChild(row);
+  container.innerHTML='';
+  if(!currentArtist.img) currentArtist.img=[];
+  currentArtist.img.slice(0,maxImages).forEach((im,i)=>{
+    const div = document.createElement('div');
+    const imgElem = document.createElement('img');
+    imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.nome}`;
+    const descInput = document.createElement('input');
+    descInput.type='text';
+    descInput.placeholder='deslunga';
+    descInput.value = im.deslunga || '';
+    descInput.addEventListener('input', ()=>{ currentArtist.img[i].deslunga = descInput.value; updatePreview(); });
+    div.appendChild(imgElem);
+    div.appendChild(descInput);
+    container.appendChild(div);
   });
 }
 
 // --- Aggiungi nuova immagine ---
-document.getElementById('addImageBtn').addEventListener('click', async ()=>{
-  const fileInput = document.getElementById('newImageFile');
-  const deslungaInput = document.getElementById('newImageDeslunga');
-  if(!fileInput.files.length) { alert('Seleziona un file'); return; }
-  if(currentArtist.img.length>=10) { alert('Limite 10 immagini'); return; }
-
-  const file = fileInput.files[0];
-  const deslunga = deslungaInput.value || '';
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('deslunga', deslunga);
-  formData.append('cartella', currentArtist.cartella);
-  formData.append('userEmail', userEmail);
-
-  try {
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', { method:'POST', body: formData });
-    const result = await resp.json();
-    if(result.error){ alert(result.error); return; }
-    currentArtist.img.push({nome:file.name, deslunga: deslunga});
-    renderImages();
-    updatePreview();
-    fileInput.value=''; deslungaInput.value='';
-  } catch(e){ alert('Errore upload: '+e.message); }
+document.getElementById('addImageBtn').addEventListener('click', ()=>{
+  if(currentArtist.img.length >= maxImages) return alert('Numero massimo immagini raggiunto');
+  const newImgName = prompt('Nome file immagine (con estensione):');
+  if(!newImgName) return;
+  const desl = prompt('Descrizione (deslunga) della nuova immagine:') || '';
+  currentArtist.img.push({nome:newImgName, deslunga:desl});
+  renderImages();
+  updatePreview();
 });
 
-// --- Preview JSON ---
+// --- Anteprima JSON ---
 function updatePreview(){
   document.getElementById('jsonPreview').textContent = JSON.stringify(data, null,2);
 }
 
-// --- Salva ---
+// --- Salvataggio ---
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
-  try {
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/update', {
+  try{
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ userEmail, data })
     });
     const result = await resp.json();
-    if(result.error) { alert('Errore salvataggio: '+result.error); return; }
+    if(result.error) throw new Error(result.error);
     alert('Salvataggio completato!');
-  } catch(e){ alert('Errore: '+e.message); }
+  }catch(e){alert('Errore salvataggio: ' + e.message);}
 });
 </script>
 </body>
