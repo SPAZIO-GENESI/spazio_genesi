@@ -115,18 +115,22 @@ function applyChanges(){
 // --- Rendering immagini ---
 function renderImages(){
   const container = document.getElementById('imagesContainer');
-  container.innerHTML='';
-  if(!currentArtist.img) currentArtist.img=[];
-  
-  currentArtist.img.slice(0,maxImages).forEach((imgObj)=>{
+  container.innerHTML = '';
+
+  // Se img è un oggetto → convertilo in array
+  const imgArray = Array.isArray(currentArtist.img)
+      ? currentArtist.img
+      : Object.entries(currentArtist.img).map(([key, value]) => ({ [key]: value }));
+
+  imgArray.slice(0, maxImages).forEach((imgObj) => {
     const key = Object.keys(imgObj)[0];
-    imgObj[key].forEach((im, i)=>{
+    imgObj[key].forEach((im) => {
       const div = document.createElement('div');
       const imgElem = document.createElement('img');
       imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.img}`;
       const descInput = document.createElement('input');
-      descInput.type='text';
-      descInput.placeholder='deslunga';
+      descInput.type = 'text';
+      descInput.placeholder = 'deslunga';
       descInput.value = im.deslunga || '';
       descInput.addEventListener('input', ()=>{ im.deslunga = descInput.value; updatePreview(); });
       div.appendChild(imgElem);
