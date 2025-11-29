@@ -178,6 +178,7 @@ function renderImages(){
 }
 
 // --- Upload nuova immagine ---
+// --- Upload nuova immagine ---
 document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const fileInput = document.getElementById('newImageFile');
@@ -192,6 +193,7 @@ document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
   formData.append('deslunga', desl);
   formData.append('cartella', currentArtist.cartella);
   formData.append('userEmail', userEmail);
+  formData.append('artistName', currentArtist.nome);
 
   try {
     const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', {
@@ -201,14 +203,23 @@ document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
     const result = await resp.json();
     if(result.error) throw new Error(result.error);
 
-    // aggiorna JSON locale rispettando la struttura { img: [ { "1": [ ... ], "2": [ ... ] } ] }
+    // --- aggiorna JSON locale rispettando la struttura ---
+    if (!currentArtist.img || !currentArtist.img[0]) {
+      currentArtist.img = [ {} ]; // inizializza se non esiste
+    }
     const imgObj = currentArtist.img[0];
-    const nextKey = (Object.keys(imgObj).length + 1).toString();
+
+    // trova la prossima chiave numerica libera
+    const keys = Object.keys(imgObj).map(k => parseInt(k,10)).filter(n => !isNaN(n));
+    const nextKey = keys.length ? (Math.max(...keys)+1).toString() : "1";
+
+    // inserisci la nuova immagine
     imgObj[nextKey] = [{ img: file.name, des: '', deslunga: desl }];
 
     renderImages();
     updatePreview();
     alert('Immagine caricata, salvata nel repo e aggiunta al JSON!');
+
     // reset form
     fileInput.value = '';
     deslInput.value = '';
