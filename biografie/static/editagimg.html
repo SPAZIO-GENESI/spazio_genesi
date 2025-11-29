@@ -48,6 +48,29 @@ button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2
 }
 
 .img-card input {width:100%;margin-top:4px;font-size:12px;}
+
+.img-item {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.img-item button {
+  background: #c53030;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+}
+.img-item button:hover {
+  background: #9b2c2c;
+}
+
+
 #newImageForm {margin-top:12px;border-top:1px solid #ccc;padding-top:12px;}
 </style>
 </head>
@@ -145,32 +168,42 @@ function applyChanges(){
 }
 
 // --- Rendering immagini ---
-function renderImages(){
-  const container = document.getElementById('imagesContainer');
-  container.innerHTML = '';
+    function renderImages(){
+    const container = document.getElementById('imagesContainer');
+    container.innerHTML = '';
 
-  // currentArtist.img è un array con un solo oggetto
-  const imgObj = currentArtist.img[0];
+    const imgObj = currentArtist.img[0];
 
-  Object.entries(imgObj).forEach(([key, value]) => {
-    value.forEach((im) => {
-      const div = document.createElement('div');
-      const imgElem = document.createElement('img');
-      imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.img}`;
-      const descInput = document.createElement('textarea');
+    Object.entries(imgObj).forEach(([key, value]) => {
+        value.forEach((im) => {
+        const div = document.createElement('div');
+        div.className = 'img-item';
+
+        const imgElem = document.createElement('img');
+        imgElem.src = `https://raw.githubusercontent.com/SPAZIO-GENESI/spazio_genesi/main/biografie/${currentArtist.cartella}/${im.img}`;
+
+        const descInput = document.createElement('textarea');
         descInput.placeholder = 'deslunga';
         descInput.value = im.deslunga || '';
-        descInput.addEventListener('input', ()=>{ 
-        im.deslunga = descInput.value; 
-        updatePreview(); 
+        descInput.addEventListener('input', ()=>{ im.deslunga = descInput.value; updatePreview(); });
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Elimina';
+        delBtn.style.marginTop = '6px';
+        delBtn.addEventListener('click', ()=>{
+            // rimuovi dal JSON
+            delete imgObj[key];
+            renderImages();
+            updatePreview();
         });
 
-      div.appendChild(imgElem);
-      div.appendChild(descInput);
-      container.appendChild(div);
+        div.appendChild(imgElem);
+        div.appendChild(descInput);
+        div.appendChild(delBtn);
+        container.appendChild(div);
+        });
     });
-  });
-}
+    }
 
 // --- Caricamento nuova immagine ---
     document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
