@@ -72,6 +72,23 @@ async function loadArtistFromWorker(email){
   }
 }
 
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  applyChanges();
+  try{
+    const resp = await fetch(WORKER_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ userEmail, data: { artisti:[currentArtist] } })
+    });
+    const json = await resp.json();
+    if (!resp.ok) throw new Error(json.error || 'Errore salvataggio');
+    alert('Salvataggio completato!');
+  }catch(e){
+    alert('Errore salvataggio: '+e.message);
+  }
+});
+
+
 function loadArtist(artist){
   document.getElementById('field_cartella').value = artist.cartella || '';
   document.getElementById('field_nome').value = artist.nome || '';
@@ -98,7 +115,6 @@ function updatePreview(){
 }
 
 // --- Salvataggio ---
-document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
     const resp = await fetch(WORKER_URL, {
