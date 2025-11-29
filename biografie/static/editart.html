@@ -9,13 +9,73 @@
 body {font-family: system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;color:#111;}
 .card {background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px;margin-bottom:16px;}
 label {display:block;margin-top:8px;font-size:13px;}
-input,textarea {width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4;}
-textarea {min-height:120px;}
-button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer;}
-.img-card {display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:12px;}
-.img-item {background:#fafafa;border:1px solid #ddd;border-radius:8px;padding:10px;display:flex;flex-direction:column;align-items:stretch;}
-.img-item img {width:100%;height:auto;border-radius:6px;border:1px solid #ccc;margin-bottom:8px;}
-.img-item textarea {width:100%;min-height:80px;font-size:12px;padding:6px;border-radius:6px;border:1px solid #bbb;resize:vertical;}
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d4;
+  box-sizing: border-box; /* evita overflow */
+}
+
+/* textarea generali */
+textarea {
+  min-height: 160px;       /* più alto di default */
+  font-size: 14px;         /* testo più leggibile */
+  line-height: 1.4;
+  resize: vertical;        /* ridimensionabile verticalmente */
+}
+
+/* pulsanti */
+button {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 0;
+  background: #2b6cb0;
+  color: white;
+  cursor: pointer;
+}
+
+/* griglia immagini */
+.img-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* card immagine */
+.img-item {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* immagine dentro card */
+.img-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+/* textarea dentro card immagine */
+.img-item textarea {
+  width: 100%;
+  min-height: 120px;       /* più alto di default */
+  font-size: 13px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  resize: vertical;        /* ridimensionabile */
+}
+
 .img-item button {background:#c53030;color:white;border:none;border-radius:6px;padding:6px;cursor:pointer;}
 .img-item button:hover {background:#9b2c2c;}
 #newImageForm {margin-top:12px;border-top:1px solid #ccc;padding-top:12px;}
