@@ -112,7 +112,7 @@ function updatePreview(){
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev//', {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ userEmail, data })
