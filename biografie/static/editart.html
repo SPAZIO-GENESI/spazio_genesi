@@ -198,7 +198,11 @@ function renderImages(){
       const descInput = document.createElement('textarea');
       descInput.placeholder = 'deslunga';
       descInput.value = im.deslunga || '';
-      descInput.addEventListener('input', ()=>{ im.deslunga = descInput.value; updatePreview(); });
+      
+      descInput.addEventListener('input', ()=>{
+  im.deslunga = unescape(encodeURIComponent(descInput.value));
+  updatePreview();
+});
 
       const delBtn = document.createElement('button');
       delBtn.textContent = 'Elimina';
@@ -250,7 +254,8 @@ document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
 
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('deslunga', desl);
+  const deslClean = unescape(encodeURIComponent(desl));
+formData.append('deslunga', deslClean);
   formData.append('cartella', currentArtist.cartella);
   formData.append('userEmail', userEmail);
   formData.append('artistName', currentArtist.nome);
