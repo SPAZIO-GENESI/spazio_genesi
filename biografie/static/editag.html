@@ -19,7 +19,8 @@ button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b
 
 <div id="g_id_onload"
      data-client_id="987898157658-irhu80m2qkjm04p6v9rrh23638ofhcbo.apps.googleusercontent.com"
-     data-callback="handleCredentialResponse">
+     data-callback="handleCredentialResponse"
+     data-auto_prompt="false">
 </div>
 <div class="g_id_signin" data-type="standard"></div>
 
@@ -40,25 +41,26 @@ button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b
 <pre id="jsonPreview">{ }</pre>
 </div>
 
-<script>
-const WORKER_URL = 'https://artistajson.it-e3f.workers.dev/'; // cambia con il tuo worker
-let currentArtist = null;
+<script type="module">
+const WORKER_URL = 'https://artistajson.it-e3f.workers.dev/';
 let userEmail = null;
+let currentArtist = null;
 
-// --- Google OAuth ---
-function handleCredentialResponse(response) {
+// --- Funzione chiamata da Google login ---
+window.handleCredentialResponse = (response) => {
   const jwt = parseJwt(response.credential);
   userEmail = jwt.email;
   loadArtistFromWorker(userEmail);
-}
+};
 
+// --- Decodifica JWT Google ---
 function parseJwt(token) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Carica solo il record dell'artista ---
+// --- Carica solo il record dell'artista dal Worker ---
 async function loadArtistFromWorker(email){
   try {
     const resp = await fetch(`${WORKER_URL}?email=${encodeURIComponent(email)}`);
@@ -72,23 +74,7 @@ async function loadArtistFromWorker(email){
   }
 }
 
-document.getElementById('saveBtn').addEventListener('click', async ()=>{
-  applyChanges();
-  try{
-    const resp = await fetch(WORKER_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ userEmail, data: { artisti:[currentArtist] } })
-    });
-    const json = await resp.json();
-    if (!resp.ok) throw new Error(json.error || 'Errore salvataggio');
-    alert('Salvataggio completato!');
-  }catch(e){
-    alert('Errore salvataggio: '+e.message);
-  }
-});
-
-
+// --- Carica valori nell'editor ---
 function loadArtist(artist){
   document.getElementById('field_cartella').value = artist.cartella || '';
   document.getElementById('field_nome').value = artist.nome || '';
@@ -99,8 +85,8 @@ function loadArtist(artist){
   updatePreview();
 }
 
+// --- Aggiorna JSON locale con valori modificati ---
 function applyChanges(){
-  if(!currentArtist) return;
   currentArtist.cartella = document.getElementById('field_cartella').value;
   currentArtist.nome = document.getElementById('field_nome').value;
   currentArtist.IG = document.getElementById('field_ig').value;
@@ -110,11 +96,13 @@ function applyChanges(){
   updatePreview();
 }
 
+// --- Anteprima JSON ---
 function updatePreview(){
-  document.getElementById('jsonPreview').textContent = JSON.stringify(currentArtist, null,2);
+  document.getElementById('jsonPreview').textContent = JSON.stringify({ artisti: [currentArtist] }, null, 2);
 }
 
-// --- Salvataggio ---
+// --- Salvataggio tramite Worker ---
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
     const resp = await fetch(WORKER_URL, {
