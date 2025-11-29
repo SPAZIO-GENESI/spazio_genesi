@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Editor Artisti — Protetto</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;color:#111}
+.card{background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px;margin-bottom:16px}
+label{display:block;margin-top:8px;font-size:13px}
+input,textarea{width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4}
+textarea{min-height:120px}
+button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer}
+img{max-width:150px;margin:4px;border-radius:4px;border:1px solid #ccc}
+</style>
+</head>
+<body>
+<h2>Editor Artisti — Login richiesto</h2>
+
+<div id="g_id_onload"
+     data-client_id="987898157658-irhu80m2qkjm04p6v9rrh23638ofhcbo.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse">
+</div>
+<div class="g_id_signin" data-type="standard"></div>
+
+<div id="editor" style="display:none" class="card">
+<h3>Modifica i tuoi dati</h3>
+<label>cartella <input id="field_cartella" type="text" disabled></label>
+<label>nome <input id="field_nome" type="text"></label>
+<label>IG <input id="field_ig" type="text"></label>
+<label>social <input id="field_social" type="text"></label>
+<label>portfolio <input id="field_portfolio" type="text"></label>
+<label>bio <textarea id="field_bio"></textarea></label>
+
+<h4>Immagini (max 10)</h4>
+<div id="imagePreview"></div>
+<input type="file" id="newImage" accept="image/*">
+<button id="addImageBtn">Aggiungi immagine</button>
+
+<div style="margin-top:12px">
+<button id="saveBtn">Salva modifiche</button>
+</div>
+
+<h4>Anteprima JSON</h4>
+<pre id="jsonPreview">{ }</pre>
+</div>
+
+<script>
+let userEmail = null;
+let currentArtist = null;
+let data = { "artisti": [] };
+
+// --- Funzione di login Google ---
+function handleCredentialResponse(response) {
+  const jwt = parseJwt(response.credential);
+  userEmail = jwt.email;
+  loadArtistData();
+}
+
+// --- Decode JWT ---
+function parseJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
+  return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+}
+
+// --- Carica dati singolo artista dal worker ---
+async function loadArtistData(){
+  try {
+    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(userEmail)}`);
+    if(!resp.ok) throw new Error('Utente non trovato o errore caricamento');
+    currentArtist = await resp.json();
+    data.artisti = [currentArtist]; // solo record dell'artista
+    document.getElementById('editor').style.display='block';
+    loadArtist(currentArtist);
+  } catch(e){
+    alert('Errore caricamento dati: '+e.message);
+  }
+}
+
+// --- Carica valori input e immagini ---
+function loadArtist(artist){
+  document.getElementById('field_cartella').value = artist.cartella || '';
+  document.getElementById('field_nome').value = artist.nome || '';
+  document.getElementById('field_ig').value = artist.IG || '';
+  document.getElementById('field_social').value = artist.social || '';
+  document.getElementById('field_portfolio').value = artist.portfolio || '';
+  document.getElementById('field_bio').value = artist.bio || '';
+  renderImages();
+  updatePreview();
+}
+
+// --- Render immagini ---
+function renderImages(){
+  const previewDiv = document.getElementById('imagePreview');
+  previewDiv.innerHTML = '';
+  if(currentArtist.img && currentArtist.img.length){
+    currentArtist.img.forEach(group => {
+      Object.values(group).forEach(imgArr => {
+        imgArr.forEach(imgObj => {
+          const imgEl = document.createElement('img');
+          imgEl.src = '/biografie/' + currentArtist.cartella + '/' + imgObj.img;
+          imgEl.alt = imgObj.des || '';
+          previewDiv.appendChild(imgEl);
+        });
+      });
+    });
+  }
+}
+
+// --- Applica modifiche input a currentArtist ---
+function applyChanges(){
+  currentArtist.nome = document.getElementById('field_nome').value;
+  currentArtist.IG = document.getElementById('field_ig').value;
+  currentArtist.social = document.getElementById('field_social').value;
+  currentArtist.portfolio = document.getElementById('field_portfolio').value;
+  currentArtist.bio = document.getElementById('field_bio').value;
+  updatePreview();
+}
+
+// --- Aggiorna preview JSON ---
+function updatePreview(){
+  document.getElementById('jsonPreview').textContent = JSON.stringify({artisti:[currentArtist]}, null,2);
+}
+
+// --- Aggiungi nuova immagine ---
+document.getElementById('addImageBtn').addEventListener('click', ()=>{
+  const fileInput = document.getElementById('newImage');
+  if(!fileInput.files || !fileInput.files[0]) return alert('Seleziona un file');
+  if(!currentArtist.img) currentArtist.img = [{}];
+  const group = currentArtist.img[0]; // primo gruppo
+  const key = Object.keys(group)[0] || '1';
+  if(!group[key]) group[key] = [];
+  if(group[key].length >= 10) return alert('Limite immagini raggiunto');
+
+  const file = fileInput.files[0];
+  // aggiungiamo solo il nome del file, upload reale va gestito separatamente
+  group[key].push({img: file.name, des: file.name, deslunga: ''});
+  renderImages();
+  updatePreview();
+  fileInput.value='';
+});
+
+// --- Salva modifiche al worker ---
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  applyChanges();
+  try{
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ userEmail, data:{artisti:[currentArtist]} })
+    });
+    const result = await resp.json();
+    if(result.error) throw new Error(result.error);
+    alert('Salvataggio completato!');
+  }catch(e){
+    alert('Errore salvataggio: '+e.message);
+  }
+});
+</script>
+</body>
+</html>
