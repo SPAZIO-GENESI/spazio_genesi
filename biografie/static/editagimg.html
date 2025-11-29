@@ -156,18 +156,39 @@ function renderImages(){
 }
 
 // --- Aggiungi nuova immagine ---
-document.getElementById('addImageBtn').addEventListener('click', ()=>{
-  const imgs = getAllImages(currentArtist);
-  if(imgs.length >= maxImages) return alert('Numero massimo immagini raggiunto');
-  const newImgName = prompt('Nome file immagine (con estensione):');
-  if(!newImgName) return;
-  const desl = prompt('Descrizione (deslunga) della nuova immagine:') || '';
-  // Inserimento in chiave "nuovo" o "10" come esempio
-  if(!currentArtist.img[0]["10"]) currentArtist.img[0]["10"] = [];
-  currentArtist.img[0]["10"].push({ img: newImgName, deslunga: desl });
-  renderImages();
-  updatePreview();
+document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const file = form.file.files[0];
+  const deslunga = form.deslunga.value.trim();
+  if (!file) return alert('Seleziona un file');
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('deslunga', deslunga);
+  formData.append('cartella', currentArtist.cartella);
+  formData.append('userEmail', userEmail);
+
+  try {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const result = await resp.json();
+    if (result.error) throw new Error(result.error);
+
+    // Aggiorna l'artista in locale
+    if (!currentArtist.img) currentArtist.img = [];
+    currentArtist.img.push({ nome: file.name, deslunga });
+    renderImages();
+    updatePreview();
+    form.reset();
+    alert('Immagine caricata correttamente!');
+  } catch (err) {
+    alert('Errore upload: ' + err.message);
+  }
 });
+
 
 // --- Anteprima JSON ---
 function updatePreview(){
