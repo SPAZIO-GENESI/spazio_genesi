@@ -49,7 +49,7 @@ let currentArtist = null;
 // --- 1️⃣ Carica il JSON dal repo GitHub pubblico ---
 async function loadJSONFromGitHub() {
   try {
-    const response = await fetch('https://raw.githubusercontent.com/TUO_OWNER/TUO_REPO/main/bio.json');
+    const response = await fetch('https://raw.githubusercontent.com/SPAZIO-GENESI/spazio_genesi/main/biografie/bio.json');
     if (!response.ok) throw new Error('Errore nel caricamento del JSON');
     data = await response.json();
     console.log('JSON caricato:', data);
