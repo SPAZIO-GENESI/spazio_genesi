@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Editor Artisti — Protetto</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+body {font-family: system-ui,Segoe UI,Roboto,Arial;margin:16px;background:#f7f7f8;color:#111;}
+.card {background:#fff;border:1px solid #e0e0e3;padding:12px;border-radius:8px;margin-bottom:16px;}
+label {display:block;margin-top:8px;font-size:13px;}
+input,textarea {width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4;}
+textarea {min-height:120px;}
+button {margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer;}
+.img-card {display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:12px;}
+.img-item {background:#fafafa;border:1px solid #ddd;border-radius:8px;padding:10px;display:flex;flex-direction:column;align-items:stretch;}
+.img-item img {width:100%;height:auto;border-radius:6px;border:1px solid #ccc;margin-bottom:8px;}
+.img-item textarea {width:100%;min-height:80px;font-size:12px;padding:6px;border-radius:6px;border:1px solid #bbb;resize:vertical;}
+.img-item button {background:#c53030;color:white;border:none;border-radius:6px;padding:6px;cursor:pointer;}
+.img-item button:hover {background:#9b2c2c;}
+#newImageForm {margin-top:12px;border-top:1px solid #ccc;padding-top:12px;}
+pre {background:#1e1e1e;color:#d4d4d4;padding:12px;border-radius:8px;overflow:auto;}
+</style>
+</head>
+<body>
+<h2>Editor Artisti — Login richiesto</h2>
+
+<div id="g_id_onload"
+     data-client_id="987898157658-irhu80m2qkjm04p6v9rrh23638ofhcbo.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse">
+</div>
+<div class="g_id_signin" data-type="standard"></div>
+
+<div id="editor" style="display:none" class="card">
+  <h3>Modifica i tuoi dati</h3>
+  <label>Cartella <input id="field_cartella" type="text"></label>
+  <label>Nome <input id="field_nome" type="text"></label>
+  <label>IG <input id="field_ig" type="text"></label>
+  <label>Social <input id="field_social" type="text"></label>
+  <label>Portfolio <input id="field_portfolio" type="text"></label>
+  <label>Bio <textarea id="field_bio"></textarea></label>
+
+  <h4>Immagini esistenti</h4>
+  <div class="img-card" id="imagesContainer"></div>
+
+  <h4>Aggiungi nuova immagine</h4>
+  <form id="newImageForm">
+    <label>Seleziona file <input type="file" id="newImageFile" accept="image/*"></label>
+    <label>Descrizione lunga (deslunga) <input type="text" id="newImageDeslunga"></label>
+    <button type="submit">Carica immagine</button>
+  </form>
+
+  <div style="margin-top:12px">
+    <button id="saveBtn">Salva modifiche</button>
+  </div>
+
+  <h4>Anteprima JSON</h4>
+  <pre id="jsonPreview">{ }</pre>
+</div>
+
+<script>
+let userEmail = null;
+let currentArtist = null;
+let data = { artisti: [] };
+
+// --- Login Google ---
+function handleCredentialResponse(response) {
+  const jwt = parseJwt(response.credential);
+  userEmail = jwt.email;
+  loadArtistFromWorker(userEmail);
+}
+function parseJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
+  return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+}
+
+// --- Caricamento singolo artista dal Worker ---
+async function loadArtistFromWorker(email) {
+  try {
+    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(email)}&t=${Date.now()}`);
+    if (!resp.ok) throw new Error('Errore caricamento artista');
+    currentArtist = await resp.json();
+    if (!currentArtist) throw new Error('Artista non trovato');
+    data.artisti = [currentArtist];
+    document.getElementById('editor').style.display='block';
+    loadFields();
+    renderImages();
+    updatePreview();
+  } catch(e) {
+    alert('Errore: ' + e.message);
+  }
+}
+
+// --- Caricamento campi ---
+function loadFields(){
+  document.getElementById('field_cartella').value = currentArtist.cartella || '';
+  document.getElementById('field_nome').value = currentArtist.nome || '';
+  document.getElementById('field_ig').value = currentArtist.IG || '';
+  document.getElementById('field_social').value = currentArtist.social || '';
+  document.getElementById('field_portfolio').value = currentArtist.portfolio || '';
+  document.getElementById('field_bio').value = currentArtist.bio || '';
+}
+
+// --- Applica modifiche dai campi ---
+function applyChanges(){
+  currentArtist.cartella = document.getElementById('field_cartella').value;
+  currentArtist.nome = document.getElementById('field_nome').value;
+  currentArtist.IG = document.getElementById('field_ig').value;
+  currentArtist.social = document.getElementById('field_social').value;
+  currentArtist.portfolio = document.getElementById('field_portfolio').value;
+  currentArtist.bio = document.getElementById('field_bio').value;
+  data.artisti[0] = currentArtist;
+}
+
+// --- Rendering immagini + delete ---
+function renderImages(){
+  const container = document.getElementById('imagesContainer');
+  container.innerHTML = '';
+  const imgObj = currentArtist.img[0];
+
+  Object.entries(imgObj).forEach(([key, value]) => {
+    value.forEach((im) => {
+      const div = document.createElement('div');
+      div.className = 'img-item';
+
+      const imgElem = document.createElement('img');
+      // raw per visibilità immediata + cache buster
+      imgElem.src = `https://raw.githubusercontent.com/SPAZIO-GENESI/spazio_genesi/main/biografie/${currentArtist.cartella}/${im.img}?v=${Date.now()}`;
+      imgElem.alt = im.des || im.img || '';
+
+      const descInput = document.createElement('textarea');
+      descInput.placeholder = 'deslunga';
+      descInput.value = im.deslunga || '';
+      descInput.addEventListener('input', ()=>{ im.deslunga = descInput.value; updatePreview(); });
+
+      const delBtn = document.createElement('button');
+      delBtn.textContent = 'Elimina';
+      delBtn.addEventListener('click', async ()=>{
+        const conferma = confirm(`Vuoi davvero eliminare l'immagine "${im.img}" e la sua descrizione?`);
+        if(!conferma) return;
+        try {
+          const resp = await fetch('https://artistajson.it-e3f.workers.dev/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              cartella: currentArtist.cartella,
+              fileName: im.img,
+              userEmail
+            })
+          });
+          const result = await resp.json();
+          if(result.error) throw new Error(result.error);
+
+          // rimuovi dal JSON locale
+          delete imgObj[key];
+          renderImages();
+          updatePreview();
+          alert('Immagine eliminata dal repo e dal JSON!');
+        } catch(e) {
+          alert('Errore eliminazione: ' + e.message);
+        }
+      });
+
+      div.appendChild(imgElem);
+      div.appendChild(descInput);
+      div.appendChild(delBtn);
+      container.appendChild(div);
+    });
+  });
+}
+
+// --- Upload nuova immagine ---
+document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fileInput = document.getElementById('newImageFile');
+  const deslInput = document.getElementById('newImageDeslunga');
+  if(!fileInput.files.length) return alert('Seleziona un file');
+
+  const file = fileInput.files[0];
+  const desl = deslInput.value || '';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('deslunga', desl);
+  formData.append('cartella', currentArtist.cartella);
+  formData.append('userEmail', userEmail);
+
+  try {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const result = await resp.json();
+    if(result.error) throw new Error(result.error);
+
+    // aggiorna JSON locale rispettando la struttura { img: [ { "1": [ ... ], "2": [ ... ] } ] }
+    const imgObj = currentArtist.img[0];
+    const nextKey = (Object.keys(imgObj).length + 1).toString();
+    imgObj[nextKey] = [{ img: file.name, des: '', deslunga: desl }];
+
+    renderImages();
+    updatePreview();
+    alert('Immagine caricata, salvata nel repo e aggiunta al JSON!');
+    // reset form
+    fileInput.value = '';
+    deslInput.value = '';
+  } catch(e) {
+    alert('Errore upload: ' + e.message);
+  }
+});
+
+// --- Salvataggio JSON su worker (/update) ---
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  applyChanges();
+  try {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userEmail, data })
+    });
+    const result = await resp.json();
+    if(result.error) throw new Error(result.error);
+    alert('Dati salvati correttamente!');
+  } catch(e) {
+    alert('Errore salvataggio: ' + e.message);
+  }
+});
+
+// --- Anteprima JSON ---
+function updatePreview(){
+  // assicurati che la struttura sia coerente
+  data.artisti[0] = currentArtist;
+  document.getElementById('jsonPreview').textContent = JSON.stringify(data, null, 2);
+}
+</script>
+</body>
+</html>
