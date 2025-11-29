@@ -117,14 +117,11 @@ function renderImages(){
   const container = document.getElementById('imagesContainer');
   container.innerHTML = '';
 
-  // Se img è un oggetto → convertilo in array
-  const imgArray = Array.isArray(currentArtist.img)
-      ? currentArtist.img
-      : Object.entries(currentArtist.img).map(([key, value]) => ({ [key]: value }));
+  // currentArtist.img è un array con un solo oggetto
+  const imgObj = currentArtist.img[0];
 
-  imgArray.slice(0, maxImages).forEach((imgObj) => {
-    const key = Object.keys(imgObj)[0];
-    imgObj[key].forEach((im) => {
+  Object.entries(imgObj).forEach(([key, value]) => {
+    value.forEach((im) => {
       const div = document.createElement('div');
       const imgElem = document.createElement('img');
       imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${im.img}`;
@@ -146,21 +143,15 @@ document.getElementById('newImageForm').addEventListener('submit', async (e)=>{
   const fileInput = document.getElementById('newImageFile');
   const deslInput = document.getElementById('newImageDeslunga');
   if(!fileInput.files.length) return alert('Seleziona un file');
-  if(Object.keys(currentArtist.img).length >= maxImages) return alert('Numero massimo immagini raggiunto');
 
   const file = fileInput.files[0];
   const desl = deslInput.value || '';
-  const reader = new FileReader();
-  reader.onload = function(evt){
-    const base64Content = evt.target.result.split(',')[1];
-    const nextKey = (Object.keys(currentArtist.img).length + 1).toString();
-    const newImgObj = {};
-    newImgObj[nextKey] = [{ img: file.name, deslunga: desl, des: '' }];
-    currentArtist.img.push(newImgObj);
-    renderImages();
-    updatePreview();
-  };
-  reader.readAsDataURL(file);
+  const nextKey = (Object.keys(currentArtist.img[0]).length + 1).toString();
+
+  currentArtist.img[0][nextKey] = [{ img: file.name, deslunga: desl, des: '' }];
+
+  renderImages();
+  updatePreview();
 });
 
 // --- Anteprima JSON ---
