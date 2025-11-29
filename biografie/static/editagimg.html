@@ -117,26 +117,29 @@ function renderImages(){
   const container = document.getElementById('imagesContainer');
   container.innerHTML='';
   if(!currentArtist.img) currentArtist.img=[];
-  currentArtist.img.slice(0,maxImages).forEach((im,i)=>{
-    // se la struttura JSON è con chiavi numeriche
-    const imgObj = Object.values(im)[0][0]; // estrae {img, des, deslunga}
+  
+  currentArtist.img.slice(0,maxImages).forEach((im, i) => {
+    // Itera su tutte le chiavi numeriche dell'oggetto
+    Object.keys(im).forEach(key => {
+      im[key].forEach((imgObj, idx) => {
+        const div = document.createElement('div');
+        const imgElem = document.createElement('img');
+        imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${imgObj.img}`;
 
-    const div = document.createElement('div');
-    const imgElem = document.createElement('img');
-    imgElem.src = `https://SPAZIO-GENESI.github.io/spazio_genesi/biografie/${currentArtist.cartella}/${imgObj.img}`;
+        const descInput = document.createElement('input');
+        descInput.type='text';
+        descInput.placeholder='deslunga';
+        descInput.value = imgObj.deslunga || '';
+        descInput.addEventListener('input', () => {
+          imgObj.deslunga = descInput.value;
+          updatePreview();
+        });
 
-    const descInput = document.createElement('input');
-    descInput.type='text';
-    descInput.placeholder='deslunga';
-    descInput.value = imgObj.deslunga || '';
-    descInput.addEventListener('input', ()=>{
-      imgObj.deslunga = descInput.value;
-      updatePreview();
+        div.appendChild(imgElem);
+        div.appendChild(descInput);
+        container.appendChild(div);
+      });
     });
-
-    div.appendChild(imgElem);
-    div.appendChild(descInput);
-    container.appendChild(div);
   });
 }
 
