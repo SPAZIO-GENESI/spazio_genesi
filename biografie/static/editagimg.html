@@ -12,7 +12,7 @@ label{display:block;margin-top:8px;font-size:13px}
 input,textarea{width:100%;padding:8px;border-radius:6px;border:1px solid #d0d0d4}
 textarea{min-height:120px}
 button{margin-top:8px;padding:8px 10px;border-radius:6px;border:0;background:#2b6cb0;color:white;cursor:pointer}
-img{max-width:150px;margin:4px;border-radius:4px;border:1px solid #ccc}
+img{max-width:200px;display:block;margin-top:4px;margin-bottom:4px;border:1px solid #ccc;border-radius:4px}
 </style>
 </head>
 <body>
@@ -26,7 +26,7 @@ img{max-width:150px;margin:4px;border-radius:4px;border:1px solid #ccc}
 
 <div id="editor" style="display:none" class="card">
 <h3>Modifica i tuoi dati</h3>
-<label>cartella <input id="field_cartella" type="text" disabled></label>
+<label>cartella <input id="field_cartella" type="text" readonly></label>
 <label>nome <input id="field_nome" type="text"></label>
 <label>IG <input id="field_ig" type="text"></label>
 <label>social <input id="field_social" type="text"></label>
@@ -47,69 +47,47 @@ img{max-width:150px;margin:4px;border-radius:4px;border:1px solid #ccc}
 </div>
 
 <script>
-let userEmail = null;
 let currentArtist = null;
-let data = { "artisti": [] };
+let userEmail = null;
 
-// --- Funzione di login Google ---
-function handleCredentialResponse(response) {
+// --- Login Google ---
+function handleCredentialResponse(response){
   const jwt = parseJwt(response.credential);
   userEmail = jwt.email;
-  loadArtistData();
+  loadArtistData(userEmail);
 }
 
-// --- Decode JWT ---
-function parseJwt(token) {
+function parseJwt(token){
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c=> '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-// --- Carica dati singolo artista dal worker ---
-async function loadArtistData(){
-  try {
-    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(userEmail)}`);
-    if(!resp.ok) throw new Error('Utente non trovato o errore caricamento');
-    currentArtist = await resp.json();
-    data.artisti = [currentArtist]; // solo record dell'artista
+// --- Carica solo record dell'artista dal Worker ---
+async function loadArtistData(email){
+  try{
+    const resp = await fetch(`https://artistajson.it-e3f.workers.dev/?email=${encodeURIComponent(email)}`);
+    const result = await resp.json();
+    if(result.error) return alert(result.error);
+    currentArtist = result;
     document.getElementById('editor').style.display='block';
-    loadArtist(currentArtist);
-  } catch(e){
-    alert('Errore caricamento dati: '+e.message);
-  }
+    loadArtistFields(currentArtist);
+    renderImages();
+    updatePreview();
+  }catch(e){alert('Errore caricamento dati: '+e.message);}
 }
 
-// --- Carica valori input e immagini ---
-function loadArtist(artist){
+// --- Carica campi testo ---
+function loadArtistFields(artist){
   document.getElementById('field_cartella').value = artist.cartella || '';
   document.getElementById('field_nome').value = artist.nome || '';
   document.getElementById('field_ig').value = artist.IG || '';
   document.getElementById('field_social').value = artist.social || '';
   document.getElementById('field_portfolio').value = artist.portfolio || '';
   document.getElementById('field_bio').value = artist.bio || '';
-  renderImages();
-  updatePreview();
 }
 
-// --- Render immagini ---
-function renderImages(){
-  const previewDiv = document.getElementById('imagePreview');
-  previewDiv.innerHTML = '';
-  if(currentArtist.img && currentArtist.img.length){
-    currentArtist.img.forEach(group => {
-      Object.values(group).forEach(imgArr => {
-        imgArr.forEach(imgObj => {
-          const imgEl = document.createElement('img');
-          imgEl.src = '/biografie/' + currentArtist.cartella + '/' + imgObj.img;
-          imgEl.alt = imgObj.des || '';
-          previewDiv.appendChild(imgEl);
-        });
-      });
-    });
-  }
-}
-
-// --- Applica modifiche input a currentArtist ---
+// --- Applica modifiche campi testo ---
 function applyChanges(){
   currentArtist.nome = document.getElementById('field_nome').value;
   currentArtist.IG = document.getElementById('field_ig').value;
@@ -119,44 +97,75 @@ function applyChanges(){
   updatePreview();
 }
 
-// --- Aggiorna preview JSON ---
+// --- Anteprima JSON ---
 function updatePreview(){
-  document.getElementById('jsonPreview').textContent = JSON.stringify({artisti:[currentArtist]}, null,2);
+  document.getElementById('jsonPreview').textContent = JSON.stringify({artisti:[currentArtist]},null,2);
+}
+
+// --- Render immagini e modifica campo deslunga ---
+function renderImages(){
+  const previewDiv = document.getElementById('imagePreview');
+  previewDiv.innerHTML = '';
+  if(currentArtist.img && currentArtist.img.length){
+    currentArtist.img.forEach((group,gIndex)=>{
+      Object.entries(group).forEach(([key,imgArr])=>{
+        imgArr.forEach((imgObj,i)=>{
+          const container = document.createElement('div');
+          container.style.marginBottom='8px';
+
+          const imgEl = document.createElement('img');
+          imgEl.src = '/biografie/'+currentArtist.cartella+'/'+imgObj.img;
+          imgEl.alt = imgObj.des || '';
+          container.appendChild(imgEl);
+
+          const input = document.createElement('input');
+          input.type='text';
+          input.value = imgObj.deslunga || '';
+          input.placeholder = 'Descrizione lunga';
+          input.style.width='100%';
+          input.addEventListener('input', (e)=>{
+            currentArtist.img[gIndex][key][i].deslunga = e.target.value;
+            updatePreview();
+          });
+          container.appendChild(input);
+
+          previewDiv.appendChild(container);
+        });
+      });
+    });
+  }
 }
 
 // --- Aggiungi nuova immagine ---
-document.getElementById('addImageBtn').addEventListener('click', ()=>{
+document.getElementById('addImageBtn').addEventListener('click',()=>{
   const fileInput = document.getElementById('newImage');
   if(!fileInput.files || !fileInput.files[0]) return alert('Seleziona un file');
-  if(!currentArtist.img) currentArtist.img = [{}];
-  const group = currentArtist.img[0]; // primo gruppo
+  if(!currentArtist.img) currentArtist.img=[{}];
+  const group = currentArtist.img[0];
   const key = Object.keys(group)[0] || '1';
-  if(!group[key]) group[key] = [];
-  if(group[key].length >= 10) return alert('Limite immagini raggiunto');
+  if(!group[key]) group[key]=[];
+  if(group[key].length>=10) return alert('Limite immagini raggiunto');
 
   const file = fileInput.files[0];
-  // aggiungiamo solo il nome del file, upload reale va gestito separatamente
-  group[key].push({img: file.name, des: file.name, deslunga: ''});
+  group[key].push({img:file.name, des:file.name, deslunga:''});
   renderImages();
   updatePreview();
   fileInput.value='';
 });
 
-// --- Salva modifiche al worker ---
+// --- Salvataggio sul Worker ---
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
   applyChanges();
   try{
-    const resp = await fetch('https://artistajson.it-e3f.workers.dev/', {
+    const resp = await fetch('https://artistajson.it-e3f.workers.dev/',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ userEmail, data:{artisti:[currentArtist]} })
     });
     const result = await resp.json();
-    if(result.error) throw new Error(result.error);
-    alert('Salvataggio completato!');
-  }catch(e){
-    alert('Errore salvataggio: '+e.message);
-  }
+    if(result.error) alert('Errore salvataggio: '+result.error);
+    else alert('Salvataggio completato!');
+  }catch(e){alert('Errore: '+e.message);}
 });
 </script>
 </body>
