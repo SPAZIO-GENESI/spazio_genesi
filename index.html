@@ -96,8 +96,136 @@
 
         <link rel="preload" as="image" href="/img/SPAZIO_GENESI_Tessere.jpg" fetchpriority="high">
 
+<style>
 
+.flyer-shadow-only {
+    position: relative;
+    display: inline-block;
+    transition: all 0.5s ease;
+}
 
+.flyer-shadow-only img {
+    transition: all 0.6s ease;
+    display: block;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    border-radius: 2px;
+}
+
+/* Solo l'ombra dell'angolo che si solleva */
+.flyer-shadow-only::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 80px;
+    height: 80px;
+    background: 
+        radial-gradient(ellipse at 60px -10px, rgba(0,0,0,0.12) 0%, transparent 60%);
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: -1;
+}
+
+.flyer-shadow-only:hover {
+    transform: translateY(-4px);
+}
+
+.flyer-shadow-only:hover img {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.flyer-shadow-only:hover::before {
+    opacity: 1;
+    transform: scale(1.1);
+}
+  /* Versione ottimizzata per il tuo SVG */
+.water-drop {
+    display: inline-block;
+    position: relative;
+    /*overflow: hidden;*/
+    border-radius: 4px;
+    padding: 10px;
+    margin: -10px;
+    transition: transform 0.3s ease;
+}
+
+.water-drop svg {
+    transition: all 0.6s ease;
+    transform: scale(1);
+    filter: brightness(1);
+    display: block;
+}
+
+/* Effetto goccia sull'hover */
+.water-drop:hover svg {
+    animation: waterRipple 1.2s ease-out;
+    filter: brightness(1.1) contrast(1.05);
+}
+
+/* Onde concentriche */
+.water-drop::before,
+.water-drop::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.water-drop:hover::before {
+    animation: ripple 1.2s ease-out 0.1s;
+}
+
+.water-drop:hover::after {
+    animation: ripple 1.2s ease-out 0.3s;
+}
+
+/* Animazioni */
+@keyframes ripple {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        width: 120%;
+        height: 120%;
+        opacity: 0;
+    }
+}
+
+@keyframes waterRipple {
+    0% {
+        transform: scale(1);
+        filter: brightness(1) contrast(1);
+    }
+    25% {
+        transform: scale(1.02);
+        filter: brightness(1.12) contrast(1.08) blur(0.2px);
+    }
+    50% {
+        transform: scale(1.01);
+        filter: brightness(1.08) contrast(1.04) blur(0.1px);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1.04) contrast(1.02);
+    }
+}
+</style>
 
         <!-- SERVICE WORKER GITHUB PER CACHE -->
         <script>
@@ -157,10 +285,10 @@
           </header>
     
           <main role="main" class="inner cover">
-            <div class="container">
-              <p class="lead">
-                <a id="logopopover" href="#" data-content="geometrismo anni '70, scuola di ULM (post Bauhaus) rif. Mimmo Castellano, Pino Tovaglia, Giulio Cittato, Giancarlo Illiprandi. Logo di névoa-na-rua" rel="popover" data-placement="bottom" data-original-title="Riferimenti" data-trigger="hover"0>
-                  <svg id="Layer_2" style="max-width: 100%; width:100%; height:auto; max-width:500px" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" width="500" viewBox="0 0 107.6 89.6">
+            <div class="container" >
+              <p class="lead" >
+                <a id="logopopover" class="water-drop"  href="#" data-content="geometrismo anni '70, scuola di ULM (post Bauhaus) rif. Mimmo Castellano, Pino Tovaglia, Giulio Cittato, Giancarlo Illiprandi. Logo di névoa-na-rua" rel="popover" data-placement="bottom" data-original-title="Riferimenti" data-trigger="hover"0>
+                  <svg id="Layer_2"  style="max-width: 100%; width:100%; height:auto; max-width:500px" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" width="500" viewBox="0 0 107.6 89.6">
                     <defs>
                       <style>
                         .cls-1 {
@@ -178,9 +306,14 @@
               <a name="evento"><h3 class="cover-heading">Evento</h3></a>
               <div class="row">
                 <div class="col-md-12">
-                  <a href="/img/SPAZIO_GENESI_Tessere.jpg" target="_blank">
-                      <img width="500" rel="preload" loading="eager" fetchpriority="high" class="img-fluid" src="/img/SPAZIO_GENESI_Tessere.jpg" alt="EVENTO SPAZIO GENESI , titolo: TESSERE. vernissage 15 aprile 2025 alle 18.00 presso centro commerciale via roma 215, L'AQUILA">
-                    </a>
+                  
+                    <div class="flyer-shadow-only">
+                      <img width="500" rel="preload" loading="eager" fetchpriority="high" 
+                          class="img-fluid" src="/img/SPAZIO_GENESI_Tessere.jpg" 
+                          alt="EVENTO SPAZIO GENESI, titolo: TESSERE. vernissage 15 aprile 2025 alle 18.00 presso centro commerciale via roma 215, L'AQUILA">
+                    </div>
+                      
+                    
                       <br>
                       Titolo: TESSERE, il delicato atto di cura nella complessità del quotidiano.<br>
                       Genere: mostra arte contemporanea<br>
