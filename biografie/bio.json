@@ -240,6 +240,19 @@
                 "2":[{"img":"milena_sofkova_ignatova_Le_Desir_Élite_Publication_Magazine.jpg","des":"","deslunga":"Le Desir Élite Publication Magazine, Athens (Greese) “RIFLESSI” pubblicazione di 7 foto e copertina del n. di Febbraio 2025"}],
                 "3":[{"img":"milena_sofkova_ignatova_Stories_Untold_Magazine_Los_Angeles_red_passion.jpg","des":"","deslunga":"Stories Untold Magazine Los Angeles Red passion, pubblicazione di 7 foto copertina nel n. di Febbraio 2025"}]
                 }]            
+        },
+            {
+            "cartella":"manuelavalloscuro",
+            "nome": "Manuela Valloscuro",
+            "IG": "",
+            "social": "",
+            "email": "nevoa0@gmail.com",
+            "portfolio": "manuela_valloscuro_PORTFOLIO.pdf",
+            "bio": "Laureata in Moda e Costume presso l’Accademia Koefia di Roma nel 2012, attualmente frequento il corso di Decorazione e Arti Plastiche per gli spazi urbani, di secondo livello, presso l’Accademia di Belle Arti dell’Aquila.<br>La mia ricerca artistica risiede in un’indagine profonda sul tema della metamorfosi, intesa non come semplice passaggio transitorio, ma come condizione ontologica fondamentale dell’esistenza umana. È un viaggio nei territori fragili e mutevoli del cambiamento, esplorato come flusso perpetuo: un tumulto silenzioso che ci abita e ridisegna incessantemente i confini della nostra identità interiore e della nostra presenza fisica nel mondo.<br>L’esperienza percettiva, mediata da oggetti e forme che appartengono alla natura, diventa occasione di riflessione. Queste forme, trasformandosi in immagini simmetriche e in pattern mutevoli, generano una sensibilità nuova, imprevedibile e variabile. Le opere si configurano come narrazioni stratificate, capaci di indagare le tensioni tra l’apparenza esterna e le correnti sotterranee della psiche, abbracciando tanto le vertigini emotive quanto le trasformazioni tangibili che ci attraversano.<br>La sperimentazione nasce proprio da questa dialettica: così come nell’Art Nouveau la narrazione visiva non è statica, ma si dispiega come percorso evolutivo dinamico e si materializza opera dopo opera, in un processo di trasformazione quasi onirico. Alla radice del deforme vi è la metamorfosi del pattern in cui è l’immaginazione a renderlo fruibile, attraverso le sue caratteristiche formali e formative, aprendo lo spazio a nuove possibilità percettive ed estetiche.",
+            "img": [ {
+                "1":[{"img":"manuela_valloscuro_GERMINAZIONE.jpg","des":"","deslunga":"Germinazione, tecnica mista su tela, 50x70 cm, 2024"}],
+                "2":[{"img":"manuela_valloscuro_C_e_MOLTO_DI_ME.jpg","des":"","deslunga":"C'è molto di me, tecnica mista su tela, 50x70 cm, 2024"}]
+                }]            
         }
     ]
 }
