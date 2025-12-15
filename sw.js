@@ -1,10 +1,9 @@
-const CACHE_NAME = 'static-cache-novembre-v27; // Aggiungi un numero di versione
+const CACHE_NAME = 'static-cache-dicembre-v2'; // Aggiungi un numero di versione
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/cover.css',
-  '/img/SPAZIOGENESI_LA_COMUNE_ESIGENZA_28MAGGIO.jpg',
-  '/img/gdc20.png'
+  '/img/SPAZIO_GENESI_Tessere.jpg',
 ];
 
 self.addEventListener('install', (event) => {
