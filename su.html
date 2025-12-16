@@ -131,7 +131,7 @@
     © <a href="https://spaziogenesi.org/" target="_blank">Spazio Genesi</a> – Short URL v1 - realizzato da <a href="https://tangram.page/" target="_blank">Tangram.page</a>
   </div>
 
-    <script>
+  <script>
     const baseEndpoint = "https://sentinelle.mappa.asud.net/sg";
 
     document.getElementById("shortenerForm").addEventListener("submit", async (e) => {
@@ -143,14 +143,12 @@
       const endpoint = `${baseEndpoint}?originalURL=${encodeURIComponent(originalURL)}`;
 
       try {
-        const res = await fetch(endpoint, {
-          method: "POST"
-        });
-
+        const res = await fetch(endpoint); // GET implicito
         const data = await res.json();
 
         if (data.success && data.secureShortURL) {
-          document.getElementById("result").textContent = data.secureShortURL;
+          document.getElementById("result").innerHTML =
+            `<a href="${data.secureShortURL}" target="_blank">${data.secureShortURL}</a>`;
         } else {
           document.getElementById("result").textContent = "Errore nella risposta";
         }
@@ -158,7 +156,7 @@
         document.getElementById("result").textContent = "Errore di rete";
       }
     });
-    </script>
+  </script>
   
 </body>
 </html>
