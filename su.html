@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generatore di codici QR gratuito online by SPAZIO GENESI. Crea codici QR in formato SVG o PNG per URL, testi e altro.">
+  <title>GENESI Short URL Generator</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 480px;
+      margin: 1.5em auto;
+      padding: 0 1em;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    h1 {
+      font-size: 1.4em;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      font-size: 0.95em;
+      color: #333;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.7em;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      margin-top: 0.5em;
+    }
+
+    select {
+      width: 100%;
+      margin-top: 0.8em;
+      padding: 0.6em;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8em;
+      font-size: 1.05em;
+      margin-top: 1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #111;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    #qr {
+      margin-top: 2em;
+      min-height: 280px;
+    }
+
+    #qr svg, #qr img {
+      width: 90%;
+      max-width: 300px;
+      height: auto;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #downloadBtn {
+      display: none;
+      background-color: #0078d7;
+    }
+
+    #downloadBtn:hover {
+      background-color: #005fa3;
+    }
+
+    .footer {
+      margin-top: 2em;
+      font-size: 0.8em;
+      color: #666;
+    }
+  </style>
+  <!-- Matomo -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+    var u="//matomodocker.azurewebsites.net/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '7']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
+</head>
+<body>
+
+  <h1>GENESI Generatore Short URL</h1>
+  <p>
+
+  </p>
+
+    <form id="shortenerForm">
+    <label>
+      URL originale:
+      <input type="text" id="originalURL" name="originalURL" required>
+    </label>
+    <button type="submit">Genera</button>
+  </form>
+
+  
+    <div id="qr">
+        <p id="result"></p>
+    </div>
+  <div class="footer">
+    © <a href="https://spaziogenesi.org/" target="_blank">Spazio Genesi</a> – Short URL v1 - realizzato da <a href="https://tangram.page/" target="_blank">Tangram.page</a>
+  </div>
+
+    <script>
+    const baseEndpoint = "https://sentinelle.mappa.asud.net/sg";
+
+    document.getElementById("shortenerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const originalURL = document.getElementById("originalURL").value.trim();
+      if (!originalURL) return;
+
+      const endpoint = `${baseEndpoint}?originalURL=${encodeURIComponent(originalURL)}`;
+
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST"
+        });
+
+        const data = await res.json();
+
+        if (data.success && data.secureShortURL) {
+          document.getElementById("result").textContent = data.secureShortURL;
+        } else {
+          document.getElementById("result").textContent = "Errore nella risposta";
+        }
+      } catch (err) {
+        document.getElementById("result").textContent = "Errore di rete";
+      }
+    });
+    </script>
+  
+</body>
+</html>
