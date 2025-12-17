@@ -1,4 +1,4 @@
-const CACHE_NAME = 'static-cache-dicembre-v13'; // Aggiungi un numero di versione
+const CACHE_NAME = 'static-cache-dicembre-v14'; // Aggiungi un numero di versione
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
