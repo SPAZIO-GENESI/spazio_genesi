@@ -16,7 +16,8 @@
 <meta http-equiv="Content-Security-Policy"
   content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 
+
+    script-src 'self' 'unsafe-inline'
       https://code.jquery.com
       https://cdn.jsdelivr.net
       https://cdn-cookieyes.com
@@ -24,12 +25,14 @@
       https://*.shareaholic.com
       https://*.shareaholic.net
       https://*.openshareweb.com
-      https://matomodocker.azurewebsites.net 
+      https://matomodocker.azurewebsites.net
       https://*.tawk.to
       https://*.google.com
       https://*.viglink.com
       https://*.sovrn.com
-      https://*.sovrn.co;
+      https://*.sovrn.co
+      https://*.adtrafficquality.google;   <!-- ✅ added -->
+
     script-src-elem 'self' 'unsafe-inline'
       https://code.jquery.com
       https://cdn.jsdelivr.net
@@ -38,40 +41,52 @@
       https://*.shareaholic.com
       https://*.shareaholic.net
       https://*.openshareweb.com
-      https://matomodocker.azurewebsites.net 
+      https://matomodocker.azurewebsites.net
       https://*.tawk.to
       https://*.google.com
       https://*.viglink.com
       https://*.sovrn.com
-      https://*.sovrn.co;
-    connect-src 'self' 
-      https://matomodocker.azurewebsites.net 
+      https://*.sovrn.co
+      https://*.adtrafficquality.google;   <!-- ✅ added -->
+
+    connect-src 'self'
+      https://matomodocker.azurewebsites.net
       https://*.tawk.to
       https://*.cookieyes.com
       https://cdn-cookieyes.com
-      https://cdn.jsdelivr.net 
+      https://cdn.jsdelivr.net
       https://*.shareaholic.com
       https://*.shareaholic.net
       https://*.cloudfront.net
       https://*.viglink.com
       https://*.sovrn.com
       https://ep1.adtrafficquality.google
+      https://*.adtrafficquality.google     <!-- ✅ added -->
       https://*.google.com
       wss://*.tawk.to;
+
     img-src 'self' data: https: blob:;
-    style-src 'self' 'unsafe-inline' 
-      https://fonts.googleapis.com 
+
+    style-src 'self' 'unsafe-inline'
+      https://fonts.googleapis.com
       https://cdn.jsdelivr.net
       https://*.tawk.to
       https://*.google.com;
-    font-src 'self' 
+
+    font-src 'self'
       https://fonts.gstatic.com
       https://*.tawk.to
       data:;
-    frame-src https://*.tawk.to https://*.google.com;
+
+    frame-src
+      https://*.tawk.to
+      https://*.google.com
+      https://*.goog;                      <!-- ✅ added -->
+
     object-src 'none';
     base-uri 'self';
   ">
+
 
         
         <meta name="author" content="Tangram.page">
