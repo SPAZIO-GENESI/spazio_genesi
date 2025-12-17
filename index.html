@@ -12,59 +12,36 @@
         <title>Spazio Genesi</title>
         <meta name="description" content="Spazio di interfaccia ed esperienze tra studenti studentesse Accademia di Belle Arti ABAQ L'Aquila">
         <meta name="revisit-after" content="1" />
+
+        <link href="/_pagefind/pagefind-ui.css" rel="stylesheet">
+        <script src="/_pagefind/pagefind-ui.js"></script>
+
         
 <meta http-equiv="Content-Security-Policy"
   content="
     default-src 'self';
 
-    script-src 'self' 'unsafe-inline' 'unsafe-eval'
+    script-src 'self' 'unsafe-inline'
       https://code.jquery.com
       https://cdn.jsdelivr.net
       https://cdn-cookieyes.com
       https://*.cookieyes.com
-      https://*.shareaholic.com
-      https://*.shareaholic.net
-      https://*.openshareweb.com
-      https://matomodocker.azurewebsites.net
       https://*.tawk.to
-      https://*.google.com
-      https://*.viglink.com
-      https://*.sovrn.com
-      https://*.sovrn.co
-      https://*.adtrafficquality.google
-      https://static.cloudflareinsights.com;  
+      https://static.cloudflareinsights.com;
 
-    script-src-elem 'self' 'unsafe-inline''unsafe-eval'
+    script-src-elem 'self' 'unsafe-inline'
       https://code.jquery.com
       https://cdn.jsdelivr.net
       https://cdn-cookieyes.com
       https://*.cookieyes.com
-      https://*.shareaholic.com
-      https://*.shareaholic.net
-      https://*.openshareweb.com
-      https://matomodocker.azurewebsites.net
       https://*.tawk.to
-      https://*.google.com
-      https://*.viglink.com
-      https://*.sovrn.com
-      https://*.sovrn.co
-      https://*.adtrafficquality.google
-      https://static.cloudflareinsights.com;  
+      https://static.cloudflareinsights.com;
 
     connect-src 'self'
-      https://matomodocker.azurewebsites.net
       https://*.tawk.to
-      https://*.cookieyes.com
       https://cdn-cookieyes.com
       https://cdn.jsdelivr.net
-      https://*.shareaholic.com
-      https://*.shareaholic.net
-      https://*.cloudfront.net
-      https://*.viglink.com
-      https://*.sovrn.com
-      https://ep1.adtrafficquality.google
-      https://*.adtrafficquality.google
-      https://*.google.com
+      https://static.cloudflareinsights.com
       wss://*.tawk.to;
 
     img-src 'self' data: https: blob:;
@@ -72,19 +49,14 @@
     style-src 'self' 'unsafe-inline'
       https://fonts.googleapis.com
       https://cdn.jsdelivr.net
-      https://*.tawk.to
-      https://*.google.com;
+      https://*.tawk.to;
 
     font-src 'self'
       https://fonts.gstatic.com
-      https://*.tawk.to
       data:;
 
     frame-src
-      https://*.tawk.to
-      https://*.google.com
-      https://*.goog
-      https://*.adtrafficquality.google;  
+      https://*.tawk.to;
 
     object-src 'none';
     base-uri 'self';
@@ -451,9 +423,12 @@
               <div class="row">
                 <div class="col">
                   <h2>Cerca nel sito</h2>
-                  <script async src="https://cse.google.com/cse.js?cx=e0d77101c85384828">
-                  </script>
-                  <div class="gcse-search"></div>                    
+
+                  
+                    <div id="search"></div>
+
+
+
                 </div>
               </div>
 
@@ -962,6 +937,10 @@
 
         
       <script>
+        new PagefindUI({
+          element: "#search"
+        });
+
         $('#logopopover').popover({ trigger: "hover" });
         $('#cdpopover').popover({ trigger: "hover" });
         $('#dfpopover').popover({ trigger: "hover" });
