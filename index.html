@@ -17,10 +17,11 @@
 <script src="/pagefind/pagefind-ui.js"></script>
 
 
- <meta http-equiv="Content-Security-Policy"
+<meta http-equiv="Content-Security-Policy"
   content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' wasm-unsafe-eval
+
+    script-src 'self' 'unsafe-inline' wasm-unsafe-eval
       https://code.jquery.com
       https://cdn.jsdelivr.net
       https://cdn-cookieyes.com
@@ -29,9 +30,10 @@
       https://static.cloudflareinsights.com
       https://matomodocker.azurewebsites.net
       https://cdn.openshareweb.com
-      https://*.shareaholic.com;
+      https://*.shareaholic.com
+      https://cdn.viglink.com;
 
-    script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' wasm-unsafe-eval
+    script-src-elem 'self' 'unsafe-inline' wasm-unsafe-eval
       https://code.jquery.com
       https://cdn.jsdelivr.net
       https://cdn-cookieyes.com
@@ -40,8 +42,8 @@
       https://static.cloudflareinsights.com
       https://matomodocker.azurewebsites.net
       https://cdn.openshareweb.com
-      https://*.shareaholic.com;
-
+      https://*.shareaholic.com
+      https://cdn.viglink.com;
 
     connect-src 'self'
       https://*.tawk.to
@@ -52,6 +54,7 @@
       https://matomodocker.azurewebsites.net
       https://analytics.shareaholic.com
       https://www.shareaholic.net
+      https://cdn.viglink.com
       wss://*.tawk.to;
 
     img-src 'self' data: https: blob:;
@@ -62,15 +65,13 @@
       https://*.tawk.to;
 
     font-src 'self'
-      https://embed.tawk.to
-      https://fonts.gstatic.com
       https://fonts.gstatic.com
       https://cdn.jsdelivr.net
+      https://embed.tawk.to
       data:;
 
     frame-src
       https://*.tawk.to;
-      
 
     object-src 'none';
     base-uri 'self';
