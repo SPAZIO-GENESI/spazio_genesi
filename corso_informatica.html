@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("iscrizioneForm");
   const msg = document.getElementById("msg");
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw90Rxw2TBHBkcHwNAN3tc_CDL6QWnDMh43-j-KrrxwNUDNz0GiQiZ6mRhIrGhTiVCIoQ/exec";
+  
 
   form.addEventListener("submit", function (e) {
     e.preventDefault(); // ✅ ora e è definito correttamente
@@ -143,26 +144,31 @@ document.addEventListener("DOMContentLoaded", function () {
                   <tbody>
                     <tr>
                       <td>
-                        <form id="iscrizioneForm">
+                      <form 
+                        id="iscrizioneForm"
+                        action="https://script.google.com/macros/s/AKfycbw90Rxw2TBHBkcHwNAN3tc_CDL6QWnDMh43-j-KrrxwNUDNz0GiQiZ6mRhIrGhTiVCIoQ/exec"
+                        method="POST"
+                        target="hidden_iframe"
+                      >
                           
                           <div class="form-group text-left">
                             <label for="nome">Nome</label>
-                            <input type="text" class="form-control" id="nome" required>
+                            <input type="text" class="form-control" id="nome" name="nome" required>
                           </div>
 
                           <div class="form-group text-left">
                             <label for="cognome">Cognome</label>
-                            <input type="text" class="form-control" id="cognome" required>
+                            <input type="text" class="form-control" id="cognome" name="cognome" required>
                           </div>
 
                           <div class="form-group text-left">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required>
                           </div>
 
                           <div class="form-group text-left">
                             <label for="telefono">Telefono</label>
-                            <input type="tel" class="form-control" id="telefono">
+                            <input type="tel" class="form-control" id="telefono" name="telefono">
                           </div>
 
                           <div class="form-check text-left">
@@ -180,6 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           <div id="msg" class="mt-3"></div>
 
                         </form>
+                        <iframe name="hidden_iframe" style="display:none;"></iframe>
                       </td>
                     </tr>
                   </tbody>
