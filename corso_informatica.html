@@ -58,12 +58,12 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-    var form = document.getElementById("iscrizioneForm");
+    const form = document.getElementById("iscrizioneForm");
+    const msg = document.getElementById("msg");    
     
     if (!form) return;
 
-    const form = document.getElementById("iscrizioneForm");
-    const msg = document.getElementById("msg");
+
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
