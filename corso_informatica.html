@@ -42,55 +42,50 @@
 <!-- End Matomo Code -->
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/68029a24d84fea190d7eedf6/1ip52k7o8';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68029a24d84fea190d7eedf6/1ip52k7o8';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
   </script>
   <!--End of Tawk.to Script-->
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
 
-              const form = document.getElementById("iscrizioneForm");
-              const msg = document.getElementById("msg");
+        form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-              form.addEventListener("submit", async (e) => {
-                e.preventDefault();
+        const data = {
+          nome: document.getElementById("nome").value,
+          cognome: document.getElementById("cognome").value,
+          email: document.getElementById("email").value,
+          telefono: document.getElementById("telefono").value
+        };
 
-                const data = {
-                  nome: document.getElementById("nome").value,
-                  cognome: document.getElementById("cognome").value,
-                  email: document.getElementById("email").value,
-                  telefono: document.getElementById("telefono").value
-                };
+        msg.innerHTML = `
+          <div class="alert alert-success mt-3" role="alert">
+            Iscrizione inviata con successo. Grazie ${data.nome}.
+          </div>
+        `;
 
-                // Mostra subito messaggio di conferma
-                msg.innerHTML = `<div class="alert alert-success" role="alert">
-                  ✅ Grazie ${data.nome}! La tua iscrizione è stata registrata correttamente.
-                </div>`;
+        form.reset();
 
-                form.reset();
+        fetch("https://script.google.com/macros/s/AKfycbzr7BInLZFg9QAW2MtHA7rEjo13256shWVuAg6gLBo6MKka1HDsUQrTYmHCpoL46se6fw/exec", {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "text/plain" }
+        }).catch((err) => console.warn("Errore invio:", err));
+      });
 
-                // Invia i dati al Google Script senza aspettare risposta per evitare CORS error
-                try {
-                  fetch("https://script.google.com/macros/s/AKfycbw90Rxw2TBHBkcHwNAN3tc_CDL6QWnDMh43-j-KrrxwNUDNz0GiQiZ6mRhIrGhTiVCIoQ/exec", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: { "Content-Type": "application/json" }
-                  }).catch((err) => console.warn("CORS bypassed, ma dati inviati"));
-                } catch (err) {
-                  console.warn(err);
-                }
-              });
+    </script>
 
-    });
-</script>
+
 
     </head>
     <body class="text-center">
