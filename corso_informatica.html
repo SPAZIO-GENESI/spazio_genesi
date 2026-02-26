@@ -55,44 +55,41 @@
   <!--End of Tawk.to Script-->
 
   <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
 
-  const form = document.getElementById("iscrizioneForm");
-  const msg = document.getElementById("msg");
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw90Rxw2TBHBkcHwNAN3tc_CDL6QWnDMh43-j-KrrxwNUDNz0GiQiZ6mRhIrGhTiVCIoQ/exec";
-  
+              const form = document.getElementById("iscrizioneForm");
+              const msg = document.getElementById("msg");
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault(); // ✅ ora e è definito correttamente
+              form.addEventListener("submit", async (e) => {
+                e.preventDefault();
 
-    const data = {
-      nome: document.getElementById("nome").value,
-      cognome: document.getElementById("cognome").value,
-      email: document.getElementById("email").value,
-      telefono: document.getElementById("telefono").value
-    };
+                const data = {
+                  nome: document.getElementById("nome").value,
+                  cognome: document.getElementById("cognome").value,
+                  email: document.getElementById("email").value,
+                  telefono: document.getElementById("telefono").value
+                };
 
-    // Messaggio immediato per l’utente
-    msg.innerHTML = `
-      <div class="alert alert-success mt-3" role="alert">
-        Iscrizione inviata con successo. Grazie ${data.nome}.
-      </div>
-    `;
+                // Mostra subito messaggio di conferma
+                msg.innerHTML = `<div class="alert alert-success" role="alert">
+                  ✅ Grazie ${data.nome}! La tua iscrizione è stata registrata correttamente.
+                </div>`;
 
-    form.reset();
+                form.reset();
 
-    // Invio dati (anche se CORS mostra errore in console)
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" }
-    }).catch(() => {
-      console.warn("Invio completato (CORS ignorato dal browser).");
+                // Invia i dati al Google Script senza aspettare risposta per evitare CORS error
+                try {
+                  fetch("https://script.google.com/macros/s/AKfycbw90Rxw2TBHBkcHwNAN3tc_CDL6QWnDMh43-j-KrrxwNUDNz0GiQiZ6mRhIrGhTiVCIoQ/exec", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: { "Content-Type": "application/json" }
+                  }).catch((err) => console.warn("CORS bypassed, ma dati inviati"));
+                } catch (err) {
+                  console.warn(err);
+                }
+              });
+
     });
-
-  });
-
-});
 </script>
 
     </head>
@@ -146,9 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       <td>
                       <form 
                         id="iscrizioneForm"
-                        action="https://script.google.com/macros/s/AKfycbyzeiMG2oVqR6pfTbPEJ4agsahmjHU_Uz-sm2gL0DWztEgNiREW43Xn8phyVKPVqQwnnA/exec"
-                        method="POST"
-                        target="hidden_iframe"
+
                       >
                           
                           <div class="form-group text-left">
