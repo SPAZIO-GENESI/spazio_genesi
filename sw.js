@@ -1,4 +1,4 @@
-const CACHE_NAME = 'static-cache-marzo-v9'; // Aggiungi un numero di versione
+const CACHE_NAME = 'static-cache-marzo-v10';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -6,82 +6,88 @@ const ASSETS_TO_CACHE = [
   '/img/SPAZIO_GENESI_Tessere.jpg',
 ];
 
+// INSTALL
 self.addEventListener('install', (event) => {
-  // Salta la fase di waiting per attivare immediatamente la nuova versione
   self.skipWaiting();
-  
+
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
   );
 });
 
+// ACTIVATE
 self.addEventListener('activate', (event) => {
-  // Elimina vecchie cache quando la nuova versione è attivata
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
-      );
-    })
+      )
+    )
   );
-  
-  // Prendi il controllo immediatamente
+
   return self.clients.claim();
 });
 
+// FETCH
 self.addEventListener('fetch', (event) => {
-  // Ignora richieste non GET e richieste a /api o simili
+  const req = event.request;
+
+  // Non gestire API o richieste non GET
   if (
-    event.request.method !== 'GET' ||
-    event.request.url.includes('/api/') ||
-    event.request.url.includes('/matomo.php')
+    req.method !== 'GET' ||
+    req.url.includes('/api/') ||
+    req.url.includes('/matomo.php')
   ) {
     return;
   }
 
+  // 1️⃣ NETWORK-FIRST per HTML (fondamentale!)
+  if (req.destination === 'document') {
+    event.respondWith(
+      fetch(req)
+        .then((networkRes) => {
+          // aggiorna la cache
+          const copy = networkRes.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          return networkRes;
+        })
+        .catch(() => caches.match(req).then((res) => res || caches.match('/')))
+    );
+    return;
+  }
+
+  // 2️⃣ CACHE-FIRST per tutto il resto
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
+    caches.match(req).then((cachedRes) => {
+      if (cachedRes) return cachedRes;
 
-        // Altrimenti fai la richiesta alla rete
-        return fetch(event.request).then((networkResponse) => {
-          // Controlla se abbiamo ricevuto una risposta valida
-          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-            return networkResponse;
+      return fetch(req)
+        .then((networkRes) => {
+          if (
+            !networkRes ||
+            networkRes.status !== 200 ||
+            networkRes.type !== 'basic'
+          ) {
+            return networkRes;
           }
 
-          // Clona la risposta per salvarla in cache e restituirla
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
+          const copy = networkRes.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
 
-          return networkResponse;
-        }).catch(() => {
-          // Fallback offline
-          if (event.request.destination === 'document') {
-            return caches.match('/');
+          return networkRes;
+        })
+        .catch(() => {
+          if (req.destination === 'image') {
+            return new Response('', { status: 404 });
           }
-          return new Response('Offline content', {
-            status: 503,
-            statusText: 'Service Unavailable',
-            headers: new Headers({
-              'Content-Type': 'text/plain'
-            })
-          });
+          return new Response('Offline', { status: 503 });
         });
-      })
+    })
   );
 });
