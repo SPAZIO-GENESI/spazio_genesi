@@ -155,34 +155,7 @@
   display: flex;
   justify-content: center;
 }
-
-/* PayPal button container */
-.stripe-box-inner {
-  max-width: 300px;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-#paypal-container-V7NLWNW8BK6D2,
-[id^="paypal-container-"] {
-  width: 100%;
-  max-width: 300px;
-}
-#paypal-container-5EVEGBYTDSAJG,
-[id^="paypal-container-"] {
-  width: 100%;
-  max-width: 300px;
-}
-#paypal-container-2MY36H66BSN4W,
-[id^="paypal-container-"] {
-  width: 100%;
-  max-width: 300px;
-}
-
         </style>
-        <script 
-  src="https://www.paypal.com/sdk/js?client-id=BAAWaqUltEyNiREyqCFGtH46W-x7TOP9Rc26ILViUvyJWFNw4U91zwyPWw8lUimPNBBOXc9fH9mUocMFxA&components=hosted-buttons&disable-funding=venmo&currency=EUR">
-</script>
 
     </head>
 
@@ -219,12 +192,11 @@
 
                                 <div class="stripe-box">
                                     <div class="stripe-box-inner">
-                                    <div id="paypal-container-V7NLWNW8BK6D2"></div>
-                                    <script>
-                                    paypal.HostedButtons({
-                                        hostedButtonId: "V7NLWNW8BK6D2",
-                                    }).render("#paypal-container-V7NLWNW8BK6D2")
-                                    </script>
+                                        <stripe-buy-button
+                                        buy-button-id="buy_btn_1TChFXAt5enIwzKuTBw3UOKl"
+                                        publishable-key="pk_live_51TAvPZAt5enIwzKuPz04UtRPtTRx503SNkUl9WhrMzWQCXfatHkDOOD6RWUXPM6X6QA4B3y7pba9IxxCDPJfQGy100bsazj0cr"
+                                        >
+                                        </stripe-buy-button>
                                     </div>
                                 </div>
 
@@ -240,16 +212,24 @@
                         <div class="col-12 col-md-8 col-lg-5 d-flex justify-content-center">
                         <div class="membership-card">
 
-                            
+                            <div>
+            <!--
+                            <div class="card-media">
+                                Accesso base
+                            </div>
+            -->
+                            <h3 class="card-title">Quota SOCIA – Libero</h3>
+                            <p class="card-desc">
+                            Sostieni l’associazione con un contributo mensile. Decidi liberamente quanti mesi di iscrizione. Per ogni mese di iscrizione avrai accesso ai servizi gratuiti previsti (voto in assemblea)
+                            </p>
+                            </div>
 
                             <div class="stripe-box">
                             <div class="stripe-box-inner">
-                                <div id="paypal-container-5EVEGBYTDSAJG"></div>
-                                <script>
-                                paypal.HostedButtons({
-                                    hostedButtonId: "5EVEGBYTDSAJG",
-                                }).render("#paypal-container-5EVEGBYTDSAJG")
-                                </script>
+                                <stripe-buy-button
+                                buy-button-id="buy_btn_1TCcbfAt5enIwzKu17VRVwus"
+                                publishable-key="pk_live_51TAvPZAt5enIwzKuPz04UtRPtTRx503SNkUl9WhrMzWQCXfatHkDOOD6RWUXPM6X6QA4B3y7pba9IxxCDPJfQGy100bsazj0cr">
+                                </stripe-buy-button>
                             </div>
                             </div>
 
@@ -259,16 +239,22 @@
                         <div class="col-12 col-md-8 col-lg-5 d-flex justify-content-center">
                         <div class="membership-card highlight">
 
-                        
+                            <div>
+
+
+
+                            <h3 class="card-title">Quota SOCIA – TRIMESTRALE</h3>
+                            <p class="card-desc">
+                                Sostieni l’associazione con un contributo. Da Regolamento con almeno una quota trimestrale puoi accedere inoltre alla candidatura del tuo lavoro per una esposizione bipersonale (da stabilire con Curatela) + Esposizione BIOGRAFIA
+                            </p>
+                            </div>
 
                             <div class="stripe-box">
                             <div class="stripe-box-inner">
-                                <div id="paypal-container-2MY36H66BSN4W"></div>
-                                <script>
-                                paypal.HostedButtons({
-                                    hostedButtonId: "2MY36H66BSN4W",
-                                }).render("#paypal-container-2MY36H66BSN4W")
-                                </script>
+                                <stripe-buy-button
+                                buy-button-id="buy_btn_1TCciiAt5enIwzKursPRwoZ1"
+                                publishable-key="pk_live_51TAvPZAt5enIwzKuPz04UtRPtTRx503SNkUl9WhrMzWQCXfatHkDOOD6RWUXPM6X6QA4B3y7pba9IxxCDPJfQGy100bsazj0cr">
+                                </stripe-buy-button>
                             </div>
                             </div>
 
@@ -295,27 +281,10 @@
 
                                 <div class="stripe-box">
                                 <div class="stripe-box-inner">
-                                    <div id="paypal-button-container-P-7ML05505JA818620MNG6B4LA"></div>
-                                    <script src="https://www.paypal.com/sdk/js?client-id=Ab6joAWjiJDrrrqzYb0gzg5uDBCtCI0Td5NXZealzworAbewh__9rgxpuKHzRCRo9xSiKhME-hOIAFRg&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
-                                    <script>
-                                    paypal.Buttons({
-                                        style: {
-                                            shape: 'rect',
-                                            color: 'gold',
-                                            layout: 'vertical',
-                                            label: 'subscribe'
-                                        },
-                                        createSubscription: function(data, actions) {
-                                            return actions.subscription.create({
-                                            /* Creates the subscription */
-                                            plan_id: 'P-7ML05505JA818620MNG6B4LA'
-                                            });
-                                        },
-                                        onApprove: function(data, actions) {
-                                            alert(data.subscriptionID); // You can add optional success message for the subscriber here
-                                        }
-                                    }).render('#paypal-button-container-P-7ML05505JA818620MNG6B4LA'); // Renders the PayPal button
-                                    </script>
+                                    <stripe-buy-button
+                                    buy-button-id="buy_btn_1TCcp1At5enIwzKuBAZrJztc"
+                                    publishable-key="pk_live_51TAvPZAt5enIwzKuPz04UtRPtTRx503SNkUl9WhrMzWQCXfatHkDOOD6RWUXPM6X6QA4B3y7pba9IxxCDPJfQGy100bsazj0cr">
+                                    </stripe-buy-button>
                                 </div>
                                 </div>
 
