@@ -65,7 +65,7 @@
     frame-src https://*.tawk.to https://*.google.com;
     object-src 'none';
     base-uri 'self';
-  ">
+        ">
 
         
         <meta name="description" content="Biografie delle artiste associate Spazio Genesi. Spazio di interfaccia tra studenti studentesse Accademia di Belle Arti ABAQ L'Aquila">
@@ -87,88 +87,170 @@
         <link rel="manifest" href="/img/manifest.json">
 
         <link rel="canonical" href="https://spaziogenesi.org/biografie/">
+
+
         <!-- Matomo -->
-<script>
-  var _paq = window._paq = window._paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="//matomodocker.azurewebsites.net/";
-    _paq.push(['setTrackerUrl', u+'matomo.php']);
-    _paq.push(['setSiteId', '7']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<!-- End Matomo Code -->
- <style>
-  .card.polaroid {
-  background: #fff;
-  padding: 10px 10px 25px 10px; /* spazio extra sotto */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  border: 1px solid #ddd;
-  text-align: center;
-  transition: transform 0.2s;
-}
+        <script>
+          var _paq = window._paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//matomodocker.azurewebsites.net/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '7']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Matomo Code -->
 
-.card.polaroid:hover {
-  transform: rotate(-2deg) scale(1.02);
-}
+      <style>
+        .card.polaroid {
+        background: #fff;
+        padding: 10px 10px 25px 10px; /* spazio extra sotto */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        border: 1px solid #ddd;
+        text-align: center;
+        transition: transform 0.2s;
+      }
 
-.card.polaroid img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+      .card.polaroid:hover {
+        transform: rotate(-2deg) scale(1.02);
+      }
 
-.card.polaroid .caption {
-  font-size: 0.8rem;
-  color: #333;
-  margin-top: 8px;
-  font-family: 'Courier New', Courier, monospace;
-}
+      .card.polaroid img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
 
-.card-img-wrapper {
-  width: 100%;
-  height: 200px; /* fallback per browser meno recenti */
-  aspect-ratio: 4/3; /* proporzione uniforme per browser moderni */
-  overflow: hidden;
-  position: relative;
-}
+      .card.polaroid .caption {
+        font-size: 0.8rem;
+        color: #333;
+        margin-top: 8px;
+        font-family: 'Courier New', Courier, monospace;
+      }
 
-.card-img-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
+      .card-img-wrapper {
+        width: 100%;
+        height: 200px; /* fallback per browser meno recenti */
+        aspect-ratio: 4/3; /* proporzione uniforme per browser moderni */
+        overflow: hidden;
+        position: relative;
+      }
 
-/* Overlay */
-.card-img-wrapper::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.25); /* sfumatura scura */
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
+      .card-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
 
-/* Effetto hover/active */
-.card-img-wrapper:hover img,
-.card-img-wrapper:active img {
-  transform: scale(1.1); /* mini zoom */
-}
+      /* Overlay */
+      .card-img-wrapper::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.25); /* sfumatura scura */
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
 
-.card-img-wrapper:hover::after,
-.card-img-wrapper:active::after {
-  opacity: 1; /* overlay visibile */
-}
+      /* Effetto hover/active */
+      .card-img-wrapper:hover img,
+      .card-img-wrapper:active img {
+        transform: scale(1.1); /* mini zoom */
+      }
+
+      .card-img-wrapper:hover::after,
+      .card-img-wrapper:active::after {
+        opacity: 1; /* overlay visibile */
+      }
+
+      .card-animate {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .card-hide {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+
+      .card-show {
+        opacity: 1;
+        transform: scale(1);
+      }
 
 
- </style>
+      </style>
+
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector(".row");
+        const cards = Array.from(container.children);
+
+        // Aggiunge classe animazione a tutte le card
+        cards.forEach(card => card.classList.add("card-animate"));
+
+        // Salva l'ordine storico originale
+        cards.forEach((card, index) => {
+          card.dataset.index = index;
+        });
+
+        const select = document.getElementById("sort-select");
+
+        select.addEventListener("change", function () {
+          const mode = this.value;
+          let sorted = [...cards];
+
+          // Applica fade-out
+          cards.forEach(card => card.classList.add("card-hide"));
+
+          setTimeout(() => {
+            if (mode === "az") {
+              sorted.sort((a, b) => {
+                const nameA = a.querySelector(".caption a").innerText.trim().toLowerCase();
+                const nameB = b.querySelector(".caption a").innerText.trim().toLowerCase();
+                return nameA.localeCompare(nameB);
+              });
+            }
+
+            if (mode === "za") {
+              sorted.sort((a, b) => {
+                const nameA = a.querySelector(".caption a").innerText.trim().toLowerCase();
+                const nameB = b.querySelector(".caption a").innerText.trim().toLowerCase();
+                return nameB.localeCompare(nameA);
+              });
+            }
+
+            if (mode === "oldest") {
+              sorted.sort((a, b) => a.dataset.index - b.dataset.index);
+            }
+
+            if (mode === "newest") {
+              sorted.sort((a, b) => b.dataset.index - a.dataset.index);
+            }
+
+            // Riordina nel DOM
+            sorted.forEach(card => container.appendChild(card));
+
+            // Fade-in
+            requestAnimationFrame(() => {
+              sorted.forEach(card => {
+                card.classList.remove("card-hide");
+                card.classList.add("card-show");
+              });
+            });
+
+          }, 300); // tempo del fade-out
+        });
+      });
+      </script>
 
     </head>
+
+    
     <body class="">
       <div class="cover-container d-flex  p-3 mx-auto flex-column">
         <header class="masthead mb-auto">
@@ -202,280 +284,288 @@
             </nav>
           </div>
         </header>
-
         
 
         <main role="main" class="mt-5">
-  <div class="container">
-    <h1 class="bio-h1 mb-4">Biografia Student*/Artista Associata Spazio Genesi</h1>
-    <div class="row">
+          <div class="container">
+            <h1 class="bio-h1 mb-4">Biografia Student*/Artista Associata Spazio Genesi</h1>
+            <div class="sorting-controls mb-4">
+              <label for="sort-select" class="form-label fw-bold">Ordina artisti</label>
+              <select id="sort-select" class="form-select" aria-label="Ordina artisti">
+                <option value="az">Alfabetico A → Z</option>
+                <option value="za">Alfabetico Z → A</option>
+                <option value="oldest">Storico (dal primo inserito)</option>
+                <option value="newest">Storico (dal più recente)</option>
+              </select>
+            </div>
 
-      <!-- Francesca Chiola -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/francescachiola/francesca_chiola_collezione_impermanente.jpg" alt="Francesca Chiola">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=francescachiola" class="stretched-link">Francesca Chiola</a>
-            </p>
-          </div>
-        </div>
-      </div>
+            <div class="row">
 
-      <!-- Sara Dias -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/saradias/DSC_2798-SaraDias_.jpg" alt="Sara Dias">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=saradias" class="stretched-link">Sara Dias</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Francesca Chiola -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/francescachiola/francesca_chiola_collezione_impermanente.jpg" alt="Francesca Chiola">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=francescachiola" class="stretched-link">Francesca Chiola</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Névoa na Rua -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/nevoanarua/nevoanarua_eroalaquila_performative2024_museomaxxilaquila.png" alt="Névoa na Rua">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=nevoanarua" class="stretched-link">Névoa na Rua</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Sara Dias -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/saradias/DSC_2798-SaraDias_.jpg" alt="Sara Dias">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=saradias" class="stretched-link">Sara Dias</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Federico Battisti -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/federicobattisti/aqab-federicobattisti.jpg" alt="Federico Battisti">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=federicobattisti" class="stretched-link">Federico Battisti</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Névoa na Rua -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/nevoanarua/nevoanarua_eroalaquila_performative2024_museomaxxilaquila.png" alt="Névoa na Rua">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=nevoanarua" class="stretched-link">Névoa na Rua</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Debora Panaccione -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/deborapanaccione/2023_derma_debora_panaccione.jpeg" alt="Debora Panaccione">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=deborapanaccione" class="stretched-link">Debora Panaccione</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Federico Battisti -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/federicobattisti/aqab-federicobattisti.jpg" alt="Federico Battisti">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=federicobattisti" class="stretched-link">Federico Battisti</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Davide Mariani -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/davidemariani/DavideMariani_waitingatthegate.jpeg" alt="Davide Mariani">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=davidemariani" class="stretched-link">Davide Mariani</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Debora Panaccione -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/deborapanaccione/2023_derma_debora_panaccione.jpeg" alt="Debora Panaccione">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=deborapanaccione" class="stretched-link">Debora Panaccione</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Elena Mussi -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/elenamussi/lattesa-65hBeats.jpg" alt="Elena Mussi">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=elenamussi" class="stretched-link">Elena Mussi</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Davide Mariani -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/davidemariani/DavideMariani_waitingatthegate.jpeg" alt="Davide Mariani">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=davidemariani" class="stretched-link">Davide Mariani</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Francesca Rinella -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/francescarinella/3A-Francesca_Rinella.jpg" alt="Francesca Rinella">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=francescarinella" class="stretched-link">Francesca Rinella</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Elena Mussi -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/elenamussi/lattesa-65hBeats.jpg" alt="Elena Mussi">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=elenamussi" class="stretched-link">Elena Mussi</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Marianna Mancini -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/mariannamancini/CROSSWOLK.JPG" alt="Marianna Mancini">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=mariannamancini" class="stretched-link">Marianna Mancini</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Francesca Rinella -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/francescarinella/3A-Francesca_Rinella.jpg" alt="Francesca Rinella">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=francescarinella" class="stretched-link">Francesca Rinella</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Sabrina Iezzi -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/sabrinaiezzi/sabrina_iezzi_casa_abbandonata.jpg" alt="Sabrina Iezzi">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=sabrinaiezzi" class="stretched-link">Sabrina Iezzi</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Marianna Mancini -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/mariannamancini/CROSSWOLK.JPG" alt="Marianna Mancini">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=mariannamancini" class="stretched-link">Marianna Mancini</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Davide Meola -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/davidemeola/davide_meola_serata_a_san_silvestro.jpeg" alt="Davide Meola">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=davidemeola" class="stretched-link">Davide Meola</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Sabrina Iezzi -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/sabrinaiezzi/sabrina_iezzi_casa_abbandonata.jpg" alt="Sabrina Iezzi">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=sabrinaiezzi" class="stretched-link">Sabrina Iezzi</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Alessia Donatelli -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/alessiadonatelli/alessia_donatelli_prima_prova.jpeg" alt="Alessia Donatelli">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=alessiadonatelli" class="stretched-link">Alessia Donatelli</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Davide Meola -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/davidemeola/davide_meola_serata_a_san_silvestro.jpeg" alt="Davide Meola">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=davidemeola" class="stretched-link">Davide Meola</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Lisa Rastelli -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/lisarastelli/lisa_rastelli_disincantato_naufragio_bussola.jpg" alt="Lisa Rastelli">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=lisarastelli" class="stretched-link">Lisa Rastelli</a>
-            </p>
-          </div>
-        </div>
-      </div>
+              <!-- Alessia Donatelli -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/alessiadonatelli/alessia_donatelli_prima_prova.jpeg" alt="Alessia Donatelli">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=alessiadonatelli" class="stretched-link">Alessia Donatelli</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Vincenzo Damiano Cristallo -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/vincenzodamianocristallo/VincenzoDamianoCristallo_PiazzaPioIIPienza_modellinoincartonlegno_cm 30x33_2023.jpg" alt="Vincenzo Damiano Cristallo">
-          </div>
-          <div class="card-body text-center">
-            
-            <p class="caption"><a href="./bio.htm?artista=vincenzodamianocristallo" class="stretched-link">Vincenzo Damiano Cristallo</a></p>
-            
-          </div>
-        </div>
-      </div>
+              <!-- Lisa Rastelli -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/lisarastelli/lisa_rastelli_disincantato_naufragio_bussola.jpg" alt="Lisa Rastelli">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=lisarastelli" class="stretched-link">Lisa Rastelli</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Manuela Valloscuro  -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/manuelavalloscuro/manuela_valloscuro_GERMINAZIONE.PNG" alt="Manuela Valloscuro">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=manuelavalloscuro" class="stretched-link">Manuela Valloscuro</a></p>
-        
-          </div>
-        </div>
-      </div>
+              <!-- Vincenzo Damiano Cristallo -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/vincenzodamianocristallo/VincenzoDamianoCristallo_PiazzaPioIIPienza_modellinoincartonlegno_cm 30x33_2023.jpg" alt="Vincenzo Damiano Cristallo">
+                  </div>
+                  <div class="card-body text-center">
+                    
+                    <p class="caption"><a href="./bio.htm?artista=vincenzodamianocristallo" class="stretched-link">Vincenzo Damiano Cristallo</a></p>
+                    
+                  </div>
+                </div>
+              </div>
 
-      <!-- Monica Toscani  -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/monicatoscani/monica_toscani_Poetica_delle_rovine_contemporanee.jpeg" alt="Monica Toscani">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=monicatoscani" class="stretched-link">Monica Toscani</a></p>
-        
-          </div>
-        </div>
-      </div>
+              <!-- Manuela Valloscuro  -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/manuelavalloscuro/manuela_valloscuro_GERMINAZIONE.PNG" alt="Manuela Valloscuro">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=manuelavalloscuro" class="stretched-link">Manuela Valloscuro</a></p>
+                
+                  </div>
+                </div>
+              </div>
 
-            <!-- Milena Ignatova  -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/milenasofkovaignatova/milena_sofkova_ignatov_Darkly_Art_Magazine.jpg" alt="Milena Ignatova">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=milenasofkovaignatova" class="stretched-link">Milena Sofkova Ignatova</a></p>
-          </div>
-        </div>
-      </div>
+              <!-- Monica Toscani  -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/monicatoscani/monica_toscani_Poetica_delle_rovine_contemporanee.jpeg" alt="Monica Toscani">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=monicatoscani" class="stretched-link">Monica Toscani</a></p>
+                
+                  </div>
+                </div>
+              </div>
 
-                  <!-- Sebastiano Bacci  -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/sebastianobacci/Sebastiano_Bacci_Generational_pain.jpg" alt="Sebastiano Bacci">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=sebastianobacci" class="stretched-link">Sebastiano Bacci</a></p>
-          </div>
-        </div>
-      </div>
-                  <!-- Maira  -->
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="card polaroid h-100">
-          <div class="card-img-wrapper">
-            <img src="/biografie/maira/maira_opera3.jpg" alt="Maira">
-          </div>
-          <div class="card-body text-center">
-            <p class="caption">
-              <a href="./bio.htm?artista=maira" class="stretched-link">Maira</a></p>
-          </div>
-        </div>
-      </div>
+                    <!-- Milena Ignatova  -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/milenasofkovaignatova/milena_sofkova_ignatov_Darkly_Art_Magazine.jpg" alt="Milena Ignatova">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=milenasofkovaignatova" class="stretched-link">Milena Sofkova Ignatova</a></p>
+                  </div>
+                </div>
+              </div>
 
-    </div>
-  </div>
-</main>
+                          <!-- Sebastiano Bacci  -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/sebastianobacci/Sebastiano_Bacci_Generational_pain.jpg" alt="Sebastiano Bacci">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=sebastianobacci" class="stretched-link">Sebastiano Bacci</a></p>
+                  </div>
+                </div>
+              </div>
+                          <!-- Maira  -->
+              <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card polaroid h-100">
+                  <div class="card-img-wrapper">
+                    <img src="/biografie/maira/maira_opera3.jpg" alt="Maira">
+                  </div>
+                  <div class="card-body text-center">
+                    <p class="caption">
+                      <a href="./bio.htm?artista=maira" class="stretched-link">Maira</a></p>
+                  </div>
+                </div>
+              </div>
 
+            </div>
+          </div>
+        </main>
 
   
         <footer class="mastfoot mt-auto">
