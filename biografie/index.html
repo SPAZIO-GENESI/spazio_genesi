@@ -182,16 +182,36 @@
         transform: scale(1);
       }
 
+      /* Animazione polaroid */
+      .card-polaroid-anim {
+        transition: 
+          opacity 0.35s ease,
+          transform 0.45s cubic-bezier(.25,.46,.45,.94);
+        transform-origin: center center;
+      }
+
+      /* Uscita */
+      .card-polaroid-hide {
+        opacity: 0;
+        transform: rotate(-3deg) scale(0.96) translateY(10px);
+      }
+
+      /* Entrata */
+      .card-polaroid-show {
+        opacity: 1;
+        transform: rotate(0deg) scale(1) translateY(0);
+      }
 
       </style>
 
+      <!-- Ordinamento dinamico con animazione polaroid -->
       <script>
       document.addEventListener("DOMContentLoaded", function () {
         const container = document.querySelector(".row");
         const cards = Array.from(container.children);
 
         // Aggiunge classe animazione a tutte le card
-        cards.forEach(card => card.classList.add("card-animate"));
+        cards.forEach(card => card.classList.add("card-polaroid-anim"));
 
         // Salva l'ordine storico originale
         cards.forEach((card, index) => {
@@ -204,8 +224,8 @@
           const mode = this.value;
           let sorted = [...cards];
 
-          // Applica fade-out
-          cards.forEach(card => card.classList.add("card-hide"));
+          // Polaroid fade-out + tilt
+          cards.forEach(card => card.classList.add("card-polaroid-hide"));
 
           setTimeout(() => {
             if (mode === "az") {
@@ -235,22 +255,29 @@
             // Riordina nel DOM
             sorted.forEach(card => container.appendChild(card));
 
-            // Fade-in
+            // Polaroid fade-in + “caduta” con rotazione casuale
             requestAnimationFrame(() => {
               sorted.forEach(card => {
-                card.classList.remove("card-hide");
-                card.classList.add("card-show");
+                const randomTilt = (Math.random() * 4 - 2).toFixed(2); // da -2° a +2°
+                card.style.transform = `rotate(${randomTilt}deg)`;
+                card.classList.remove("card-polaroid-hide");
+                card.classList.add("card-polaroid-show");
+
+                // Ritorno graduale alla posizione naturale
+                setTimeout(() => {
+                  card.style.transform = "rotate(0deg)";
+                }, 300);
               });
             });
 
-          }, 300); // tempo del fade-out
+          }, 350); // tempo del fade-out
         });
       });
       </script>
 
     </head>
 
-    
+
     <body class="">
       <div class="cover-container d-flex  p-3 mx-auto flex-column">
         <header class="masthead mb-auto">

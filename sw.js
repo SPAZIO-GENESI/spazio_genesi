@@ -1,4 +1,4 @@
-const CACHE_NAME = 'static-cache-marzo-v12';
+const CACHE_NAME = 'static-cache-marzo-v13';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -38,7 +38,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
 
-  // Non gestire API o richieste non GET
   if (
     req.method !== 'GET' ||
     req.url.includes('/api/') ||
@@ -47,47 +46,27 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 1️⃣ NETWORK-FIRST per HTML (fondamentale!)
-  if (req.destination === 'document') {
-    event.respondWith(
-      fetch(req)
-        .then((networkRes) => {
-          // aggiorna la cache
-          const copy = networkRes.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
-          return networkRes;
-        })
-        .catch(() => caches.match(req).then((res) => res || caches.match('/')))
-    );
+  // ✅ HTML: solo rete (risolve definitivamente cache vecchia)
+  if (req.mode === 'navigate') {
+    event.respondWith(fetch(req));
     return;
   }
 
-  // 2️⃣ CACHE-FIRST per tutto il resto
+  // ✅ ASSET: cache-first
   event.respondWith(
     caches.match(req).then((cachedRes) => {
       if (cachedRes) return cachedRes;
 
-      return fetch(req)
-        .then((networkRes) => {
-          if (
-            !networkRes ||
-            networkRes.status !== 200 ||
-            networkRes.type !== 'basic'
-          ) {
-            return networkRes;
-          }
-
-          const copy = networkRes.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
-
+      return fetch(req).then((networkRes) => {
+        if (!networkRes || networkRes.status !== 200) {
           return networkRes;
-        })
-        .catch(() => {
-          if (req.destination === 'image') {
-            return new Response('', { status: 404 });
-          }
-          return new Response('Offline', { status: 503 });
-        });
+        }
+
+        const copy = networkRes.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+
+        return networkRes;
+      });
     })
   );
 });
