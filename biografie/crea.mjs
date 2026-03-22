@@ -47,11 +47,26 @@ function cycleAndRenderImages(jsonData, personName) {
                 desTag.setAttribute ('content',"Biografia dell'artista " + artist.cartella + " associata SPAZIO GENESI ets");
                 document.head.appendChild(desTag);
                 console.log(desTag);
+                
 
             // GENERAZIONE OG
+            const isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+            let imageUrl;
+
+            if (isLocal) {
+                // Evita OG image o usa un placeholder
+                imageUrl = encodeURIComponent("https://spaziogenesi.org/placeholder.png");
+            } else {
+                // URL reale per produzione
+                imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" 
+                                            + artist.cartella + "/" 
+                                            + artist.img[0]["1"][0]["img"]);
+            }
+
+
                 const title = encodeURIComponent(document.title);
                 const description = encodeURIComponent("Biografia Artista "+ artist.nome);
-                const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
+               // const imageUrl = encodeURIComponent("https://spaziogenesi.org/biografie/" +artist.cartella +"/"+ artist.img[0]["1"][0]["img"] );
                 //template settings
                 const templateId = 'e4b8c678-7bd5-445d-ba03-bfaad510c686';
                 const versionNumber = 4;
@@ -112,11 +127,18 @@ function cycleAndRenderImages(jsonData, personName) {
                 document.getElementById("pidiv3").appendChild(socurl);
             }
 
-
+            // Create container elements dynamically
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     images.forEach(image => {
                         numimg += 1;
+                        
+                        // Create a container div for this image
+                        const imgContainer = document.createElement('div');
+                        imgContainer.id = 'img' + numimg;
+                        imgContainer.className = 'img-container mb-4';
+                        document.getElementById('bio').appendChild(imgContainer);
+                        
                         renderImage(image, numimg, artist);
                     });
                 });
@@ -126,23 +148,26 @@ function cycleAndRenderImages(jsonData, personName) {
 }
 
 function renderImage(image, numimg, artist) {
-   // console.log(artist);
-    const imgElement = document.createElement('img');
-    if (image.img){
-        imgElement.src = "./"+artist.cartella+"/"+image.img;
-        // imgElement.style.width = "100px";
-        imgElement.className="img-fluid w-100 ";
-        imgElement.alt = image.des;
-        //console.log(imgElement);
-        //console.log("img"+numimg);
-        document.getElementById('img'+numimg).appendChild(imgElement);
+    // Check if the container exists
+    const container = document.getElementById('img' + numimg);
+    if (!container) {
+        console.warn(`Container with id 'img${numimg}' not found`);
+        return;
+    }
+    
+    if (image.img) {
+        const imgElement = document.createElement('img');
+        imgElement.src = "./" + artist.cartella + "/" + image.img;
+        imgElement.className = "img-fluid w-100 ";
+        imgElement.alt = image.des || "";
+        container.appendChild(imgElement);
 
         const di = document.createElement('p');
         di.className = "regdiv text-justify mt-2 w-100";
-        di.innerHTML = image.deslunga;
+        // Check if deslunga exists and is not empty
+        di.innerHTML = image.deslunga || "";
         
-        document.getElementById('img'+numimg).appendChild(di);
-        //document.getElementById('img'+numimg).innerHTML = image.des;
+        container.appendChild(di);
     }
 }
 
