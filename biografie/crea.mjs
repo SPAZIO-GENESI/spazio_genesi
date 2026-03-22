@@ -126,23 +126,26 @@ function cycleAndRenderImages(jsonData, personName) {
                 socurl.className = "regdiv";
                 document.getElementById("pidiv3").appendChild(socurl);
             }
-
             // Create container elements dynamically
             artist.img.forEach(imgGroup => {
                 Object.values(imgGroup).forEach(images => {
                     images.forEach(image => {
                         numimg += 1;
-                        
+
                         // Create a container div for this image
                         const imgContainer = document.createElement('div');
                         imgContainer.id = 'img' + numimg;
                         imgContainer.className = 'img-container mb-4';
-                        document.getElementById('bio').appendChild(imgContainer);
-                        
+
+                        // Append to RIGHT COLUMN, not inside #bio
+                        const rightColumn = document.querySelector('.col-md-6.col-sm-12.col-xs-12.text-justify');
+                        rightColumn.appendChild(imgContainer);
+
                         renderImage(image, numimg, artist);
                     });
                 });
             });
+
         }
     });
 }
