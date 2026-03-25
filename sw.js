@@ -1,4 +1,4 @@
-const CACHE_NAME = 'static-cache-marzo-v16';
+const CACHE_NAME = 'static-cache-marzo-v17';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
