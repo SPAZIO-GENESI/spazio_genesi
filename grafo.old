@@ -149,15 +149,6 @@
     .cat-processo .pill { stroke: #BA7517 } .cat-processo .label { fill: #854F0B }
     .cat-relazione .pill { stroke: #993556 } .cat-relazione .label { fill: #72243E }
 
-    /* active = reverse: fill colorato, testo bianco */
-    .node-g.active .pill { stroke-width: 2; filter: none }
-    .cat-corpo.node-g.active    .pill { fill: #639922; stroke: #639922 }
-    .cat-memoria.node-g.active  .pill { fill: #534AB7; stroke: #534AB7 }
-    .cat-spazio.node-g.active   .pill { fill: #0F6E56; stroke: #0F6E56 }
-    .cat-processo.node-g.active .pill { fill: #BA7517; stroke: #BA7517 }
-    .cat-relazione.node-g.active .pill { fill: #993556; stroke: #993556 }
-    .node-g.active .label { fill: #ffffff }
-
     .graph-hint {
         position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
         font-size: 10px; color: #ccc; pointer-events: none; white-space: nowrap;
@@ -177,11 +168,9 @@
     /* Mobile */
     @media (max-width: 767px) {
         .sg-panes { flex-direction: column; height: auto }
-        .sg-pane-graph { height: 70vw; min-height: 300px; max-height: 420px; flex: none }
+        .sg-pane-graph { height: 55vw; min-height: 260px; flex: none }
         .sg-pane-side { width: 100%; max-width: 100%; min-width: 0; border-left: none; border-top: 1px solid #dee2e6 }
         .sg-divider { display: none }
-        /* su touch, hint più visibile */
-        .graph-hint { font-size: 11px; color: #bbb }
     }
     </style>
 </head>
@@ -308,17 +297,10 @@ let gdata = null;
 })();
 
 /* ── Graph ── */
-const isMobile = () => window.innerWidth < 768;
-
 function pillSize(node) {
-    // size va da 0.7 a 1.8 (build_graph.py: 0.7 + 1.1*(freq/max))
-    // range font: mobile 9-15px, desktop 11-19px
-    const mobile = isMobile();
-    const fsMin = mobile ? 9  : 11;
-    const fsMax = mobile ? 15 : 19;
-    const fs = Math.round(fsMin + (node.size - 0.7) / 1.1 * (fsMax - fsMin));
-    const pw = Math.round(node.label.length * fs * 0.62 + (mobile ? 18 : 26));
-    const ph = Math.round(fs + (mobile ? 10 : 14));
+    const fs = Math.round(11 + node.size * 4);
+    const pw = Math.round(node.label.length * fs * 0.62 + 28);
+    const ph = Math.round(fs + 14);
     return { fs, pw, ph };
 }
 
@@ -327,35 +309,21 @@ function renderGraph() {
     const W = wrap.clientWidth, H = wrap.clientHeight;
     if (W < 10 || H < 10) return;
 
-    const mobile = isMobile();
     const svg = d3.select('#graph').attr('viewBox', `0 0 ${W} ${H}`);
     const nodes = gdata.nodes.map(d => ({...d}));
     const edges = gdata.edges.map(d => ({...d}));
 
     if (window._sim) window._sim.stop();
 
-    // Boundary: tieni i nodi dentro il rettangolo con padding
-    const pad = mobile ? 30 : 50;
-    function boundX(d) { return Math.max(pad, Math.min(W - pad, d.x)); }
-    function boundY(d) { return Math.max(pad, Math.min(H - pad, d.y)); }
-
     const sim = d3.forceSimulation(nodes)
         .force('link', d3.forceLink(edges).id(d => d.id)
-            .distance(d => (mobile ? 70 : 120) - d.weight * (mobile ? 35 : 60))
+            .distance(d => 120 - d.weight * 60)
             .strength(d => 0.25 + d.weight * 0.5))
-        .force('charge', d3.forceManyBody().strength(mobile ? -140 : -300))
+        .force('charge', d3.forceManyBody().strength(-300))
         .force('center', d3.forceCenter(W/2, H/2))
-        .force('collision', d3.forceCollide().radius(d => pillSize(d).pw/2 + (mobile ? 6 : 12)))
-        .force('x', d3.forceX(W/2).strength(mobile ? 0.12 : 0.04))
-        .force('y', d3.forceY(H/2).strength(mobile ? 0.12 : 0.04))
-        .force('bounds', () => {
-            nodes.forEach(d => {
-                if (d.x < pad)     { d.x = pad;     d.vx = Math.abs(d.vx||0) }
-                if (d.x > W - pad) { d.x = W - pad; d.vx = -Math.abs(d.vx||0) }
-                if (d.y < pad)     { d.y = pad;      d.vy = Math.abs(d.vy||0) }
-                if (d.y > H - pad) { d.y = H - pad;  d.vy = -Math.abs(d.vy||0) }
-            });
-        });
+        .force('collision', d3.forceCollide().radius(d => pillSize(d).pw/2 + 12))
+        .force('x', d3.forceX(W/2).strength(0.04))
+        .force('y', d3.forceY(H/2).strength(0.04));
     window._sim = sim;
 
     const edgeSel = d3.select('#edges-g').selectAll('line.edge')
@@ -386,7 +354,7 @@ function renderGraph() {
     sim.on('tick', () => {
         edgeSel.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
                .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
-        nodeSel.attr('transform', d => `translate(${boundX(d)},${boundY(d)})`);
+        nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
     svg.on('click', () => deselect(edgeSel, nodeSel));
