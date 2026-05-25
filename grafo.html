@@ -145,6 +145,47 @@ svg#graph { width:100%; height:100%; display:block }
 .conn-fill  { height:100%; border-radius:2px }
 .conn-pct   { font-size:10px; color:#aaa; min-width:24px; text-align:right }
 
+/* Documents */
+#d-docs { margin-top:1.1rem }
+#d-docs h3 {
+  font-size:0.68rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  color:#888;
+  margin-bottom:0.5rem;
+}
+.doc-card {
+  border:1px solid #e8e8e8;
+  border-radius:5px;
+  padding:0.6rem 0.7rem;
+  margin-bottom:0.5rem;
+  background:#fafafa;
+}
+.doc-title {
+  font-size:0.78rem;
+  font-weight:600;
+  color:#111;
+  margin-bottom:0.25rem;
+  line-height:1.3;
+}
+.doc-excerpt {
+  font-size:0.73rem;
+  color:#555;
+  line-height:1.5;
+  margin-bottom:0.35rem;
+}
+.doc-link {
+  font-size:0.7rem;
+  color:#185FA5;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+}
+.doc-link:hover { text-decoration:underline }
+.doc-no-pdf { font-size:0.7rem; color:#bbb }
+
 /* Legend */
 #legend {
   border-top:1px solid #dee2e6;
@@ -214,6 +255,10 @@ svg#graph { width:100%; height:100%; display:block }
         <div id="d-conns">
           <h3>Relazioni</h3>
           <div id="d-list"></div>
+        </div>
+        <div id="d-docs">
+          <h3>Comunicati</h3>
+          <div id="d-doc-list"></div>
         </div>
       </div>
     </div>
@@ -354,8 +399,39 @@ function selectNode(id, edgeSel, nodeSel){
     })
     .sort((a,b)=>b.weight-a.weight);
 
+  // Document cards
+  const docList = document.getElementById('d-doc-list');
+  docList.innerHTML = '';
+  node.docs.forEach(doc => {
+    const card = document.createElement('div');
+    card.className = 'doc-card';
+    const titleEl = document.createElement('div');
+    titleEl.className = 'doc-title';
+    titleEl.textContent = doc.title;
+    const excerptEl = document.createElement('div');
+    excerptEl.className = 'doc-excerpt';
+    excerptEl.textContent = doc.excerpt ? '«' + doc.excerpt + '»' : '';
+    card.appendChild(titleEl);
+    if (doc.excerpt) card.appendChild(excerptEl);
+    if (doc.pdf_url) {
+      const link = document.createElement('a');
+      link.className = 'doc-link';
+      link.href = doc.pdf_url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.innerHTML = '↗ comunicato PDF';
+      card.appendChild(link);
+    } else {
+      const nolink = document.createElement('span');
+      nolink.className = 'doc-no-pdf';
+      nolink.textContent = 'PDF non disponibile';
+      card.appendChild(nolink);
+    }
+    docList.appendChild(card);
+  });
+
   const list = document.getElementById('d-list');
-  list.innerHTML='';
+  list.innerHTML = '';
   edgesOf.forEach(e=>{
     const n = gdata.nodes.find(x=>x.id===e.id);
     if(!n) return;
