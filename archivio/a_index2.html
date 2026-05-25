@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="it" class="h-100">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Archivio Eventi Spazio Genesi</title>
+        <meta name="revisit-after" content="1">
+        <meta name="description" content="Biografie delle artiste associate Spazio Genesi. Spazio di interfaccia tra studenti studentesse Accademia di Belle Arti ABAQ L'Aquila">
+        <meta name="author" content="Tangram.page">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/cover.css" rel="stylesheet">
+        <link rel="shortcut icon" href="/img/favicon.ico?v=4" sizes="any">
+        <link href="/img/icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+        <link href="/img/icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+        <link href="/img/icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+        <link rel="manifest" href="/img/manifest.json">
+        <style>
+        /* ── Override cover.css per questa pagina ── */
+
+        /* cover.css limita a max-width:700px tra 501-1900px: annullato */
+        .cover-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0.75rem 1rem !important;
+        }
+        /* cover.css aggiunge padding laterale a .cover: annullato per il main */
+        main.cover {
+            padding: 0 !important;
+            max-width: 100% !important;
+        }
+        /* body ha font monospace dal cover.css: il grafo usa system-ui, isoliamo */
+        .sg-panes, .sg-panes * {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+        /* body ha box-shadow e text-shadow: non interferisce col grafo ma togliamo text-shadow nelle colonne */
+        .sg-pane-left, .sg-pane-right {
+            text-shadow: none;
+        }
+        /* nav-masthead links sono bianchi al 50% nel cover.css, ma il sito li vuole così — lasciamo */
+        /* testo nelle colonne: left-align (body è text-center) */
+        .sg-pane-left, .sg-pane-right, .sg-side-body { text-align: left !important }
+        /* masthead e footer restano centrati come nell'originale */
+        .masthead .inner { max-width: 42em; margin: 0 auto }
+        .mastfoot .inner { max-width: 42em; margin: 0 auto }
+
+        /* ── Three-pane resizable layout ── */
+        .sg-panes {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 190px);
+            min-height: 420px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Left: event list */
+        .sg-pane-left {
+            width: 260px;
+            min-width: 160px;
+            max-width: 40%;
+            overflow-y: auto;
+            flex-shrink: 0;
+            border-right: 1px solid #dee2e6;
+            padding: 0.75rem 0.9rem;
+            background: #fff;
+            text-align: left;
+        }
+        .sg-pane-left .table { font-size: 0.78rem; margin-bottom: 0.5rem }
+        .sg-pane-left .table th { font-size: 0.72rem; font-weight: 600; color: #555; padding: 0.4rem 0 }
+        .sg-pane-left .table td { padding: 0.3rem 0; border-top: none }
+        .sg-pane-left .table td p { margin: 0; line-height: 1.4 }
+        .sg-pane-left .table a { color: #111; font-weight: 500 }
+        .sg-pane-left .table a:hover { color: #185FA5 }
+        .sg-pane-left .table-condensed thead th { border-bottom: 1px solid #dee2e6 }
+
+        /* Center: graph */
+        .sg-pane-center {
+            flex: 1 1 auto;
+            overflow: hidden;
+            position: relative;
+            background: #fff;
+            min-width: 200px;
+        }
+        .sg-pane-center svg { width: 100%; height: 100%; display: block }
+
+        /* Right: sidebar */
+        .sg-pane-right {
+            width: 280px;
+            min-width: 160px;
+            max-width: 40%;
+            flex-shrink: 0;
+            border-left: 1px solid #dee2e6;
+            overflow-y: auto;
+            background: #fff;
+            text-align: left;
+        }
+
+        /* Drag handles */
+        .sg-divider {
+            width: 5px;
+            flex-shrink: 0;
+            cursor: col-resize;
+            background: #f0f0f0;
+            border-left: 1px solid #dee2e6;
+            border-right: 1px solid #dee2e6;
+            position: relative;
+            z-index: 10;
+            transition: background 0.15s;
+        }
+        .sg-divider:hover, .sg-divider.dragging { background: #dee2e6 }
+        .sg-divider::after {
+            content: '⋮';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: #aaa;
+            pointer-events: none;
+        }
+
+        /* Sidebar internals */
+        .sg-side-body { padding: 0.9rem }
+        .sg-side-body h2 {
+            font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            color: #888; margin-bottom: 0.6rem;
+            border-bottom: 1px solid #f0f0f0; padding-bottom: 0.35rem;
+        }
+        #hint { font-size: 0.78rem; color: #777; line-height: 1.6 }
+        #detail { display: none }
+        #detail.on { display: block }
+        #d-name { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem }
+        #d-meta { font-size: 0.72rem; color: #777; margin-bottom: 0.9rem; line-height: 1.5 }
+        #d-conns h3, #d-docs h3 {
+            font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            color: #888; margin: 0.8rem 0 0.4rem;
+        }
+        .conn-row {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.76rem; padding: 4px 5px;
+            border-radius: 4px; cursor: pointer; color: #333;
+        }
+        .conn-row:hover { background: #f5f5f5 }
+        .conn-label { min-width: 64px; font-weight: 500 }
+        .conn-track { flex: 1; height: 2px; background: #eee; border-radius: 2px }
+        .conn-fill  { height: 100%; border-radius: 2px }
+        .conn-pct   { font-size: 10px; color: #aaa; min-width: 22px; text-align: right }
+
+        .doc-card {
+            border: 1px solid #e8e8e8; border-radius: 4px;
+            padding: 0.5rem 0.6rem; margin-bottom: 0.4rem; background: #fafafa;
+        }
+        .doc-title { font-size: 0.75rem; font-weight: 600; color: #111; margin-bottom: 0.2rem; line-height: 1.3 }
+        .doc-excerpt { font-size: 0.7rem; color: #555; line-height: 1.45; margin-bottom: 0.3rem }
+        .doc-link { font-size: 0.68rem; color: #185FA5; text-decoration: none }
+        .doc-link:hover { text-decoration: underline }
+        .doc-no-pdf { font-size: 0.68rem; color: #bbb }
+
+        .sg-legend { border-top: 1px solid #dee2e6; padding: 0.7rem 0.9rem; flex-shrink: 0 }
+        .sg-legend h2 {
+            font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            color: #888; margin-bottom: 0.4rem;
+        }
+        .leg { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: #555; margin-bottom: 3px }
+        .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0 }
+
+        /* Graph SVG elements */
+        .edge { fill: none; stroke: #999; stroke-opacity: 0.25 }
+        .edge.highlight { stroke: #333; stroke-opacity: 0.7 }
+        .edge.dim { stroke-opacity: 0.05 }
+        .node-g { cursor: pointer }
+        .node-g:hover .pill { stroke-width: 1.5 }
+        .node-g.active .pill { stroke-width: 2 }
+        .pill {
+            fill: #ffffff; stroke: #aaa; stroke-width: 1;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.07));
+        }
+        .label {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-weight: 500; fill: #111;
+            pointer-events: none; dominant-baseline: central; text-anchor: middle;
+        }
+        .cat-corpo    .pill { stroke: #639922 } .cat-corpo    .label { fill: #3B6D11 }
+        .cat-memoria  .pill { stroke: #534AB7 } .cat-memoria  .label { fill: #3C3489 }
+        .cat-spazio   .pill { stroke: #0F6E56 } .cat-spazio   .label { fill: #085041 }
+        .cat-processo .pill { stroke: #BA7517 } .cat-processo .label { fill: #854F0B }
+        .cat-relazione .pill { stroke: #993556 } .cat-relazione .label { fill: #72243E }
+
+        /* Graph hint */
+        .graph-hint {
+            position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+            font-size: 10px; color: #ccc; pointer-events: none; white-space: nowrap;
+        }
+
+        /* ── Mobile: stack vertically ── */
+        @media (max-width: 767px) {
+            .sg-panes {
+                flex-direction: column;
+                height: auto;
+            }
+            .sg-pane-left  { width: 100%; max-width: 100%; border-right: none; border-bottom: 1px solid #dee2e6; max-height: 260px }
+            .sg-pane-center { width: 100%; height: 320px; flex: none; border-bottom: 1px solid #dee2e6 }
+            .sg-pane-right { width: 100%; max-width: 100%; border-left: none }
+            .sg-divider { display: none }
+        }
+        /* masthead inner: keep centered like original but don't constrain main */
+        /* (handled above) */
+        </style>
+    </head>
+    <body class="text-center">
+      <div class="cover-container d-flex p-3 mx-auto flex-column">
+
+        <header class="masthead mb-auto">
+          <div class="inner">
+            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="60px" viewBox="0 0 580.000000 481.000000" preserveAspectRatio="xMidYMid meet">
+              <g transform="translate(0.000000,481.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                <path d="M2175 4799 c-729 -75 -1378 -467 -1780 -1074 -82 -124 -203 -366 -252 -505 -100 -282 -137 -506 -137 -815 0 -222 6 -283 46 -497 l23 -118 1396 0 1397 0 26 -83 c37 -117 49 -216 43 -332 -24 -405 -299 -739 -698 -847 -120 -32 -328 -32 -448 0 -105 29 -210 76 -301 138 -77 51 -201 176 -240 242 l-25 41 -368 1 -368 0 63 -76 c142 -172 345 -355 533 -479 124 -82 366 -203 505 -252 281 -100 505 -137 815 -137 310 0 534 37 815 137 139 49 381 170 505 252 265 175 514 425 690 690 94 141 214 391 269 558 l49 147 534 0 533 0 0 565 0 565 -1944 0 -1943 0 -27 59 c-53 119 -70 203 -70 361 0 168 18 251 84 388 51 106 88 161 169 246 83 86 166 145 275 197 142 66 218 82 391 82 122 0 165 -4 228 -21 99 -27 232 -89 310 -146 74 -52 190 -172 232 -238 l30 -48 413 0 c226 0 412 2 412 5 0 14 -172 214 -256 299 -190 190 -374 323 -619 447 -232 117 -479 196 -735 234 -127 19 -452 27 -575 14z"/>
+              </g>
+            </svg>
+            <h3 class="masthead-brand">Spazio Genesi</h3>
+            <nav class="nav nav-masthead justify-content-center">
+              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="/chisiamo.html">Chi siamo</a>
+              <a class="nav-link" href="/biografie/">Biografie</a>
+              <a class="nav-link active" href="/archivio/">Archivio</a>
+            </nav>
+          </div>
+        </header>
+
+        <main role="main" class="inner cover mt-5">
+          <div class="container-fluid px-0">
+
+            <div class="sg-panes" id="sg-panes">
+
+              <!-- LEFT: event list -->
+              <div class="sg-pane-left" id="pane-left">
+
+                <table class="table table-condensed">
+                  <thead><tr><th>2026</th></tr></thead>
+                  <tbody>
+                    <tr><td><p class="text-xs-left">Gen 28, <a href="#" disabled>L'AMORE E L'ODIO</a><br><small>con <a href="/biografie/bio.htm?artista=milenasofkovaignatova">Milena Ignatova</a> e <a href="/biografie/bio.htm?artista=sebastianobacci">Sebastiano Bacci</a></small></p></td></tr>
+                  </tbody>
+                </table>
+
+                <table class="table table-condensed">
+                  <thead><tr><th>2025</th></tr></thead>
+                  <tbody>
+                    <tr><td><p class="text-xs-left">Dic 3, <a href="#" disabled>TESSERE</a><br><small>con <a href="/biografie/bio.htm?artista=manuelavallorscuro">Manuela Vallorscuro</a> e <a href="/biografie/bio.htm?artista=vincenzodamianocristallo">Vincenzo D. Cristallo</a></small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Nov 7, <a href="/img/festa_matricole_2025.jpeg">Festa matricole ABAQ 2025</a><br><small>Potluck Party</small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Ott 29, <a href="#" disabled>E POI QUANDO TUTTO È A POSTO</a><br><small>di <a href="/biografie/bio.htm?artista=saradias">Sara Dias</a> e <a href="/biografie/bio.htm?artista=francescachiola">Francesca Chiola</a></small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Mag 28, <a href="#" disabled>OGNI VOLTA POI</a><br><small>con <a href="/biografie/bio.htm?artista=francescachiola">Francesca Chiola</a> e <a href="/biografie/bio.htm?artista=lisarastelli">Lisa Rastelli</a></small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Mar 13, <a href="./aureum.html">AUREUM. SUL SIGNIFICARE</a><br><small>con <a href="/biografie/bio.htm?artista=elenamussi">Elena Mussi</a> e <a href="/biografie/bio.htm?artista=francescarinella">Francesca Rinella</a></small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Gen 30, <a href="./meden_agan.html">MĒDÈN ÁGAN</a><br><small>con <a href="https://www.instagram.com/stef._dc_/">S. Delli Compagni</a> e <a href="https://www.instagram.com/r.io.male/">R. Bardhoshi</a></small></p></td></tr>
+                  </tbody>
+                </table>
+
+                <table class="table table-condensed">
+                  <thead><tr><th>2024</th></tr></thead>
+                  <tbody>
+                    <tr><td><p class="text-xs-left">Dic 19, <a href="trattienimi_pure.html">TRATTIENIMI PURE</a><br><small>con <a href="/biografie/bio.htm?artista=sabrinaiezzi">Sabrina Iezzi</a> e <a href="/biografie/bio.htm?artista=mariannamancini">Marianna Mancini</a></small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Nov 30, <a href="che_non_si_potra_mai_avere.html">CHE NON SI POTRÀ MAI AVERE</a><br><small>con <a href="/biografie/bio.htm?artista=deborapanaccione">D. Panaccione</a> e <a href="/biografie/bio.htm?artista=davidemariani">D. Mariani</a></small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Nov 7, <a href="/img/festa_matricole.jpeg">Festa matricole</a> <a href="https://www.abaq.it/">ABAQ</a> 2024<br><small>potluck party</small></p></td></tr>
+                    <tr><td><p class="text-xs-left">Ott 4, <a href="possibile_da_scrivere.html">POSSIBILE DA SCRIVERE</a><br><small>collettivo delle artiste in Spazio Genesi</small></p></td></tr>
+                  </tbody>
+                </table>
+
+              </div><!-- /pane-left -->
+
+              <!-- DIVIDER left -->
+              <div class="sg-divider" id="div-left"></div>
+
+              <!-- CENTER: graph -->
+              <div class="sg-pane-center" id="pane-center">
+                <svg id="graph">
+                  <g id="edges-g"></g>
+                  <g id="nodes-g"></g>
+                </svg>
+                <div class="graph-hint">trascina i nodi · clicca per esplorare</div>
+              </div>
+
+              <!-- DIVIDER right -->
+              <div class="sg-divider" id="div-right"></div>
+
+              <!-- RIGHT: semantic sidebar -->
+              <div class="sg-pane-right" id="pane-right">
+                <div class="sg-side-body">
+                  <h2>Nodo selezionato</h2>
+                  <div id="hint">Clicca un concetto per esplorare le relazioni semantiche e i comunicati in cui compare.</div>
+                  <div id="detail">
+                    <div id="d-name"></div>
+                    <div id="d-meta"></div>
+                    <div id="d-conns"><h3>Relazioni PMI</h3><div id="d-list"></div></div>
+                    <div id="d-docs"><h3>Comunicati</h3><div id="d-doc-list"></div></div>
+                  </div>
+                </div>
+                <div class="sg-legend">
+                  <h2>Categorie</h2>
+                  <div class="leg"><div class="leg-dot" style="background:#639922"></div>corpo / figura</div>
+                  <div class="leg"><div class="leg-dot" style="background:#534AB7"></div>memoria / tempo</div>
+                  <div class="leg"><div class="leg-dot" style="background:#0F6E56"></div>spazio / luogo</div>
+                  <div class="leg"><div class="leg-dot" style="background:#BA7517"></div>processo / tecnica</div>
+                  <div class="leg"><div class="leg-dot" style="background:#993556"></div>relazione / emotività</div>
+                </div>
+              </div><!-- /pane-right -->
+
+            </div><!-- /sg-panes -->
+
+            <!-- News ticker (identical to original) -->
+            <div class="row mt-2">
+              <div class="col-md-12">
+                <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
+                  <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-danger py-2 text-white px-1 news"><span class="d-flex align-items-center">News</span></div>
+                  <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> laboratorio permanente di interazione - noi che...voi che...presente e futuro - autogestito - riservato ad iscritt* ABAQ + Erasmus - multi manifesto - tutte le tecniche - rotazione espositiva - archivio donazioni - caffè letterario - conviviale - assemblea aperta - spazio safe</marquee>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </main>
+
+        <footer class="mastfoot mt-auto">
+          <div class="inner">
+            <p>Spazio Genesi ETS - CF 96602450585<br>sede operativa <a href="https://maps.app.goo.gl/3JEsBLW5Xx8aE2mj9">Galleria Via Roma o da Via Vicentini</a> - L'Aquila (AQ)<br>info@spaziogenesi.org spaziogenesi@pec.it</p>
+            <p>Lo spazio è gentilmente concesso da: <a href="https://feelitshop.com/">Feel it!</a></p>
+            <p>Realizzato da <a href="https://tangram.page/">Tangram.page</a></p>
+          </div>
+        </footer>
+
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+      <script>
+      /* ═══════════════════════════════════════
+         DRAG-TO-RESIZE
+      ═══════════════════════════════════════ */
+      function makeResizable(divider, getPaneA, getPaneB, getContainer) {
+        let dragging = false, startX, startA, startB;
+        divider.addEventListener('mousedown', e => {
+          dragging = true;
+          startX = e.clientX;
+          startA = getPaneA().offsetWidth;
+          startB = getPaneB().offsetWidth;
+          divider.classList.add('dragging');
+          document.body.style.cursor = 'col-resize';
+          document.body.style.userSelect = 'none';
+          e.preventDefault();
+        });
+        document.addEventListener('mousemove', e => {
+          if (!dragging) return;
+          const dx = e.clientX - startX;
+          const paneA = getPaneA(), paneB = getPaneB();
+          const minA = parseInt(paneA.style.minWidth) || 120;
+          const minB = parseInt(paneB.style.minWidth) || 140;
+          const newA = Math.max(minA, startA + dx);
+          const newB = Math.max(minB, startB - dx);
+          paneA.style.width = newA + 'px';
+          paneB.style.width = newB + 'px';
+        });
+        document.addEventListener('mouseup', () => {
+          if (!dragging) return;
+          dragging = false;
+          divider.classList.remove('dragging');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          // Re-render graph to fit new center width
+          if (window._sim) window._sim.alpha(0.1).restart();
+          renderGraph();
+        });
+      }
+
+      makeResizable(
+        document.getElementById('div-left'),
+        () => document.getElementById('pane-left'),
+        () => document.getElementById('pane-center'),
+        () => document.getElementById('sg-panes')
+      );
+      makeResizable(
+        document.getElementById('div-right'),
+        () => document.getElementById('pane-center'),
+        () => document.getElementById('pane-right'),
+        () => document.getElementById('sg-panes')
+      );
+
+      /* ═══════════════════════════════════════
+         GRAPH
+      ═══════════════════════════════════════ */
+      const CAT_STROKE = {
+        corpo:'#639922', memoria:'#534AB7', spazio:'#0F6E56',
+        processo:'#BA7517', relazione:'#993556'
+      };
+
+      let gdata = null;
+
+      async function init() {
+        const r = await fetch('../graph_data.json?t=' + Date.now());
+        gdata = await r.json();
+        renderGraph();
+      }
+
+      function pillSize(node) {
+        const fs = Math.round(10 + node.size * 3.5);
+        const pw = Math.round(node.label.length * fs * 0.62 + 24);
+        const ph = Math.round(fs + 12);
+        return { fs, pw, ph };
+      }
+
+      function renderGraph() {
+        const wrap = document.getElementById('pane-center');
+        const W = wrap.clientWidth, H = wrap.clientHeight;
+        if (W < 10 || H < 10) return;
+
+        const svg = d3.select('#graph').attr('viewBox', `0 0 ${W} ${H}`);
+        const nodes = gdata.nodes.map(d => ({...d}));
+        const edges = gdata.edges.map(d => ({...d}));
+
+        if (window._sim) window._sim.stop();
+
+        const sim = d3.forceSimulation(nodes)
+          .force('link', d3.forceLink(edges).id(d=>d.id)
+            .distance(d => 110 - d.weight*55).strength(d => 0.25 + d.weight*0.5))
+          .force('charge', d3.forceManyBody().strength(-260))
+          .force('center', d3.forceCenter(W/2, H/2))
+          .force('collision', d3.forceCollide().radius(d => pillSize(d).pw/2 + 10))
+          .force('x', d3.forceX(W/2).strength(0.05))
+          .force('y', d3.forceY(H/2).strength(0.05));
+        window._sim = sim;
+
+        const edgeSel = d3.select('#edges-g').selectAll('line.edge')
+          .data(edges, d => d.source.id + '-' + d.target.id)
+          .join('line').attr('class','edge')
+          .attr('stroke-width', d => 0.5 + d.weight * 2);
+
+        const nodeSel = d3.select('#nodes-g').selectAll('g.node-g')
+          .data(nodes, d => d.id)
+          .join('g').attr('class', d => `node-g cat-${d.cat}`)
+          .call(d3.drag()
+            .on('start', (ev,d) => { if(!ev.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y })
+            .on('drag',  (ev,d) => { d.fx=ev.x; d.fy=ev.y })
+            .on('end',   (ev,d) => { if(!ev.active) sim.alphaTarget(0); d.fx=null; d.fy=null }))
+          .on('click', (ev,d) => { ev.stopPropagation(); selectNode(d.id, edgeSel, nodeSel) });
+
+        nodeSel.selectAll('rect.pill').data(d=>[d]).join('rect')
+          .attr('class','pill').attr('rx',20).attr('ry',20)
+          .each(function(d) {
+            const {pw,ph} = pillSize(d);
+            d3.select(this).attr('width',pw).attr('height',ph).attr('x',-pw/2).attr('y',-ph/2);
+          });
+
+        nodeSel.selectAll('text.label').data(d=>[d]).join('text')
+          .attr('class','label').attr('y',1)
+          .each(function(d) { d3.select(this).attr('font-size', pillSize(d).fs).text(d.label); });
+
+        sim.on('tick', () => {
+          edgeSel.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+                 .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+          nodeSel.attr('transform', d=>`translate(${d.x},${d.y})`);
+        });
+
+        svg.on('click', () => deselect(edgeSel, nodeSel));
+        window._edgeSel = edgeSel;
+        window._nodeSel = nodeSel;
+      }
+
+      function selectNode(id, edgeSel, nodeSel) {
+        edgeSel = edgeSel || window._edgeSel;
+        nodeSel = nodeSel || window._nodeSel;
+
+        nodeSel.classed('active', d => d.id === id);
+        edgeSel
+          .classed('highlight', d => (d.source.id||d.source)===id || (d.target.id||d.target)===id)
+          .classed('dim',       d => (d.source.id||d.source)!==id && (d.target.id||d.target)!==id);
+
+        const node = gdata.nodes.find(n => n.id === id);
+        document.getElementById('hint').style.display = 'none';
+        document.getElementById('detail').classList.add('on');
+        document.getElementById('d-name').textContent = node.label;
+        document.getElementById('d-meta').innerHTML =
+          `freq: <strong>${node.freq}</strong> · in <strong>${node.docs.length}</strong>/${gdata.meta.total_docs} testi`;
+
+        // Relations
+        const edgesOf = gdata.edges
+          .filter(e => (e.source.id||e.source)===id || (e.target.id||e.target)===id)
+          .map(e => ({
+            id: ((e.source.id||e.source)===id) ? (e.target.id||e.target) : (e.source.id||e.source),
+            weight: e.weight
+          }))
+          .sort((a,b) => b.weight - a.weight);
+
+        const list = document.getElementById('d-list');
+        list.innerHTML = '';
+        edgesOf.forEach(e => {
+          const n = gdata.nodes.find(x => x.id === e.id);
+          if (!n) return;
+          const stroke = CAT_STROKE[n.cat] || '#888';
+          const row = document.createElement('div');
+          row.className = 'conn-row';
+          row.innerHTML = `
+            <span class="conn-label">${n.label}</span>
+            <div class="conn-track"><div class="conn-fill" style="width:${Math.round(e.weight*100)}%;background:${stroke}"></div></div>
+            <span class="conn-pct">${Math.round(e.weight*100)}%</span>`;
+          row.addEventListener('click', () => selectNode(n.id));
+          list.appendChild(row);
+        });
+
+        // Documents
+        const docList = document.getElementById('d-doc-list');
+        docList.innerHTML = '';
+        node.docs.forEach(doc => {
+          const card = document.createElement('div');
+          card.className = 'doc-card';
+          card.innerHTML = `<div class="doc-title">${doc.title}</div>`;
+          if (doc.excerpt)
+            card.innerHTML += `<div class="doc-excerpt">«${doc.excerpt}»</div>`;
+          if (doc.pdf_url)
+            card.innerHTML += `<a class="doc-link" href="${doc.pdf_url}" target="_blank" rel="noopener">↗ comunicato PDF</a>`;
+          else
+            card.innerHTML += `<span class="doc-no-pdf">PDF non disponibile</span>`;
+          docList.appendChild(card);
+        });
+      }
+
+      function deselect(edgeSel, nodeSel) {
+        edgeSel = edgeSel || window._edgeSel;
+        nodeSel = nodeSel || window._nodeSel;
+        if (!edgeSel) return;
+        nodeSel.classed('active', false);
+        edgeSel.classed('highlight', false).classed('dim', false);
+        document.getElementById('hint').style.display = '';
+        document.getElementById('detail').classList.remove('on');
+      }
+
+      window.addEventListener('resize', () => {
+        d3.select('#nodes-g').selectAll('*').remove();
+        d3.select('#edges-g').selectAll('*').remove();
+        renderGraph();
+      });
+
+      init().catch(e => {
+        document.getElementById('hint').textContent = 'Errore caricamento graph_data.json';
+        console.error(e);
+      });
+      </script>
+    </body>
+</html>
