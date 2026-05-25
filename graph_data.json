@@ -1,0 +1,571 @@
+{
+  "meta": {
+    "total_docs": 10,
+    "doc_names": [
+      "Comunicato_stampa_Mēdèn_ágan",
+      "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+      "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+      "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+      "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+      "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+      "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+      "SPAZIO_GENESI_comunicato_Tessere",
+      "SPAZIO_GENESI_comunicato_amore_e_odio",
+      "trattienimi_pure_2024"
+    ],
+    "total_concepts": 19,
+    "total_edges": 45,
+    "generated": "2026-05-25T19:10:38.140110+00:00"
+  },
+  "nodes": [
+    {
+      "id": "comunità",
+      "label": "comunità",
+      "cat": "spazio",
+      "freq": 2,
+      "size": 0.737,
+      "docs": [
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_comunicato_amore_e_odio"
+      ],
+      "desc": "Presente in 2/10 testi. Frequenza: 2."
+    },
+    {
+      "id": "corpo",
+      "label": "corpo",
+      "cat": "corpo",
+      "freq": 32,
+      "size": 1.287,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 9/10 testi. Frequenza: 32."
+    },
+    {
+      "id": "dolore",
+      "label": "dolore",
+      "cat": "relazione",
+      "freq": 16,
+      "size": 0.993,
+      "docs": [
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_amore_e_odio"
+      ],
+      "desc": "Presente in 3/10 testi. Frequenza: 16."
+    },
+    {
+      "id": "emotività",
+      "label": "emotività",
+      "cat": "relazione",
+      "freq": 4,
+      "size": 0.773,
+      "docs": [
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 3/10 testi. Frequenza: 4."
+    },
+    {
+      "id": "equilibrio",
+      "label": "equilibrio",
+      "cat": "relazione",
+      "freq": 17,
+      "size": 1.012,
+      "docs": [
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 7/10 testi. Frequenza: 17."
+    },
+    {
+      "id": "femminile",
+      "label": "femminile",
+      "cat": "corpo",
+      "freq": 19,
+      "size": 1.048,
+      "docs": [
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 6/10 testi. Frequenza: 19."
+    },
+    {
+      "id": "figura",
+      "label": "figura",
+      "cat": "corpo",
+      "freq": 16,
+      "size": 0.993,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 8/10 testi. Frequenza: 16."
+    },
+    {
+      "id": "identità",
+      "label": "identità",
+      "cat": "relazione",
+      "freq": 7,
+      "size": 0.828,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 5/10 testi. Frequenza: 7."
+    },
+    {
+      "id": "materia",
+      "label": "materia",
+      "cat": "processo",
+      "freq": 23,
+      "size": 1.122,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere"
+      ],
+      "desc": "Presente in 6/10 testi. Frequenza: 23."
+    },
+    {
+      "id": "memoria",
+      "label": "memoria",
+      "cat": "memoria",
+      "freq": 22,
+      "size": 1.103,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 8/10 testi. Frequenza: 22."
+    },
+    {
+      "id": "narrazione",
+      "label": "narrazione",
+      "cat": "memoria",
+      "freq": 29,
+      "size": 1.232,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 10/10 testi. Frequenza: 29."
+    },
+    {
+      "id": "opera",
+      "label": "opera",
+      "cat": "processo",
+      "freq": 40,
+      "size": 1.433,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 10/10 testi. Frequenza: 40."
+    },
+    {
+      "id": "processo",
+      "label": "processo",
+      "cat": "processo",
+      "freq": 60,
+      "size": 1.8,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 10/10 testi. Frequenza: 60."
+    },
+    {
+      "id": "quotidiano",
+      "label": "quotidiano",
+      "cat": "processo",
+      "freq": 22,
+      "size": 1.103,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 8/10 testi. Frequenza: 22."
+    },
+    {
+      "id": "relazione",
+      "label": "relazione",
+      "cat": "relazione",
+      "freq": 58,
+      "size": 1.763,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 10/10 testi. Frequenza: 58."
+    },
+    {
+      "id": "soglia",
+      "label": "soglia",
+      "cat": "spazio",
+      "freq": 10,
+      "size": 0.883,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 5/10 testi. Frequenza: 10."
+    },
+    {
+      "id": "spazio",
+      "label": "spazio",
+      "cat": "spazio",
+      "freq": 18,
+      "size": 1.03,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_amore_e_odio"
+      ],
+      "desc": "Presente in 7/10 testi. Frequenza: 18."
+    },
+    {
+      "id": "tempo",
+      "label": "tempo",
+      "cat": "memoria",
+      "freq": 17,
+      "size": 1.012,
+      "docs": [
+        "Comunicato_stampa_SPAZIOGENESI_Ciò_che_conosco",
+        "Comunicato_stampa_SPAZIO_GENESI_La_comune_esigenza_di_rispondere",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio",
+        "trattienimi_pure_2024"
+      ],
+      "desc": "Presente in 8/10 testi. Frequenza: 17."
+    },
+    {
+      "id": "traccia",
+      "label": "traccia",
+      "cat": "corpo",
+      "freq": 16,
+      "size": 0.993,
+      "docs": [
+        "Comunicato_stampa_Mēdèn_ágan",
+        "SPAZIO_GENESI_Aureum_Sul significare_COMUNICATO",
+        "SPAZIO_GENESI_Comunicato_E_poi_quando_tutto_è_a_posto",
+        "SPAZIO_GENESI_Comunicato_stampa_Fierce_and_Graceful",
+        "SPAZIO_GENESI_comunicato_ADHUC._Una_persistenza_ostinata",
+        "SPAZIO_GENESI_comunicato_Tessere",
+        "SPAZIO_GENESI_comunicato_amore_e_odio"
+      ],
+      "desc": "Presente in 7/10 testi. Frequenza: 16."
+    }
+  ],
+  "edges": [
+    {
+      "source": "identità",
+      "target": "narrazione",
+      "weight": 1.0
+    },
+    {
+      "source": "dolore",
+      "target": "traccia",
+      "weight": 0.973
+    },
+    {
+      "source": "comunità",
+      "target": "femminile",
+      "weight": 0.912
+    },
+    {
+      "source": "dolore",
+      "target": "spazio",
+      "weight": 0.907
+    },
+    {
+      "source": "emotività",
+      "target": "identità",
+      "weight": 0.897
+    },
+    {
+      "source": "dolore",
+      "target": "tempo",
+      "weight": 0.839
+    },
+    {
+      "source": "figura",
+      "target": "identità",
+      "weight": 0.836
+    },
+    {
+      "source": "femminile",
+      "target": "narrazione",
+      "weight": 0.816
+    },
+    {
+      "source": "emotività",
+      "target": "memoria",
+      "weight": 0.735
+    },
+    {
+      "source": "comunità",
+      "target": "processo",
+      "weight": 0.734
+    },
+    {
+      "source": "emotività",
+      "target": "spazio",
+      "weight": 0.702
+    },
+    {
+      "source": "comunità",
+      "target": "materia",
+      "weight": 0.696
+    },
+    {
+      "source": "materia",
+      "target": "quotidiano",
+      "weight": 0.678
+    },
+    {
+      "source": "emotività",
+      "target": "figura",
+      "weight": 0.677
+    },
+    {
+      "source": "spazio",
+      "target": "tempo",
+      "weight": 0.665
+    },
+    {
+      "source": "soglia",
+      "target": "traccia",
+      "weight": 0.659
+    },
+    {
+      "source": "emotività",
+      "target": "equilibrio",
+      "weight": 0.65
+    },
+    {
+      "source": "corpo",
+      "target": "femminile",
+      "weight": 0.637
+    },
+    {
+      "source": "memoria",
+      "target": "quotidiano",
+      "weight": 0.635
+    },
+    {
+      "source": "figura",
+      "target": "traccia",
+      "weight": 0.617
+    },
+    {
+      "source": "soglia",
+      "target": "spazio",
+      "weight": 0.613
+    },
+    {
+      "source": "corpo",
+      "target": "soglia",
+      "weight": 0.606
+    },
+    {
+      "source": "dolore",
+      "target": "soglia",
+      "weight": 0.606
+    },
+    {
+      "source": "femminile",
+      "target": "figura",
+      "weight": 0.6
+    },
+    {
+      "source": "corpo",
+      "target": "figura",
+      "weight": 0.584
+    },
+    {
+      "source": "comunità",
+      "target": "corpo",
+      "weight": 0.583
+    },
+    {
+      "source": "corpo",
+      "target": "identità",
+      "weight": 0.576
+    },
+    {
+      "source": "femminile",
+      "target": "quotidiano",
+      "weight": 0.569
+    },
+    {
+      "source": "opera",
+      "target": "tempo",
+      "weight": 0.555
+    },
+    {
+      "source": "tempo",
+      "target": "traccia",
+      "weight": 0.546
+    },
+    {
+      "source": "identità",
+      "target": "tempo",
+      "weight": 0.528
+    },
+    {
+      "source": "equilibrio",
+      "target": "processo",
+      "weight": 0.504
+    },
+    {
+      "source": "dolore",
+      "target": "opera",
+      "weight": 0.502
+    },
+    {
+      "source": "memoria",
+      "target": "opera",
+      "weight": 0.499
+    },
+    {
+      "source": "opera",
+      "target": "spazio",
+      "weight": 0.498
+    },
+    {
+      "source": "narrazione",
+      "target": "opera",
+      "weight": 0.479
+    },
+    {
+      "source": "materia",
+      "target": "memoria",
+      "weight": 0.477
+    },
+    {
+      "source": "materia",
+      "target": "traccia",
+      "weight": 0.475
+    },
+    {
+      "source": "equilibrio",
+      "target": "relazione",
+      "weight": 0.474
+    },
+    {
+      "source": "quotidiano",
+      "target": "soglia",
+      "weight": 0.473
+    },
+    {
+      "source": "materia",
+      "target": "relazione",
+      "weight": 0.443
+    },
+    {
+      "source": "comunità",
+      "target": "quotidiano",
+      "weight": 0.433
+    },
+    {
+      "source": "narrazione",
+      "target": "processo",
+      "weight": 0.43
+    },
+    {
+      "source": "memoria",
+      "target": "narrazione",
+      "weight": 0.413
+    },
+    {
+      "source": "processo",
+      "target": "relazione",
+      "weight": 0.396
+    }
+  ]
+}

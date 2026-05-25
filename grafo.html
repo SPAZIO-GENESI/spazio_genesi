@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Grafo semantico — Spazio Genesi</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0 }
+
+body {
+  background:#ffffff;
+  color:#111111;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+/* Nav identica al sito */
+nav {
+  border-bottom:1px solid #dee2e6;
+  padding:0.6rem 1rem;
+  display:flex;
+  align-items:center;
+  gap:0;
+  flex-shrink:0;
+}
+nav .brand {
+  font-weight:600;
+  font-size:1rem;
+  color:#111;
+  text-decoration:none;
+  margin-right:1.5rem;
+}
+nav a {
+  color:#111;
+  text-decoration:none;
+  padding:0.25rem 0.6rem;
+  font-size:0.875rem;
+}
+nav a:hover { text-decoration:underline }
+nav .active-page { font-weight:600 }
+
+/* Subheader */
+#subheader {
+  padding:0.5rem 1rem;
+  border-bottom:1px solid #dee2e6;
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
+  flex-shrink:0;
+  font-size:0.78rem;
+  color:#555;
+}
+#subheader strong { color:#111; font-weight:500 }
+#subheader .title { font-weight:500; color:#111; margin-right:auto }
+
+/* Layout */
+#layout { display:flex; flex:1; overflow:hidden }
+#graph-wrap { flex:1; position:relative; overflow:hidden; background:#ffffff }
+svg#graph { width:100%; height:100%; display:block }
+
+/* Edges */
+.edge { fill:none; stroke:#999; stroke-opacity:0.25 }
+.edge.highlight { stroke:#333; stroke-opacity:0.7 }
+.edge.dim { stroke-opacity:0.05 }
+
+/* Nodes */
+.node-g { cursor:pointer }
+.pill {
+  fill:#ffffff;
+  stroke:#aaaaaa;
+  stroke-width:1;
+  rx:20; ry:20;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,0.08));
+}
+.node-g:hover .pill { stroke:#333; stroke-width:1.5 }
+.node-g.active .pill { stroke-width:2 }
+.label {
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:500;
+  fill:#111111;
+  pointer-events:none;
+  dominant-baseline:central;
+  text-anchor:middle;
+}
+
+/* Category accent — solo bordo colorato, fondo bianco */
+.cat-corpo   .pill { stroke:#639922 } .cat-corpo   .label { fill:#3B6D11 }
+.cat-memoria .pill { stroke:#534AB7 } .cat-memoria .label { fill:#3C3489 }
+.cat-spazio  .pill { stroke:#0F6E56 } .cat-spazio  .label { fill:#085041 }
+.cat-processo .pill { stroke:#BA7517 } .cat-processo .label { fill:#854F0B }
+.cat-relazione .pill { stroke:#993556 } .cat-relazione .label { fill:#72243E }
+
+/* Sidebar */
+#sidebar {
+  width:220px;
+  flex-shrink:0;
+  border-left:1px solid #dee2e6;
+  background:#ffffff;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+#side-body { flex:1; overflow-y:auto; padding:1rem }
+#side-body h2 {
+  font-size:0.68rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  color:#888;
+  margin-bottom:0.75rem;
+  border-bottom:1px solid #f0f0f0;
+  padding-bottom:0.4rem;
+}
+#hint { font-size:0.8rem; color:#777; line-height:1.6 }
+#detail { display:none }
+#detail.on { display:block }
+#d-name { font-size:0.95rem; font-weight:600; margin-bottom:0.25rem; color:#111 }
+#d-meta { font-size:0.75rem; color:#777; margin-bottom:1rem; line-height:1.5 }
+#d-conns h3 {
+  font-size:0.68rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  color:#888;
+  margin-bottom:0.5rem;
+}
+.conn-row {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:0.78rem;
+  padding:4px 5px;
+  border-radius:4px;
+  cursor:pointer;
+  color:#333;
+}
+.conn-row:hover { background:#f5f5f5 }
+.conn-label { min-width:68px; font-weight:500 }
+.conn-track { flex:1; height:2px; background:#eee; border-radius:2px }
+.conn-fill  { height:100%; border-radius:2px }
+.conn-pct   { font-size:10px; color:#aaa; min-width:24px; text-align:right }
+
+/* Legend */
+#legend {
+  border-top:1px solid #dee2e6;
+  padding:0.75rem 1rem;
+  flex-shrink:0;
+}
+#legend h2 {
+  font-size:0.68rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  color:#888;
+  margin-bottom:0.5rem;
+}
+.leg { display:flex; align-items:center; gap:6px; font-size:0.72rem; color:#555; margin-bottom:3px }
+.leg-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0 }
+
+/* Hint label inside graph */
+#graph-hint {
+  position:absolute;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:11px;
+  color:#bbb;
+  pointer-events:none;
+  white-space:nowrap;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="brand">Spazio Genesi</a>
+  <a href="/">Home</a>
+  <a href="/chisiamo.html">Chi siamo</a>
+  <a href="/biografie/">Biografie</a>
+  <a href="/archivio/">Archivio</a>
+  <a href="/archivio/grafo.html" class="active-page">Grafo semantico</a>
+  <a href="/Iscrizione.html">Iscrizione</a>
+</nav>
+
+<div id="subheader">
+  <span class="title">Mappa dei concetti — corpus comunicati stampa</span>
+  <span>testi: <strong id="m-docs">—</strong></span>
+  <span>concetti: <strong id="m-nodes">—</strong></span>
+  <span>relazioni: <strong id="m-edges">—</strong></span>
+  <span id="m-date" style="color:#bbb"></span>
+</div>
+
+<div id="layout">
+  <div id="graph-wrap">
+    <svg id="graph">
+      <g id="edges-g"></g>
+      <g id="nodes-g"></g>
+    </svg>
+    <div id="graph-hint">trascina i nodi · clicca per esplorare</div>
+  </div>
+
+  <div id="sidebar">
+    <div id="side-body">
+      <h2>Nodo selezionato</h2>
+      <div id="hint">Seleziona un concetto per vederne le relazioni semantiche (PMI).</div>
+      <div id="detail">
+        <div id="d-name"></div>
+        <div id="d-meta"></div>
+        <div id="d-conns">
+          <h3>Relazioni</h3>
+          <div id="d-list"></div>
+        </div>
+      </div>
+    </div>
+    <div id="legend">
+      <h2>Categorie</h2>
+      <div class="leg"><div class="leg-dot" style="background:#639922"></div>corpo / figura</div>
+      <div class="leg"><div class="leg-dot" style="background:#534AB7"></div>memoria / tempo</div>
+      <div class="leg"><div class="leg-dot" style="background:#0F6E56"></div>spazio / luogo</div>
+      <div class="leg"><div class="leg-dot" style="background:#BA7517"></div>processo / tecnica</div>
+      <div class="leg"><div class="leg-dot" style="background:#993556"></div>relazione / emotività</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+const CAT_STROKE = {
+  corpo:'#639922', memoria:'#534AB7', spazio:'#0F6E56',
+  processo:'#BA7517', relazione:'#993556'
+};
+
+let gdata = null;
+
+async function init(){
+  const r = await fetch('graph_data.json?t='+Date.now());
+  gdata = await r.json();
+  const m = gdata.meta;
+  document.getElementById('m-docs').textContent  = m.total_docs;
+  document.getElementById('m-nodes').textContent = m.total_concepts;
+  document.getElementById('m-edges').textContent = m.total_edges;
+  if(m.generated)
+    document.getElementById('m-date').textContent =
+      'aggiornato ' + new Date(m.generated).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  render();
+}
+
+function pillSize(node){
+  const fs = Math.round(11 + node.size * 4);   // 12–18px
+  const pw = Math.round(node.label.length * fs * 0.6 + 28);
+  const ph = Math.round(fs + 14);
+  return { fs, pw, ph };
+}
+
+function render(){
+  const wrap = document.getElementById('graph-wrap');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const svg = d3.select('#graph').attr('viewBox',`0 0 ${W} ${H}`);
+
+  const nodes = gdata.nodes.map(d=>({...d}));
+  const edges = gdata.edges.map(d=>({...d}));
+
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(edges)
+      .id(d=>d.id)
+      .distance(d => 130 - d.weight*65)
+      .strength(d => 0.25 + d.weight*0.5))
+    .force('charge', d3.forceManyBody().strength(-300))
+    .force('center', d3.forceCenter(W/2, H/2))
+    .force('collision', d3.forceCollide().radius(d => pillSize(d).pw/2 + 12))
+    .force('x', d3.forceX(W/2).strength(0.04))
+    .force('y', d3.forceY(H/2).strength(0.04));
+
+  const edgeSel = d3.select('#edges-g').selectAll('line.edge')
+    .data(edges, d=>d.source.id+'-'+d.target.id)
+    .join('line')
+    .attr('class','edge')
+    .attr('stroke-width', d => 0.5 + d.weight * 2);
+
+  const nodeSel = d3.select('#nodes-g').selectAll('g.node-g')
+    .data(nodes, d=>d.id)
+    .join('g')
+    .attr('class', d=>`node-g cat-${d.cat}`)
+    .call(d3.drag()
+      .on('start',(ev,d)=>{ if(!ev.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y })
+      .on('drag', (ev,d)=>{ d.fx=ev.x; d.fy=ev.y })
+      .on('end',  (ev,d)=>{ if(!ev.active) sim.alphaTarget(0); d.fx=null; d.fy=null }))
+    .on('click',(ev,d)=>{ ev.stopPropagation(); selectNode(d.id, edgeSel, nodeSel) });
+
+  nodeSel.selectAll('rect.pill').data(d=>[d]).join('rect')
+    .attr('class','pill')
+    .attr('rx',20).attr('ry',20)
+    .each(function(d){
+      const {pw,ph} = pillSize(d);
+      d3.select(this).attr('width',pw).attr('height',ph).attr('x',-pw/2).attr('y',-ph/2);
+    });
+
+  nodeSel.selectAll('text.label').data(d=>[d]).join('text')
+    .attr('class','label')
+    .attr('y',1)
+    .each(function(d){
+      d3.select(this).attr('font-size', pillSize(d).fs).text(d.label);
+    });
+
+  sim.on('tick', ()=>{
+    edgeSel
+      .attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+      .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+    nodeSel.attr('transform',d=>`translate(${d.x},${d.y})`);
+  });
+
+  svg.on('click', ()=>deselect(edgeSel, nodeSel));
+
+  window._edgeSel = edgeSel;
+  window._nodeSel = nodeSel;
+}
+
+function connectedIds(id){
+  const ids = new Set();
+  gdata.edges.forEach(e=>{
+    const s=e.source.id||e.source, t=e.target.id||e.target;
+    if(s===id) ids.add(t);
+    if(t===id) ids.add(s);
+  });
+  return ids;
+}
+
+function selectNode(id, edgeSel, nodeSel){
+  edgeSel = edgeSel || window._edgeSel;
+  nodeSel = nodeSel || window._nodeSel;
+
+  nodeSel.classed('active', d=>d.id===id);
+  edgeSel
+    .classed('highlight', d=>(d.source.id||d.source)===id||(d.target.id||d.target)===id)
+    .classed('dim',       d=>(d.source.id||d.source)!==id&&(d.target.id||d.target)!==id);
+
+  const node = gdata.nodes.find(n=>n.id===id);
+  document.getElementById('hint').style.display='none';
+  document.getElementById('detail').classList.add('on');
+  document.getElementById('d-name').textContent = node.label;
+  document.getElementById('d-meta').innerHTML =
+    `frequenza: <strong>${node.freq}</strong>&nbsp;·&nbsp;in <strong>${node.docs.length}</strong>/${gdata.meta.total_docs} testi`;
+
+  const edgesOf = gdata.edges
+    .filter(e=>(e.source.id||e.source)===id||(e.target.id||e.target)===id)
+    .map(e=>{
+      const oid = ((e.source.id||e.source)===id) ? (e.target.id||e.target) : (e.source.id||e.source);
+      return {id:oid, weight:e.weight};
+    })
+    .sort((a,b)=>b.weight-a.weight);
+
+  const list = document.getElementById('d-list');
+  list.innerHTML='';
+  edgesOf.forEach(e=>{
+    const n = gdata.nodes.find(x=>x.id===e.id);
+    if(!n) return;
+    const stroke = CAT_STROKE[n.cat]||'#888';
+    const row = document.createElement('div');
+    row.className='conn-row';
+    row.innerHTML=`
+      <span class="conn-label">${n.label}</span>
+      <div class="conn-track"><div class="conn-fill" style="width:${Math.round(e.weight*100)}%;background:${stroke}"></div></div>
+      <span class="conn-pct">${Math.round(e.weight*100)}%</span>`;
+    row.addEventListener('click',()=>selectNode(n.id));
+    list.appendChild(row);
+  });
+}
+
+function deselect(edgeSel, nodeSel){
+  edgeSel = edgeSel || window._edgeSel;
+  nodeSel = nodeSel || window._nodeSel;
+  if(!edgeSel) return;
+  nodeSel.classed('active',false);
+  edgeSel.classed('highlight',false).classed('dim',false);
+  document.getElementById('hint').style.display='';
+  document.getElementById('detail').classList.remove('on');
+}
+
+window.addEventListener('resize',()=>{
+  deselect();
+  d3.select('#nodes-g').selectAll('*').remove();
+  d3.select('#edges-g').selectAll('*').remove();
+  render();
+});
+
+init().catch(e=>{
+  document.getElementById('hint').textContent='Errore nel caricamento di graph_data.json.';
+  console.error(e);
+});
+</script>
+</body>
+</html>
